@@ -11,4 +11,4 @@ Sistema de registro de clientes para psicólogos cadastrados.
 * Hélio Martins
 * Thales Henrique
 # Tecnologias
-* NodeJS, HTML, CSS, SQLite
+* NodeJS, HTML, CSS, SQLite, Vue
