@@ -23,13 +23,13 @@
 <script>
 
 export default {
-  name: 'App',
+  name: 'App'
 }
 </script>
 
 <style>
     li {
-        margin:10px;  
+        margin:10px;
     }
     nav {
         margin-bottom:20px;
