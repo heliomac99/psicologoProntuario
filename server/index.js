@@ -60,11 +60,20 @@ app.post('/usuario/remove', (req, res) => {
 });
 
 app.post('/usuario/edit', (req, res) => {
-    exec_sql(`UPDATE Users SET (nome, login, idade, endereco, municipio) VALUES (?,?,?,?,?) WHERE uid = ?`, [req.body.nome, req.body.login, req.body.idade, req.body.endereco, req.body.municipio, req.body.uid]);
+    db.run(`UPDATE Users SET (nome, login, idade, endereco, municipio) VALUES (?,?,?,?,?) WHERE uid = ?`, [req.body.nome, req.body.login, req.body.idade, req.body.endereco, req.body.municipio, req.body.uid], (err) => {
+        if (err) {
+            console.error(err.message);
+            res.send({status: 500, message: err.message});
+        } else {
+            res.send({status: 200});
+        }
+    });
 });
 
 app.post('/paciente', (req, res) => {
-    res.send(exec_sql(`SELECT * FROM Pacientes`))
+    db.all(`SELECT * FROM Pacientes WHERE pid = ?`, [req.body.pid], (err, rows) => {
+        res.send(rows);
+    });
 });
 
 app.post('/paciente/add', (req, res) => {
@@ -90,11 +99,20 @@ app.post('/paciente/remove', (req, res) => {
 });
 
 app.post('/paciente/edit', (req, res) => {
-    exec_sql(`UPDATE Pacientes SET (nome, idade, municipio) VALUES (?,?,?) WHERE uid = ?`, [req.body.nome, req.body.idade, req.body.municipio, req.body.uid]);
+    db.run(`UPDATE Pacientes SET (nome, idade, municipio) VALUES (?,?,?) WHERE uid = ?`, [req.body.nome, req.body.idade, req.body.municipio, req.body.uid], (err) => {
+        if (err) {
+            console.error(err.message);
+            res.send({status: 500, message: err.message});
+        } else {
+            res.send({status: 200});
+        }
+    });
 });
 
 app.post('/Relatorio', (req, res) => {
-    res.send(exec_sql(`SELECT * FROM Relatorios`))
+    db.all(`SELECT * FROM Relatorios WHERE pid = ? AND usid = ?`, [req.body.pid, req.body.usid], (err, rows) => {
+        res.send(rows);
+    });
 });
 
 app.post('/Relatorio/add', (req, res) => {
@@ -109,11 +127,25 @@ app.post('/Relatorio/add', (req, res) => {
 });
 
 app.post('/Relatorio/remove', (req, res) => {
-    exec_sql(`DELETE FROM Relatorios WHERE uid = ?`, [req.body.uid]);
+    db.run(`DELETE FROM Relatorios WHERE id = ?`, [req.body.id], (err) => {
+        if (err) {
+            console.error(err.message);
+            res.send({status: 500, message: err.message});
+        } else {
+            res.send({status: 200});
+        }
+    });
 });
 
 app.post('/Relatorio/edit', (req, res) => {
-    exec_sql(`UPDATE Relatorios SET (pid, usid, corpo) VALUES (?,?,?) WHERE uid = ?`, [req.body.nome, req.body.idade, req.body.municipio, req.body.uid]);
+    db.run(`UPDATE Relatorios SET (pid, usid, corpo) VALUES (?,?,?) WHERE id = ?`, [req.body.nome, req.body.idade, req.body.municipio, req.body.id], (err) => {
+        if (err) {
+            console.error(err.message);
+            res.send({status: 500, message: err.message});
+        } else {
+            res.send({status: 200});
+        }
+    });
 });
 
 const port = process.env.PORT || 4000;
