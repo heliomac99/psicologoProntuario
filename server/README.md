@@ -1,9 +1,9 @@
 Interface para API
 
-/usuario \
+### ``` /usuario ``` 
 Endpoint para lidar com os dados de usuario (psicologos).
 
-/usuario/add \
+#### ``` /usuario/add ``` 
 {
     nome,
     email, 
@@ -11,11 +11,11 @@ Endpoint para lidar com os dados de usuario (psicologos).
     endereco, 
     municipio
 }
-/usuario/remove \
+#### ``` /usuario/remove ``` 
 {
     id
 }
-/usuario/edit \
+#### ``` /usuario/edit ``` 
 {
     nome,
     email, 
@@ -25,21 +25,21 @@ Endpoint para lidar com os dados de usuario (psicologos).
     id
 }
 
-/paciente \
+### ``` /paciente ``` 
 Endpoint para lidar com os dados de pacientes vinculados a um psicologo.
 
-/paciente/add \
+#### ``` /paciente/add ``` 
 {
     nome, 
     pid, 
     idade, 
     municipio
 }
-/paciente/remove \
+#### ``` /paciente/remove ```
 {
     id
 }
-/paciente/edit \
+#### ```/paciente/edit ```
 {
     nome, 
     pid, 
@@ -48,24 +48,24 @@ Endpoint para lidar com os dados de pacientes vinculados a um psicologo.
     id
 }
 
-/relatorio
+#### ``` /relatorio ```
 Endpoint para lidar com os dados de relatorios de um paciente. Retorna uma lista de todos os relatorios vinculados a um par de psicologo e paciente.
 {
     pid,
     usid
 }
 
-/relatorio/add \
+#### ``` /relatorio/add ```
 {
     pid, 
     usid, 
     corpo
 }
-/relatorio/remove \
+#### ``` /relatorio/remove ```
 {
     id
 }
-/relatorio/edit \
+#### ``` /relatorio/edit ```
 {
     pid, 
     usid, 
