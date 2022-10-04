@@ -49,7 +49,7 @@ Endpoint para lidar com os dados de pacientes vinculados a um psicologo.
 }
 
 #### ``` /relatorio ```
-Endpoint para lidar com os dados de relatorios de um paciente. Retorna uma lista de todos os relatorios vinculados a um par de psicologo e paciente.
+Endpoint para lidar com os dados de relatorios de um paciente. Retorna uma lista de todos os relatorios vinculados a um par de psicologo e paciente. \
 {
     pid,
     usid
