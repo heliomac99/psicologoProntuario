@@ -10,7 +10,7 @@ let db = new sqlite3.Database(__dirname + '\\database\\psionico.db', sqlite3.OPE
 db.run(`CREATE TABLE Users (
         id INTEGER PRIMARY KEY ASC,
         nome TEXT,
-        login TEXT,
+        email TEXT,
         idade INTEGER,
         endereco TEXT,
         municipio TEXT
@@ -20,7 +20,6 @@ db.run(`CREATE TABLE Pacientes (
     id INTEGER PRIMARY KEY ASC,
     pid INTEGER,
     nome TEXT,
-    login TEXT,
     idade INTEGER,
     municipio TEXT
     )`);
