@@ -60,7 +60,7 @@ app.post('/usuario/remove', (req, res) => {
 });
 
 app.post('/usuario/edit', (req, res) => {
-    db.run(`UPDATE Users SET (nome, login, idade, endereco, municipio) VALUES (?,?,?,?,?) WHERE uid = ?`, [req.body.nome, req.body.login, req.body.idade, req.body.endereco, req.body.municipio, req.body.uid], (err) => {
+    db.run(`UPDATE Users SET (nome, email, idade, endereco, municipio) VALUES (?,?,?,?,?) WHERE id = ?`, [req.body.nome, req.body.email, req.body.idade, req.body.endereco, req.body.municipio, req.body.id], (err) => {
         if (err) {
             console.error(err.message);
             res.send({status: 500, message: err.message});
@@ -99,7 +99,7 @@ app.post('/paciente/remove', (req, res) => {
 });
 
 app.post('/paciente/edit', (req, res) => {
-    db.run(`UPDATE Pacientes SET (nome, idade, municipio) VALUES (?,?,?) WHERE uid = ?`, [req.body.nome, req.body.idade, req.body.municipio, req.body.uid], (err) => {
+    db.run(`UPDATE Pacientes SET (nome, idade, municipio) VALUES (?,?,?) WHERE id = ?`, [req.body.nome, req.body.idade, req.body.municipio, req.body.id], (err) => {
         if (err) {
             console.error(err.message);
             res.send({status: 500, message: err.message});
@@ -109,13 +109,13 @@ app.post('/paciente/edit', (req, res) => {
     });
 });
 
-app.post('/Relatorio', (req, res) => {
+app.post('/relatorio', (req, res) => {
     db.all(`SELECT * FROM Relatorios WHERE pid = ? AND usid = ?`, [req.body.pid, req.body.usid], (err, rows) => {
         res.send(rows);
     });
 });
 
-app.post('/Relatorio/add', (req, res) => {
+app.post('/relatorio/add', (req, res) => {
     db.run(`INSERT INTO Relatorios (pid, usid, corpo) VALUES (?,?,?)`, [req.body.pid, req.body.usid, req.body.corpo], (err) => {
         if (err) {
             console.error(err.message);
@@ -126,7 +126,7 @@ app.post('/Relatorio/add', (req, res) => {
     });
 });
 
-app.post('/Relatorio/remove', (req, res) => {
+app.post('/relatorio/remove', (req, res) => {
     db.run(`DELETE FROM Relatorios WHERE id = ?`, [req.body.id], (err) => {
         if (err) {
             console.error(err.message);
@@ -137,7 +137,7 @@ app.post('/Relatorio/remove', (req, res) => {
     });
 });
 
-app.post('/Relatorio/edit', (req, res) => {
+app.post('/relatorio/edit', (req, res) => {
     db.run(`UPDATE Relatorios SET (pid, usid, corpo) VALUES (?,?,?) WHERE id = ?`, [req.body.nome, req.body.idade, req.body.municipio, req.body.id], (err) => {
         if (err) {
             console.error(err.message);
