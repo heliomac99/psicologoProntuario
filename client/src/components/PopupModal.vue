@@ -9,23 +9,23 @@
 </template>
 
 <script>
-export default {
-  name: 'PopupModal',
+    export default {
+        name: 'PopupModal',
 
-  data: () => ({
-    isVisible: false
-  }),
+        data: () => ({
+            isVisible: false,
+        }),
 
-  methods: {
-    open () {
-      this.isVisible = true
-    },
+        methods: {
+            open() {
+                this.isVisible = true
+            },
 
-    close () {
-      this.isVisible = false
+            close() {
+                this.isVisible = false
+            },
+        },
     }
-  }
-}
 </script>
 
 <style scoped>
@@ -60,7 +60,7 @@ export default {
         max-width: 480px;
         margin-left: auto;
         margin-right: auto;
-        padding: 1.5rem;
+        padding: 3rem;
     }
 
     .fade-enter-active,

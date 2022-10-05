@@ -19,16 +19,16 @@ Sistema de registro e acompanhamento de clientes para psicólogos cadastrados.
 	- Discutir e criar esquema do banco de dados [Atila, Davi, Helio, Thales]
 	- Criar banco de dados [Davi]
 
--Historia: Como psicologo, eu quero me cadastrar no sistema
--Tarefas:
+- Historia: Como psicologo, eu quero me cadastrar no sistema
+- Tarefas:
 	- Projetar e testar a interface de login [Atila]
 	- Projetar e testar a interface do psicologo [Helio]
 	- Criar e testar endpoint para cadastro [Davi]
 	- Criar e testar endpoint para login [Thales]
 	- Criar e testar camada de autenticacao [Davi]
 
--Historia: Como psicologo, eu quero gerenciar meus pacientes
--Tarefas:
+- Historia: Como psicologo, eu quero gerenciar meus pacientes
+- Tarefas:
 	- Projetar e testar a interface de cadastro de paciente [Helio]
 	- Projetar e testar a interface de edicao dos dados de paciente [Helio e Atila]
 	- Projetar e testar a interface de acompanhamento do paciente [Helio e Atila]
@@ -39,8 +39,8 @@ Sistema de registro e acompanhamento de clientes para psicólogos cadastrados.
 	- Criar e testar endpoint para transferencia dos dados de paciente [Thales]
 	- Criar e testar camada de autenticacao [Davi]
 
--Historia: Como psicologo, eu quero gerenciar os meus relatorios
--Tarefas:
+- Historia: Como psicologo, eu quero gerenciar os meus relatorios
+- Tarefas:
 	- Projetar e testar a interface de criacao de relatorio [Helio]
 	- Projetar e testar a interface de edicao de relatorio [Helio]
 	- Projetar e testar a interface de remocao de relatorio [Helio]
