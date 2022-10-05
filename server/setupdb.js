@@ -13,7 +13,8 @@ db.run(`CREATE TABLE Users (
         login TEXT,
         idade INTEGER,
         endereco TEXT,
-        municipio TEXT
+        municipio TEXT,
+		senha TEXT
         )`);
 
 db.run(`CREATE TABLE Pacientes (

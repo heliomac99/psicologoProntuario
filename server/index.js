@@ -7,12 +7,6 @@ const sqlite3 = require('sqlite3');
 // db.all(`SELECT * FROM Users`, [], (err, rows) => {
 //     if (err) return console.error(err.message);
 
-//     rows.forEach((row) => {
-//         console.log(row);
-//     });
-// });
-
-// db.close();
 let db = new sqlite3.Database(__dirname + '\\database\\psionico.db', sqlite3.OPEN_READWRITE, (err) => {
     if (err) {
         console.log(err.message);
@@ -38,7 +32,14 @@ app.post('/usuario', (req, res) => {
 });
 
 app.post('/usuario/add', (req, res) => {
-    db.run(`INSERT INTO Users (nome, email, idade, endereco, municipio) VALUES (?,?,?,?,?)`, [req.body.nome, req.body.email, req.body.idade, req.body.endereco, req.body.municipio], (err) => {
+    //dados do usuario
+    let nome = req.body.nome
+    let login = req.body.login
+    let idade = req.body.idade
+    let endereco = req.body.endereco
+    let municipio = req.body.municipio
+    let senha = req.body.senha
+    db.run(`INSERT INTO Users (nome, login, idade, endereco, municipio, senha) VALUES (?,?,?,?,?,?)`, [nome, login, idade, endereco, municipio, senha], (err) => {
         if (err) {
             console.error(err.message);
             res.send({status: 500, message: err.message});
@@ -60,7 +61,7 @@ app.post('/usuario/remove', (req, res) => {
 });
 
 app.post('/usuario/edit', (req, res) => {
-    db.run(`UPDATE Users SET (nome, login, idade, endereco, municipio) VALUES (?,?,?,?,?) WHERE uid = ?`, [req.body.nome, req.body.login, req.body.idade, req.body.endereco, req.body.municipio, req.body.uid], (err) => {
+    db.run(`UPDATE Users SET (nome, login, idade, endereco, municipio, senha) VALUES (?,?,?,?,?,?) WHERE uid = ?`, [req.body.nome, req.body.login, req.body.idade, req.body.endereco, req.body.municipio, req.body.uid, req.body.senha], (err) => {
         if (err) {
             console.error(err.message);
             res.send({status: 500, message: err.message});
@@ -97,7 +98,7 @@ app.post('/paciente/remove', (req, res) => {
         }
     });
 });
-
+//
 app.post('/paciente/edit', (req, res) => {
     db.run(`UPDATE Pacientes SET (nome, idade, municipio) VALUES (?,?,?) WHERE uid = ?`, [req.body.nome, req.body.idade, req.body.municipio, req.body.uid], (err) => {
         if (err) {
@@ -147,6 +148,36 @@ app.post('/Relatorio/edit', (req, res) => {
         }
     });
 });
+
+
+//login
+app.post('/login', (req, res) => {
+    //usuário e senha
+    let username = req.body.login
+    let password = req.body.senha
+    console.log(username)
+    if (username && password) {
+        sql = `SELECT id FROM Users WHERE login = ? AND senha = ?`
+        db.get(sql, [username, password], (err, result) => {
+            if (err) {
+                console.error(err.message);
+                res.send({status: 500, message: err.message});
+            } else {
+                console.log(result)
+                //testa se a linha existe
+                if (result) {
+                    console.log("Usuario encontrrrado")
+                    res.send({status: 200});
+                } else {
+                    console.log("Senha ou usuário incorretos")
+                    res.send({status: 500, message: "Senha ou usuário incorretos"});
+                }   
+            }
+        })
+    } else {
+        res.send('Digite um usuário e senha!')
+    }
+})
 
 const port = process.env.PORT || 4000;
 app.listen(port, () => {
