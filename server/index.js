@@ -61,7 +61,7 @@ app.post('/usuario/remove', (req, res) => {
 });
 
 app.post('/usuario/edit', (req, res) => {
-    db.run(`UPDATE Users SET (nome, login, idade, endereco, municipio, senha) VALUES (?,?,?,?,?,?) WHERE uid = ?`, [req.body.nome, req.body.login, req.body.idade, req.body.endereco, req.body.municipio, req.body.uid, req.body.senha], (err) => {
+    db.run(`UPDATE Users SET (nome, login, idade, endereco, municipio, senha) VALUES (?,?,?,?,?,?) WHERE id = ?`, [req.body.nome, req.body.login, req.body.idade, req.body.endereco, req.body.municipio, req.body.uid, req.body.senha], (err) => {
         if (err) {
             console.error(err.message);
             res.send({status: 500, message: err.message});
@@ -178,6 +178,29 @@ app.post('/login', (req, res) => {
         res.send('Digite um usuário e senha!')
     }
 })
+
+//retorna registro do usuário
+
+app.post('/usuario/carregarRegistro', (req, res) => {
+    sql = `SELECT * FROM Users WHERE id = ?`
+    let userId = req.body.id 
+    db.get(sql, [userId], (err, result) => {
+        if (err) {
+            console.error(err.message)
+            res.send({status: 500, message: err.message});
+        } else {
+            if (result) {
+                console.log("Usuario retornado com sucesso")
+                res.send(result)
+            } else {
+                console.log("Usuário não existe")
+                res.send({status: 500, message: "Usuário não existe"})
+            }             
+
+        }
+    })
+})
+
 
 const port = process.env.PORT || 4000;
 app.listen(port, () => {
