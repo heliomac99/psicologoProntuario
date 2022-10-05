@@ -77,7 +77,7 @@ app.post('/paciente', (req, res) => {
 });
 
 app.post('/paciente/add', (req, res) => {
-    db.run(`INSERT INTO Pacientes (nome, pid, idade, municipio) VALUES (?, ?, ?, ?)`, [req.body.nome, req.body.pid, req.body.idade, req.body.municipio], (err) => {
+    db.run(`INSERT INTO Pacientes (nome, pid, senha, idade, municipio) VALUES (?, ?, ?, ?, ?)`, [req.body.nome, req.body.pid, req.body.senha, req.body.idade, req.body.municipio], (err) => {
         if (err) {
             console.error(err.message);
             res.send({status: 500, message: err.message});
@@ -99,7 +99,7 @@ app.post('/paciente/remove', (req, res) => {
 });
 
 app.post('/paciente/edit', (req, res) => {
-    db.run(`UPDATE Pacientes SET nome = ?, idade = ?, municipio = ? WHERE id = ?`, [req.body.nome, req.body.idade, req.body.municipio, req.body.id], (err) => {
+    db.run(`UPDATE Pacientes SET nome = ?, idade = ?, senha = ?, municipio = ? WHERE id = ?`, [req.body.nome, req.body.idade, req.body.senha, req.body.municipio, req.body.id], (err) => {
         if (err) {
             console.error(err.message);
             res.send({status: 500, message: err.message});

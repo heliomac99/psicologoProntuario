@@ -11,6 +11,7 @@ db.run(`CREATE TABLE Users (
         id INTEGER PRIMARY KEY ASC,
         nome TEXT,
         email TEXT,
+        senha TEXT,
         idade INTEGER,
         endereco TEXT,
         municipio TEXT
