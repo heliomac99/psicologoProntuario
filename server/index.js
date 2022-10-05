@@ -60,7 +60,7 @@ app.post('/usuario/remove', (req, res) => {
 });
 
 app.post('/usuario/edit', (req, res) => {
-    db.run(`UPDATE Users SET (nome, email, idade, endereco, municipio) VALUES (?,?,?,?,?) WHERE id = ?`, [req.body.nome, req.body.email, req.body.idade, req.body.endereco, req.body.municipio, req.body.id], (err) => {
+    db.run(`UPDATE Users SET nome = ?, email = ?, idade = ?, endereco = ?, municipio = ? WHERE id = ?`, [req.body.nome, req.body.email, req.body.idade, req.body.endereco, req.body.municipio, req.body.id], (err) => {
         if (err) {
             console.error(err.message);
             res.send({status: 500, message: err.message});
@@ -99,7 +99,7 @@ app.post('/paciente/remove', (req, res) => {
 });
 
 app.post('/paciente/edit', (req, res) => {
-    db.run(`UPDATE Pacientes SET (nome, idade, municipio) VALUES (?,?,?) WHERE id = ?`, [req.body.nome, req.body.idade, req.body.municipio, req.body.id], (err) => {
+    db.run(`UPDATE Pacientes SET nome = ?, idade = ?, municipio = ? WHERE id = ?`, [req.body.nome, req.body.idade, req.body.municipio, req.body.id], (err) => {
         if (err) {
             console.error(err.message);
             res.send({status: 500, message: err.message});
@@ -138,7 +138,7 @@ app.post('/relatorio/remove', (req, res) => {
 });
 
 app.post('/relatorio/edit', (req, res) => {
-    db.run(`UPDATE Relatorios SET (pid, usid, corpo) VALUES (?,?,?) WHERE id = ?`, [req.body.nome, req.body.idade, req.body.municipio, req.body.id], (err) => {
+    db.run(`UPDATE Relatorios SET pid = ?, usid = ?, corpo = ? WHERE id = ?`, [req.body.nome, req.body.idade, req.body.municipio, req.body.id], (err) => {
         if (err) {
             console.error(err.message);
             res.send({status: 500, message: err.message});
