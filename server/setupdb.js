@@ -14,7 +14,8 @@ db.run(`CREATE TABLE Users (
         senha TEXT,
         idade INTEGER,
         endereco TEXT,
-        municipio TEXT
+        municipio TEXT,
+        estado TEXT
         )`);
 
 db.run(`CREATE TABLE Pacientes (
@@ -22,12 +23,15 @@ db.run(`CREATE TABLE Pacientes (
     pid INTEGER,
     nome TEXT,
     idade INTEGER,
-    municipio TEXT
+    sexo CHAR,
+    genero TEXT,
+    estado TEXT
     )`);
 
 db.run(`CREATE TABLE Relatorios (
-    uid INTEGER PRIMARY KEY ASC,
+    id INTEGER PRIMARY KEY ASC,
     pid INTEGER,
+    aval INTEGER,
     usid INTEGER
     corpo TEXT
     )`);
