@@ -4,71 +4,93 @@ Interface para API
 Endpoint para lidar com os dados de usuario (psicologos).
 
 #### ``` /usuario/add ``` 
-{
-    nome,
-    email, 
-    idade, 
-    endereco, 
-    municipio
-}
+    {
+        nome: string, 
+        email: string,
+        senha: string 
+        idade: integer, 
+        endereco: string,  
+        municipio: string,  
+        estado: string 
+    }
 #### ``` /usuario/remove ``` 
-{
-    id
-}
+    {
+        id: integer
+    } 
 #### ``` /usuario/edit ``` 
-{
-    nome,
-    email, 
-    idade, 
-    endereco, 
-    municipio,
-    id
-}
-
+    {
+        nome: string,
+        email: string, 
+        senha: string,
+        idade: integer, 
+        endereco: string, 
+        municipio: string,
+        estado: string,
+        id: integer
+    } 
 ### ``` /paciente ``` 
 Endpoint para lidar com os dados de pacientes vinculados a um psicologo.
 
 #### ``` /paciente/add ``` 
-{
-    nome, 
-    pid, 
-    idade, 
-    municipio
-}
+    {
+        nome: string, 
+        usid: integer, 
+        idade: integer, 
+        estado: string,
+        sexo: string,
+        genero: string
+    } 
+***usid***: Identificador do usuario que atende esse paciente.
+***estado***: Sigla do estado onde o paciente e atendido.
 #### ``` /paciente/remove ```
-{
-    id
-}
+    {
+        id: integer
+    } 
 #### ```/paciente/edit ```
-{
-    nome, 
-    pid, 
-    idade, 
-    municipio,    
-    id
-}
+    {
+        nome: string, 
+        id: integer, 
+        idade: integer,
+        sexo: string,
+        genero: string,
+        estado: string,
+    } 
 
 #### ``` /relatorio ```
 Endpoint para lidar com os dados de relatorios de um paciente. Retorna uma lista de todos os relatorios vinculados a um par de psicologo e paciente. \
-{
-    pid,
-    usid
-}
+    {
+        pid: integer,
+        usid: integer
+    } 
+***pid***: Identificador do paciente vinculado ao relatorio.
+***usid***: Identificador do usuario vinculado ao relatorio.
 
 #### ``` /relatorio/add ```
-{
-    pid, 
-    usid, 
-    corpo
-}
+    {
+        pid: integer, 
+        usid: integer, 
+        corpo: string,
+        aval: integer
+    } 
+***pid***: Identificador do paciente vinculado ao relatorio.
+***usid***: Identificador do usuario vinculado ao relatorio.
+***aval***: Inteiro referente a classificacao do paciente. (1-3)
 #### ``` /relatorio/remove ```
-{
-    id
-}
+    {
+        id: integer
+    } 
 #### ``` /relatorio/edit ```
-{
-    pid, 
-    usid, 
-    corpo,
-    id
-}
+    {
+        pid: integer, 
+        usid: integer, 
+        corpo: string,
+        id: integer
+    } 
+***pid***: Identificador do paciente vinculado ao relatorio.
+***usid***: Identificador do usuario vinculado ao relatorio.
+
+#### ``` /login ```
+    {
+        email: string,
+        senha: string
+    }
