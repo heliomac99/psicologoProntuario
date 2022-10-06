@@ -28,6 +28,25 @@ Endpoint para lidar com os dados de usuario (psicologos).
         estado: string,
         id: integer
     } 
+
+#### ``` /usuario/pacientes ``` 
+Retorna uma lista de todos os pacientes vinculados a um psicologo.
+
+    {
+        usid: integer
+    }
+    
+***usid***: Identificador do usuario vinculado ao paciente.
+#### ``` /usuario/paciente/relatorios ``` 
+Retorna uma lista de todos os relatorios vinculados a um par de psicologo e paciente. \
+
+    {
+        pid: integer,
+        usid: integer
+    } 
+
+***pid***: Identificador do paciente vinculado ao relatorio.
+***usid***: Identificador do usuario vinculado ao relatorio.
 ### ``` /paciente ``` 
 Endpoint para lidar com os dados de pacientes vinculados a um psicologo.
 
@@ -57,13 +76,7 @@ Endpoint para lidar com os dados de pacientes vinculados a um psicologo.
     } 
 
 #### ``` /relatorio ```
-Endpoint para lidar com os dados de relatorios de um paciente. Retorna uma lista de todos os relatorios vinculados a um par de psicologo e paciente. \
-    {
-        pid: integer,
-        usid: integer
-    } 
-***pid***: Identificador do paciente vinculado ao relatorio.
-***usid***: Identificador do usuario vinculado ao relatorio.
+Endpoint para lidar com os dados de relatorios de um paciente. 
 
 #### ``` /relatorio/add ```
     {
