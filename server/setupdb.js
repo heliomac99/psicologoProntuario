@@ -20,7 +20,7 @@ db.run(`CREATE TABLE Users (
 
 db.run(`CREATE TABLE Pacientes (
     id INTEGER PRIMARY KEY ASC,
-    pid INTEGER,
+    usid INTEGER,
     nome TEXT,
     idade INTEGER,
     sexo CHAR,
@@ -31,8 +31,8 @@ db.run(`CREATE TABLE Pacientes (
 db.run(`CREATE TABLE Relatorios (
     id INTEGER PRIMARY KEY ASC,
     pid INTEGER,
+    usid INTEGER,
     aval INTEGER,
-    usid INTEGER
     corpo TEXT
     )`);
 

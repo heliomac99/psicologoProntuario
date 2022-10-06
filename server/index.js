@@ -31,6 +31,29 @@ app.post('/usuario', (req, res) => {
     });
 });
 
+
+app.post('/usuario/pacientes', (req, res) => {
+    db.all(`SELECT * FROM Pacientes WHERE usid = ?`, [req.body.usid], (err, rows) => {
+        if (err) {
+            console.error(err.message);
+            res.send({status: 500, message: err.message});
+        } else {
+            res.send(rows);
+        }
+    });
+});
+
+app.post('/usuario/paciente/relatorios', (req, res) => {
+    db.all(`SELECT * FROM Relatorios WHERE pid = ? AND usid = ?`, [req.body.pid, req.body.usid], (err, rows) => {
+        if (err) {
+            console.error(err.message);
+            res.send({status: 500, message: err.message});
+        } else {
+            res.send(rows);
+        }
+    });
+});
+
 app.post('/usuario/add', (req, res) => {
     //dados do usuario
     let nome = req.body.nome
@@ -72,7 +95,7 @@ app.post('/usuario/edit', (req, res) => {
 });
 
 app.post('/paciente', (req, res) => {
-    db.all(`SELECT * FROM Pacientes WHERE pid = ?`, [req.body.pid], (err, rows) => {
+    db.all(`SELECT * FROM Pacientes`, (err, rows) => {
         res.send(rows);
     });
 });
