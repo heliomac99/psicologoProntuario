@@ -31,6 +31,11 @@ app.post('/usuario', (req, res) => {
     });
 });
 
+app.post('/usuario/carregarRegistro', (req, res) => {
+    db.all(`SELECT * FROM Users WHERE id = ?`, [rq.body.id], (err, rows) => {
+        res.send(rows);
+    });
+});
 
 app.post('/usuario/pacientes', (req, res) => {
     db.all(`SELECT * FROM Pacientes WHERE usid = ?`, [req.body.usid], (err, rows) => {
@@ -55,7 +60,14 @@ app.post('/usuario/paciente/relatorios', (req, res) => {
 });
 
 app.post('/usuario/add', (req, res) => {
-    db.run(`INSERT INTO Users (nome, email, idade, endereco, municipio, senha) VALUES (?,?,?,?,?, ?)`, [req.body.nome, req.body.email, req.body.idade, req.body.endereco, req.body.municipio, req.body.senha], (err) => {
+    //dados do usuario
+    let nome = req.body.nome
+    let login = req.body.login
+    let idade = req.body.idade
+    let endereco = req.body.endereco
+    let municipio = req.body.municipio
+    let senha = req.body.senha
+    db.run(`INSERT INTO Users (nome, email, idade, endereco, municipio, senha) VALUES (?,?,?,?,?,?)`, [nome, login, idade, endereco, municipio, senha], (err) => {
         if (err) {
             console.error(err.message);
             res.send({status: 500, message: err.message});
@@ -204,25 +216,25 @@ app.post('/login', (req, res) => {
 
 //retorna registro do usuário
 
-app.post('/usuario/carregarRegistro', (req, res) => {
-    sql = `SELECT * FROM Users WHERE id = ?`
-    let userId = req.body.id 
-    db.get(sql, [userId], (err, result) => {
-        if (err) {
-            console.error(err.message)
-            res.send({status: 500, message: err.message});
-        } else {
-            if (result) {
-                console.log("Usuario retornado com sucesso")
-                res.send(result)
-            } else {
-                console.log("Usuário não existe")
-                res.send({status: 500, message: "Usuário não existe"})
-            }             
+// app.post('/usuario/carregarRegistro', (req, res) => {
+//     sql = `SELECT * FROM Users WHERE id = ?`
+//     let userId = req.body.id 
+//     db.get(sql, [userId], (err, result) => {
+//         if (err) {
+//             console.error(err.message)
+//             res.send({status: 500, message: err.message});
+//         } else {
+//             if (result) {
+//                 console.log("Usuario retornado com sucesso")
+//                 res.send(result)
+//             } else {
+//                 console.log("Usuário não existe")
+//                 res.send({status: 500, message: "Usuário não existe"})
+//             }             
 
-        }
-    })
-})
+//         }
+//     })
+// })
 
 
 const port = process.env.PORT || 4000;
