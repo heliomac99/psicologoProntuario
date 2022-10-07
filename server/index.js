@@ -32,7 +32,7 @@ app.post('/usuario', (req, res) => {
 });
 
 app.post('/usuario/carregarRegistro', (req, res) => {
-    db.all(`SELECT * FROM Users WHERE id = ?`, [rq.body.id], (err, rows) => {
+    db.all(`SELECT * FROM Users WHERE id = ?`, [req.body.id], (err, rows) => {
         res.send(rows);
     });
 });
@@ -62,12 +62,12 @@ app.post('/usuario/paciente/relatorios', (req, res) => {
 app.post('/usuario/add', (req, res) => {
     //dados do usuario
     let nome = req.body.nome
-    let login = req.body.login
+    let email = req.body.email
     let idade = req.body.idade
     let endereco = req.body.endereco
     let municipio = req.body.municipio
     let senha = req.body.senha
-    db.run(`INSERT INTO Users (nome, email, idade, endereco, municipio, senha) VALUES (?,?,?,?,?,?)`, [nome, login, idade, endereco, municipio, senha], (err) => {
+    db.run(`INSERT INTO Users (nome, email, idade, endereco, municipio, senha) VALUES (?,?,?,?,?,?)`, [nome, email, idade, endereco, municipio, senha], (err) => {
         if (err) {
             console.error(err.message);
             res.send({status: 500, message: err.message});
@@ -106,7 +106,7 @@ app.post('/paciente', (req, res) => {
 });
 
 app.post('/paciente/add', (req, res) => {
-    db.run(`INSERT INTO Pacientes (nome, usid, idade, estado, sexo, genero) VALUES (?, ?, ?, ?, ?, ?)`, [req.body.nome, req.body.usid, req.body.idade, req.body.estado, req.body.sexo, req.body.genero], (err) => {
+    db.run(`INSERT INTO Pacientes (nome, usid, idade, municipio, estado, sexo, genero) VALUES (?, ?, ?, ?, ?, ?, ?)`, [req.body.nome, req.body.usid, req.body.idade, req.body.estado, req.body.sexo, req.body.genero], (err) => {
         if (err) {
             console.error(err.message);
             res.send({status: 500, message: err.message});
@@ -128,7 +128,7 @@ app.post('/paciente/remove', (req, res) => {
 });
 //
 app.post('/paciente/edit', (req, res) => {
-    db.run(`UPDATE Pacientes SET nome = ?, idade = ?, estado = ?, sexo = ?, genero = ? WHERE id = ?`, [req.body.nome, req.body.idade, req.body.estado, req.body.sexo, req.body.genero, req.body.id], (err) => {
+    db.run(`UPDATE Pacientes SET nome = ?, idade = ?, estado = ?, sexo = ?, genero = ?, municipio = ? WHERE id = ?`, [req.body.nome, req.body.idade, req.body.estado, req.body.sexo, req.body.genero, req.body.municipio, req.body.id], (err) => {
         if (err) {
             console.error(err.message);
             res.send({status: 500, message: err.message});
