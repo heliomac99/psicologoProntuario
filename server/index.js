@@ -32,7 +32,7 @@ app.post('/usuario', (req, res) => {
 });
 
 app.post('/usuario/carregarRegistro', (req, res) => {
-    db.all(`SELECT * FROM Users WHERE id = ?`, [rq.body.id], (err, rows) => {
+    db.all(`SELECT * FROM Users WHERE id = ?`, [req.body.id], (err, rows) => {
         res.send(rows);
     });
 });
@@ -62,12 +62,12 @@ app.post('/usuario/paciente/relatorios', (req, res) => {
 app.post('/usuario/add', (req, res) => {
     //dados do usuario
     let nome = req.body.nome
-    let login = req.body.login
+    let email = req.body.email
     let idade = req.body.idade
     let endereco = req.body.endereco
     let municipio = req.body.municipio
     let senha = req.body.senha
-    db.run(`INSERT INTO Users (nome, email, idade, endereco, municipio, senha) VALUES (?,?,?,?,?,?)`, [nome, login, idade, endereco, municipio, senha], (err) => {
+    db.run(`INSERT INTO Users (nome, email, idade, endereco, municipio, senha) VALUES (?,?,?,?,?,?)`, [nome, email, idade, endereco, municipio, senha], (err) => {
         if (err) {
             console.error(err.message);
             res.send({status: 500, message: err.message});

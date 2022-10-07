@@ -1,7 +1,9 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\server",
+    "\\server\\database"
   ],
-  "SelectedNode": "\\libsass.sln",
+  "SelectedNode": "\\server\\index.js",
   "PreviewInSolutionExplorer": false
 }
