@@ -123,35 +123,13 @@ app.post('/paciente/remove', (req, res) => {
 });
 //
 app.post('/paciente/edit', (req, res) => {
-    db.run(`SELECT * FROM Pacientes WHERE id = ?`, [req.body.id], (err) =>{
-        let nome = req.body.nome
-        if (req.body.nome == undefined) {
-            let nome = "sem nome"
+    db.run(`UPDATE Pacientes SET nome = ?, idade = ?, estado = ?, sexo = ?, genero = ? WHERE id = ?`, [req.body.nome, req.body.idade, req.body.estado, req.body.sexo, req.body.genero, req.body.id], (err) => {
+        if (err) {
+            console.error(err.message);
+            res.send({status: 500, message: err.message});
+        } else {
+            res.send({status: 200});
         }
-        let idade = req.body.idade
-        if (req.body.idade == undefined) {
-            let idade = 10
-        }
-        let estado = req.body.estado
-        if (req.body.estado == undefined) {
-            let estado = "NA"
-        }
-        let sexo = req.body.sexo
-        if (req.body.sexo == undefined) {
-            let sexo = "O"
-        }
-        let genero = req.body.genero
-        if (req.body.genero == undefined) {
-            let genero = "O"
-        }
-        db.run(`UPDATE Pacientes SET nome = ?, idade = ?, estado = ?, sexo = ?, genero = ? WHERE id = ?`, [nome, idade, estado, sexo, genero, req.body.id], (err) => {
-            if (err) {
-                console.error(err.message);
-                res.send({status: 500, message: err.message});
-            } else {
-                res.send({status: 200});
-            }
-        });
     });
 });
 
