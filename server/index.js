@@ -209,25 +209,25 @@ app.post('/login', (req, res) => {
 
 //retorna registro do usuário
 
-app.post('/usuario/carregarRegistro', (req, res) => {
-    sql = `SELECT * FROM Users WHERE id = ?`
-    let userId = req.body.id 
-    db.get(sql, [userId], (err, result) => {
-        if (err) {
-            console.error(err.message)
-            res.send({status: 500, message: err.message});
-        } else {
-            if (result) {
-                console.log("Usuario retornado com sucesso")
-                res.send(result)
-            } else {
-                console.log("Usuário não existe")
-                res.send({status: 500, message: "Usuário não existe"})
-            }             
+// app.post('/usuario/carregarRegistro', (req, res) => {
+//     sql = `SELECT * FROM Users WHERE id = ?`
+//     let userId = req.body.id 
+//     db.get(sql, [userId], (err, result) => {
+//         if (err) {
+//             console.error(err.message)
+//             res.send({status: 500, message: err.message});
+//         } else {
+//             if (result) {
+//                 console.log("Usuario retornado com sucesso")
+//                 res.send(result)
+//             } else {
+//                 console.log("Usuário não existe")
+//                 res.send({status: 500, message: "Usuário não existe"})
+//             }             
 
-        }
-    })
-})
+//         }
+//     })
+// })
 
 
 const port = process.env.PORT || 4000;
