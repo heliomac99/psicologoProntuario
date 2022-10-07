@@ -23,7 +23,7 @@ db.run(`CREATE TABLE Pacientes (
     usid INTEGER,
     nome TEXT,
     idade INTEGER,
-    sexo CHAR,
+    sexo TEXT,
     genero TEXT,
     estado TEXT
     )`);
