@@ -101,7 +101,7 @@ app.post('/paciente', (req, res) => {
 });
 
 app.post('/paciente/add', (req, res) => {
-    db.run(`INSERT INTO Pacientes nome = ?, usid = ?, idade = ?, estado = ?, sexo = ?, genero = ?`, [req.body.nome, req.body.usid, req.body.idade, req.body.estado, req.body.sexo, req.body.genero], (err) => {
+    db.run(`INSERT INTO Pacientes (nome, usid, idade, estado, sexo, genero) VALUES (?, ?, ?, ?, ?, ?)`, [req.body.nome, req.body.usid, req.body.idade, req.body.estado, req.body.sexo, req.body.genero], (err) => {
         if (err) {
             console.error(err.message);
             res.send({status: 500, message: err.message});

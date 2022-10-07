@@ -4,6 +4,7 @@ Interface para API
 Endpoint para lidar com os dados de usuario (psicologos).
 
 #### ``` /usuario/add ``` 
+Adiciona um usuario ao banco gerando um id unico para ele.
     {
         nome: string, 
         email: string,
@@ -14,10 +15,12 @@ Endpoint para lidar com os dados de usuario (psicologos).
         estado: string 
     }
 #### ``` /usuario/remove ``` 
+Remove usuario com id correspondente.
     {
         id: integer
     } 
 #### ``` /usuario/edit ``` 
+Altera os valores na entrada correspondente ao id passado.
     {
         nome: string,
         email: string, 
