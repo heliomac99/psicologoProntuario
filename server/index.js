@@ -37,8 +37,14 @@ app.post('/usuario', (req, res) => {
     });
 });
 
+app.post('/usuario/carregarRegistro', (req, res) => {
+    db.all(`SELECT * FROM Users WHERE id = ?`, [req.body.id], (err, rows) => {
+        res.send(rows);
+    });
+});
+
 app.post('/usuario/add', (req, res) => {
-    db.run(`INSERT INTO Users (nome, email, idade, endereco, municipio) VALUES (?,?,?,?,?)`, [req.body.nome, req.body.email, req.body.idade, req.body.endereco, req.body.municipio], (err) => {
+    db.run(`INSERT INTO Users (nome, email, idade, endereco, municipio, senha) VALUES (?,?,?,?,?, ?)`, [req.body.nome, req.body.email, req.body.idade, req.body.endereco, req.body.municipio, req.body.senha], (err) => {
         if (err) {
             console.error(err.message);
             res.send({status: 500, message: err.message});
@@ -60,7 +66,7 @@ app.post('/usuario/remove', (req, res) => {
 });
 
 app.post('/usuario/edit', (req, res) => {
-    db.run(`UPDATE Users SET nome = ?, email = ?, idade = ?, endereco = ?, municipio = ? WHERE id = ?`, [req.body.nome, req.body.email, req.body.idade, req.body.endereco, req.body.municipio, req.body.id], (err) => {
+    db.run(`UPDATE Users SET nome = ?, email = ?, idade = ?, endereco = ?, municipio = ?, senha = ? WHERE id = ?`, [req.body.nome, req.body.email, req.body.idade, req.body.endereco, req.body.municipio, req.body.senha, req.body.id], (err) => {
         if (err) {
             console.error(err.message);
             res.send({status: 500, message: err.message});
@@ -70,14 +76,21 @@ app.post('/usuario/edit', (req, res) => {
     });
 });
 
+
 app.post('/paciente', (req, res) => {
     db.all(`SELECT * FROM Pacientes WHERE pid = ?`, [req.body.pid], (err, rows) => {
         res.send(rows);
     });
 });
 
+app.post('/paciente/carregarRegistro', (req, res) => {
+    db.all(`SELECT * FROM Pacientes WHERE id = ?`, [req.body.id], (err, rows) => {
+        res.send(rows);
+    });
+});
+
 app.post('/paciente/add', (req, res) => {
-    db.run(`INSERT INTO Pacientes (nome, pid, senha, idade, municipio) VALUES (?, ?, ?, ?, ?)`, [req.body.nome, req.body.pid, req.body.senha, req.body.idade, req.body.municipio], (err) => {
+    db.run(`INSERT INTO Pacientes (nome, pid, idade, municipio, sexo) VALUES (?, ?, ?, ?)`, [req.body.nome, req.body.pid, req.body.idade, req.body.municipio, req.body.sexo], (err) => {
         if (err) {
             console.error(err.message);
             res.send({status: 500, message: err.message});
@@ -99,7 +112,7 @@ app.post('/paciente/remove', (req, res) => {
 });
 
 app.post('/paciente/edit', (req, res) => {
-    db.run(`UPDATE Pacientes SET nome = ?, idade = ?, senha = ?, municipio = ? WHERE id = ?`, [req.body.nome, req.body.idade, req.body.senha, req.body.municipio, req.body.id], (err) => {
+    db.run(`UPDATE Pacientes SET nome = ?, idade = ?, municipio = ? WHERE id = ?`, [req.body.nome, req.body.idade, req.body.municipio, req.body.id], (err) => {
         if (err) {
             console.error(err.message);
             res.send({status: 500, message: err.message});
