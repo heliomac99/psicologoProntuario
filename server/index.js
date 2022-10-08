@@ -113,7 +113,7 @@ app.post('/paciente/carregarRegistro', (req, res) => {
 });
 
 app.post('/paciente/add', (req, res) => {
-    db.run(`INSERT INTO Pacientes (nome, usid, idade, municipio, estado, sexo, genero) VALUES (?, ?, ?, ?, ?, ?, ?)`, [req.body.nome, req.body.usid, req.body.idade, req.municipio, req.body.estado, req.body.sexo, req.body.genero], (err) => {
+    db.run(`INSERT INTO Pacientes (nome, usid, idade, municipio, estado, sexo, genero) VALUES (?, ?, ?, ?, ?, ?, ?)`, [req.body.nome, req.body.usid, req.body.idade, req.body.municipio, req.body.estado, req.body.sexo, req.body.genero], (err) => {
         if (err) {
             console.error(err.message);
             res.send({status: 500, message: err.message});
@@ -131,7 +131,19 @@ app.post('/paciente/remove', (req, res) => {
         } else {
             res.send({status: 200});
         }
-    });
+    })   
+});
+
+app.post('/paciente/removeRelatorios', (req, res) => {
+    db.run(`DELETE FROM Relatorios WHERE pid = ?`, [req.body.id], (err) => {
+        console.log('teste')
+        if (err) {
+            console.error(err.message);
+            res.send({status: 500, message: err.message});
+        } else {
+            res.send({status: 200});
+        }
+    })   
 });
 
 app.post('/paciente/edit', (req, res) => {

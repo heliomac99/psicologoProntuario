@@ -3,10 +3,12 @@
         <div class="card dashBoard">
             <div class="card-body card-body-dashboard">
                 <h3 class="primaryColor" >DashBoard Paciente</h3>
-                <button @click="toogleAvaliacao" type="button" class="asText mr-10">Avaliação</button>
-                <button @click="toogleSexo" type="button" class="asText">Gênero</button>
+                <button @click="toogleAvaliacao" v-if="avaliacaoVisible" type="button" class="asText mr-10" style="color:gray">Avaliação</button>
+                <button @click="toogleAvaliacao" v-else type="button" class="asText mr-10">Avaliação</button>
+                <button @click="toogleSexo" v-if="sexoVisible" type="button" class="asText" style="color:gray">Gênero</button>
+                <button @click="toogleSexo" v-else type="button" class="asText">Gênero</button>
                 <div v-if="avaliacaoVisible" align="center">
-                    <div style="margin-top:20px">
+                    <div style="margin:20px">
                         <label>Paciente:</label>
                         <select class="form-control" placeholder="paciente" v-model="department" style="max-width:400px; margin-bottom:20px;" @change="tooglePacienteAvaliacao($event)">
                             <template v-for="(paciente, index) in pacientes" :key="index">
@@ -16,7 +18,7 @@
                             </template>
                         </select>
                     </div>
-                
+
                     <div style="display:inline-flex; margin-top:40px">
                         <div class="divBarChart">
                             <BarChart :chart-data="chartDataAvaliacao" />
@@ -129,7 +131,8 @@
             }
         },
         mounted(){
-            axios.post('http://localhost:4000/usuario/pacientes', {usid: 2}).then( (result) => {   
+            axios.post('http://localhost:4000/usuario/pacientes', {usid: 2}).then( (result) => {  
+                    console.log(result.data)
                     this.pacientes = result.data
                     this.calculaDadosSexo()             
                 }

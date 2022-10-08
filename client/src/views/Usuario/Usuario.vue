@@ -24,8 +24,8 @@
         },
         data() {
             return {
-                colLabels : ['Nome', 'E-mail', 'Endereço', 'Município', 'Idade'],
-                dataFields: ['nome', 'email', 'endereco', 'municipio', 'idade'],
+                colLabels : ['Nome', 'E-mail', 'Estado', 'Município'],
+                dataFields: ['nome', 'email', 'estado', 'municipio'],
                 dataTableKey: 0
             }
         },

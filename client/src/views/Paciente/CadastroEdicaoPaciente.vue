@@ -16,6 +16,40 @@
                             </div>
 
                             <div class="form-group col-10">
+                                <label class="form-label col-2" style="margin-right:20px">Sexo</label>
+                                <div class="form-check">
+                                    <input v-model="paciente.sexo" value="M" :checked="paciente.sexo == 'M'" class="form-check-input" type="radio" name="sexo" id="sexoM" @change="validarForm">
+                                    <label class="form-check-label" for="sexo" style="margin-right:10px">
+                                        Masculino
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input v-model="paciente.sexo" value="F" :checked="paciente.sexo == 'F'" class="form-check-input" type="radio" name="sexo" id="sexoF" @change="validarForm">
+                                    <label class="form-check-label" for="sexo">
+                                        Feminino
+                                    </label>
+                                </div>
+                                <div v-if="erros.sexo" style="display:contents">
+                                    <span style="margin-left:10px" class="spanErro">{{erros.sexo.msg}}</span>   
+                                </div>                                                    
+                            </div>
+
+                            <div class="form-group col-10">
+                                <label class="form-label col-2">Gênero</label>  
+                                <div class="col-6" >
+                                    <input v-model="paciente.genero" type="text" id="genero" class="form-control">                      
+                                </div>   
+                            </div>
+
+                            <div class="form-group col-10">
+                                    <label class="form-label col-2">Idade</label>  
+                                    <div class="col-2" >
+                                        <input v-model="paciente.idade" type="number" id="idade" class="form-control">                      
+                                  </div>                           
+                            </div>
+
+
+                            <div class="form-group col-10">
                                     <label class="form-label col-2">Estado</label>  
                                     <div class="col-10" >
                                         <select v-model="paciente.estado" id="estado" class="form-select" name="estado" @change="validarForm">
@@ -65,36 +99,6 @@
                                 </div>    
                             </div>
 
-                            <div class="form-group col-10">
-                                <label class="form-label col-2" style="margin-right:20px">Sexo</label>
-                                <div class="form-check">
-                                    <input v-model="paciente.sexo" value="M" :checked="paciente.sexo == 'M'" class="form-check-input" type="radio" name="sexo" id="sexoM">
-                                    <label class="form-check-label" for="sexo" style="margin-right:10px">
-                                        Masculino
-                                    </label>
-                                </div>
-                                <div class="form-check col-1">
-                                    <input v-model="paciente.sexo" value="F" :checked="paciente.sexo == 'F'" class="form-check-input" type="radio" name="sexo" id="sexoF">
-                                    <label class="form-check-label" for="sexo">
-                                        Feminino
-                                    </label>
-                                </div>                                                  
-                            </div>
-
-                            <div class="form-group col-10">
-                                <label class="form-label col-2">Gênero</label>  
-                                <div class="col-6" >
-                                    <input v-model="paciente.genero" type="text" id="genero" class="form-control">                      
-                                </div>   
-                            </div>
-
-                            <div class="form-group col-10">
-                                    <label class="form-label col-2">Idade</label>  
-                                    <div class="col-1" >
-                                        <input v-model="paciente.idade" type="number" id="idade" class="form-control">                      
-                                  </div>                           
-                            </div>
-
                             <div id="actionButtons" style="margin-top:20px">
                                 <button @click="salvar(paciente)" style="margin-right: 5px;" type="button" class="btn btn-primary primaryColorBtn">Salvar</button>
                                 <button @click="excluir(paciente)" type="button" class="btn btn-primary primaryColorBtn2">Excluir</button>
@@ -131,7 +135,6 @@
         },
         methods: {
             salvar(paciente) { 
-                console.log(paciente)
                 this.submitted = true
                 if(this.validarForm()){
                     if(paciente.id > 0){
@@ -157,14 +160,16 @@
 
                 if (ok) { 
                     axios.post('http://localhost:4000/paciente/remove', {id: paciente.id}).then(() => { 
-                        this.$swal("Sucesso", "Paciente excluído com sucesso!", "success"),
-                        this.$router.back()
+                    }).then(() => {
+                            axios.post('http://localhost:4000/paciente/removeRelatorios', {id: paciente.id}).then(() => { 
+                            this.$swal("Sucesso", "Paciente excluído com sucesso!", "success"),
+                            this.$router.back()
+                        })
                     })
                 }
             },
             recuperarDados() { 
                 axios.post('http://localhost:4000/paciente/carregarRegistro', {id: this.paciente.id}).then( (result) => {
-                        console.log(result.data)
                         this.paciente.nome = result.data[0].nome
                         this.paciente.municipio = result.data[0].municipio
                         this.paciente.idade = result.data[0].idade
@@ -192,9 +197,14 @@
                         this.erros.municipio = { erro: true, msg:'Município obrigatório.'}
                     else
                         this.erros.municipio = false
+
+                    if(!this.paciente.sexo)
+                        this.erros.sexo = { erro: true, msg:'Sexo obrigatório.'}
+                    else
+                        this.erros.sexo = false
                                               
                         
-                    if(this.erros.nome || this.erros.estado || this.erros.municipio)
+                    if(this.erros.nome || this.erros.estado || this.erros.municipio || this.erros.sexo)
                         return false
                     else
                         return true

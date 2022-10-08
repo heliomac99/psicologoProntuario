@@ -75,8 +75,11 @@
 
                 if (ok) {
                     axios.post('http://localhost:4000/paciente/remove', {id: paciente.id}).then(() => { 
-                        this.dataTableKey += 1,
-                        this.$swal("Sucesso", "Paciente excluído com sucesso!", "success")
+                    }).then(() => {
+                            axios.post('http://localhost:4000/paciente/removeRelatorios', {id: paciente.id}).then(() => { 
+                                this.dataTableKey += 1,
+                                this.$swal("Sucesso", "Paciente excluído com sucesso!", "success")
+                        })
                     })
                 }
             },

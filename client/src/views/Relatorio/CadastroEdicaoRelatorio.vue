@@ -114,7 +114,6 @@
             },
             recuperarDados() { 
                 axios.post('http://localhost:4000/relatorio/carregarRegistro', {id: this.relatorio.id}).then( (result) => {
-                    console.log(result.data)
                     this.relatorio.aval = result.data[0].aval
                     this.relatorio.corpo = result.data[0].corpo                    
                    }
@@ -142,7 +141,8 @@
             },
         },
         mounted(){
-            this.recuperarDados()
+            if(this.relatorio.id > 0)
+                this.recuperarDados()
         }
 
         

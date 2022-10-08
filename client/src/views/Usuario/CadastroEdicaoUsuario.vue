@@ -29,7 +29,7 @@
                                 <div class="form-group col-10">
                                     <label class="form-label col-2">Senha</label>
                                     <div class="col-9">
-                                        <input v-model="usuario.senha" id="senha" class="form-control" @keyup="validarForm" type="password">
+                                        <input v-model="usuario.senha" id="senha" class="form-control" type="password" @keyup="validarForm">
                                         <div v-if="erros.senha" style="display:contents">
                                             <span class="spanErro">{{erros.senha.msg}}</span>   
                                         </div>                                              
@@ -39,7 +39,7 @@
                                 <div class="form-group col-10">
                                     <label class="form-label col-2">Confirma Senha</label>
                                     <div class="col-9">
-                                        <input v-model="usuario.confirmaSenha" id="confirmaSenha" class="form-control" @keyup="validarForm" type="password">
+                                        <input v-model="usuario.confirmaSenha" id="confirmaSenha" class="form-control" type="password" @keyup="validarForm">
                                         <div v-if="erros.confirmaSenha" style="display:contents">
                                             <span class="spanErro">{{erros.confirmaSenha.msg}}</span>   
                                         </div>                                              
@@ -47,25 +47,53 @@
                                 </div>
 
                                 <div class="form-group col-10">
-                                    <label class="form-label col-2">Endereço</label>
-                                    <div class="col-9">
-                                        <input v-model="usuario.endereco" id="endereco" class="form-control" @keyup="validarForm">                                                     
-                                    </div>    
+                                    <label class="form-label col-2">Estado</label>  
+                                    <div class="col-9" >
+                                        <select v-model="usuario.estado" id="estado" class="form-select" name="estado" @change="validarForm">
+                                            <option value=""></option>
+                                            <option value="AC">Acre</option>
+                                            <option value="AL">Alagoas</option>
+                                            <option value="AP">Amapá</option>
+                                            <option value="AM">Amazonas</option>
+                                            <option value="BA">Bahia</option>
+                                            <option value="CE">Ceará</option>
+                                            <option value="DF">Distrito Federal</option>
+                                            <option value="ES">Espírito Santo</option>
+                                            <option value="GO">Goiás</option>
+                                            <option value="MA">Maranhão</option>
+                                            <option value="MT">Mato Grosso</option>
+                                            <option value="MS">Mato Grosso do Sul</option>
+                                            <option value="MG">Minas Gerais</option>
+                                            <option value="PA">Pará</option>
+                                            <option value="PB">Paraíba</option>
+                                            <option value="PR">Paraná</option>
+                                            <option value="PE">Pernambuco</option>
+                                            <option value="PI">Piauí</option>
+                                            <option value="RJ">Rio de Janeiro</option>
+                                            <option value="RN">Rio Grande do Norte</option>
+                                            <option value="RS">Rio Grande do Sul</option>
+                                            <option value="RO">Rondônia</option>
+                                            <option value="RR">Roraima</option>
+                                            <option value="SC">Santa Catarina</option>
+                                            <option value="SP">São Paulo</option>
+                                            <option value="SE">Sergipe</option>
+                                            <option value="TO">Tocantins</option>
+                                            <option value="EX">Estrangeiro</option>
+                                        </select>
+                                        <div v-if="erros.estado" style="display:contents">
+                                            <span class="spanErro">{{erros.estado.msg}}</span>   
+                                        </div>                    
+                                  </div>                           
                                 </div>
                                 
                                 <div class="form-group col-10">
                                     <label class="form-label col-2">Município</label>
                                     <div class="col-9">
-                                        <input v-model="usuario.municipio" id="endereco" class="form-control" @keyup="validarForm">                                                     
+                                        <input v-model="usuario.municipio" id="endereco" class="form-control" @keyup="validarForm">  
+                                        <div v-if="erros.municipio" style="display:contents">
+                                            <span class="spanErro">{{erros.municipio.msg}}</span>   
+                                        </div>                                                     
                                     </div>    
-                                </div>
-    
-
-                                <div class="form-group col-10">
-                                    <label class="form-label col-2">Idade</label>  
-                                    <div class="col-1" >
-                                        <input v-model="usuario.idade" type="number" id="idade" class="form-control">                      
-                                  </div>                           
                                 </div>
         
 
@@ -95,9 +123,8 @@
                     email: null,
                     senha: null,
                     confirmaSenha: null,
-                    endereco: null,
+                    estado: null,
                     municipio: null,
-                    idade: null,
                 },
                 erros: {},
                 submitted: false
@@ -138,10 +165,21 @@
                         this.erros.confirmaSenha = { erro: true, msg:'Senhas não conferem.'}            
                     else
                     this.erros.confirmaSenha = false
+
+                    
+                    if(!this.usuario.estado)
+                        this.erros.estado = { erro: true, msg:'Estado obrigatório.'}
+                    else
+                        this.erros.municipio = false
+
+                    if(!this.usuario.municipio)
+                        this.erros.municipio = { erro: true, msg:'Município obrigatório.'}
+                    else
+                        this.erros.municipio = false
                     
                                      
                         
-                    if(this.erros.nome || this.erros.email || this.erros.senha || this.erros.confirmaSenha )
+                    if(this.erros.nome || this.erros.email || this.erros.senha || this.erros.confirmaSenha || this.erros.municipio || this.erros.estado )
                         return false
                     else
                         return true
@@ -172,7 +210,7 @@
                 })
 
                 if (ok) { 
-                    axios.post('http://localhost:4000/usuario/remove', {id: usuario.id}).then(() => { 
+                    axios.post('http://localhost:4000/usuario/remove', {id: usuario.id}).then(() => {
                         this.$swal("Sucesso", "Usuário excluído com sucesso!", "success"),
                         this.$router.back()
                     })
