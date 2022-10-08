@@ -113,7 +113,7 @@ app.post('/paciente/carregarRegistro', (req, res) => {
 });
 
 app.post('/paciente/add', (req, res) => {
-    db.run(`INSERT INTO Pacientes (nome, usid, idade, estado, sexo, genero) VALUES (?, ?, ?, ?, ?, ?)`, [req.body.nome, req.body.usid, req.body.idade, req.body.estado, req.body.sexo, req.body.genero], (err) => {
+    db.run(`INSERT INTO Pacientes (nome, usid, idade, municipio, estado, sexo, genero) VALUES (?, ?, ?, ?, ?, ?, ?)`, [req.body.nome, req.body.usid, req.body.idade, req.body.estado, req.body.sexo, req.body.genero], (err) => {
         if (err) {
             console.error(err.message);
             res.send({status: 500, message: err.message});
@@ -135,7 +135,7 @@ app.post('/paciente/remove', (req, res) => {
 });
 //
 app.post('/paciente/edit', (req, res) => {
-    db.run(`UPDATE Pacientes SET nome = ?, idade = ?, estado = ?, sexo = ?, genero = ? WHERE id = ?`, [req.body.nome, req.body.idade, req.body.estado, req.body.sexo, req.body.genero, req.body.id], (err) => {
+    db.run(`UPDATE Pacientes SET nome = ?, idade = ?, estado = ?, sexo = ?, genero = ?, municipio = ? WHERE id = ?`, [req.body.nome, req.body.idade, req.body.estado, req.body.sexo, req.body.genero, req.body.municipio, req.body.id], (err) => {
         if (err) {
             console.error(err.message);
             res.send({status: 500, message: err.message});
