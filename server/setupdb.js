@@ -29,13 +29,18 @@ db.run(`CREATE TABLE Pacientes (
     estado TEXT
     )`);
 
+
 db.run(`CREATE TABLE Relatorios (
     id INTEGER PRIMARY KEY ASC,
-    pid INTEGER,
     usid INTEGER,
     aval INTEGER,
-    corpo TEXT
+    corpo TEXT,
+    CONSTRAINT pid
+        FOREIGN KEY (id)
+        REFERENCES Pacientes(id)
+        ON DELETE CASCADE
     )`);
+	
 
 db.close((err) => {
     if (err) {
