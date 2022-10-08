@@ -1,9 +1,9 @@
-<template>
+﻿<template>
     <div align="center" id="home">
         <div id="content">
             <div> 
-                <h3 style="margin-bottom:20px;">Lista de Pacientes</h3>
-                <button style="margin-bottom:15px;" type="button" class="btn btn-success" @click="inserir">
+                <h3 class="primaryColor" style="margin-bottom:40px;">Lista de Pacientes</h3>
+                <button style="margin-bottom:15px;" type="button" class="btn btn-primary primaryColorBtn" @click="inserir">
                     <font-awesome-icon icon="fa-solid fa-plus" style="margin-right:7px" />
                     Inserir Paciente
                 </button>
@@ -14,7 +14,7 @@
                 <input id="nome" style="margin-right: 10px; width: 500px;" class="form-control" placeholder="Nome" v-model="filtroNome"  @keyup="filtrarPorNome" >
             </div>
 
-            <DataTable ref="dataTable" :colLabels="colLabels" :dataFields="dataFields" :data="pacientes" :id="'codigo'" :showEditButton="true" :showAddButton="true" :showRemoveButton="true" @editar="editar" @excluir="excluir" @addItem="adicionarRelatorio"></DataTable>
+            <DataTable ref="dataTable" :colLabels="colLabels" :dataFields="dataFields" :dataUrl="'http://localhost:4000/usuario/pacientes'" :paramsUrl="{usid: 2}" :showEditButton="true" :showAddButton="true" :showRemoveButton="true" @editar="editar" @excluir="excluir" @addItem="adicionarRelatorio" :key="dataTableKey" :id="'id'"></DataTable>
             <ModalPergunta ref="modalExclusao"></ModalPergunta>
         </div>
     </div>
@@ -23,6 +23,7 @@
 <script>
   import ModalPergunta from '../../components/ModalPergunta.vue'
   import DataTable from '../../components/DataTable.vue'
+  import axios from 'axios'
   export default {
         name: 'PacienteView',
         components: {
@@ -31,21 +32,10 @@
         },
         data() {
             return {
-                dataFields: ['nome', 'idade', 'sexo'],
-                colLabels: ['Nome', 'Idade', 'Sexo'],
-                pacientes:    [
-                    { "nome": "Helio", "idade": 23, "sexo": "Masculino", "codigo": "1" },
-                    { "nome": "Jade", "idade": 35, "sexo": "Feminino", "codigo": "2" },
-                    { "nome": "Renato", "idade": 40, "sexo": "Masculino", "codigo": "3" },
-                    { "nome": "Soraia", "idade": 12, "sexo": "Feminino", "codigo": "4" },
-                    { "nome": "Linda", "idade": 55, "sexo": "Feminino", "codigo": "5" },
-                    { "nome": "Joel", "idade": 68, "sexo": "Masculino", "codigo": "6" },
-                    { "nome": "Jorge", "idade": 66, "sexo": "Masculino", "codigo": "7" },
-                    { "nome": "Julia", "idade": 72, "sexo": "Feminino", "codigo": "8" },
-                    { "nome": "Karen", "idade": 20, "sexo": "Feminino", "codigo": "9" },
-                    { "nome": "Fabio", "idade": 19, "sexo": "Masculino", "codigo": "10" }
-                ],
-                filtroNome: null
+                dataFields: ['nome', 'idade', 'sexo', 'genero','estado', 'municipio'],
+                colLabels: ['Nome', 'Idade', 'Sexo', 'Gênero','Estado', 'Município'],
+                filtroNome: null,
+                dataTableKey: 0
             }
         },
         methods: {
@@ -53,7 +43,7 @@
                 this.$router.push({
                     name: 'cadastroedicaopaciente',
                     params: {
-                        codigoPaciente: paciente.codigo,
+                        codigoPaciente: paciente.id,
                         nome: paciente.nome,
                         idade: paciente.idade,
                         sexo: paciente.sexo
@@ -76,7 +66,7 @@
                     },
                 });
             },
-            async excluir(codigo) {
+            async excluir(paciente) {
                 const ok = await this.$refs.modalExclusao.show({
                     title: 'Excluir Paciente',
                     message: 'Tem certeza que gostaria de excluir o paciente?',
@@ -84,12 +74,13 @@
                 })
 
                 if (ok) {
-                    //implementar fun�ao de exclusao
-                    alert('Paciente com codigo ' + codigo + ' excluido com sucesso.' )
+                    axios.post('http://localhost:4000/paciente/remove', {id: paciente.id}).then(() => { 
+                        this.dataTableKey += 1,
+                        this.$swal("Sucesso", "Paciente excluído com sucesso!", "success")
+                    })
                 }
             },
             filtrarPorNome() {
-                console.log('teste')
                 this.$refs.dataTable.filter('nome', this.filtroNome)
             }
         },

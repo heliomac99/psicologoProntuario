@@ -37,20 +37,6 @@ export default {
         text-decoration: none;
     }
 
-    /* #home {
-        width: 100vw;
-        height: 100vh;
-        background-size: cover;
-        background-image: url('./assets/wallpaper.png'); 
-        opacity: 1.0;
-        display: inline-table;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        min-height: 100vh;
-        max-width:100%; 
-    } */
-
     nav {
         box-shadow: 0 2px 4px 0 rgba(0,0,0,.2);
         color: antiquewhite;
@@ -69,4 +55,33 @@ export default {
         padding:30px;
     }
 
+    .primaryColor{
+        color:#628E90 !important;
+    }
+
+    .secondaryColor{
+        color: #3C2317 !important;
+    }
+
+    .primaryColorBtn{
+        background-color: #4C6793 !important;
+        border-color:#4C6793!important;
+    }
+
+    .primaryColorBtn2{
+        background-color: #628E90 !important;
+        border-color:#628E90!important;
+    }
+
+    .spanErro{
+        color:red!important;
+        font-size: small;
+        float:left;
+    }
+
+    .form-check-input:checked {
+        background-color: #4C6793 !important;
+        border-color: #4C6793 !important;
+    }
+  
 </style>

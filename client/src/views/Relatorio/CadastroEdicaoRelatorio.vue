@@ -1,46 +1,58 @@
 ﻿<template>
     <div align="center" id="content">
-        <h3>Cadastro Relatório</h3>
+        <h3 class="primaryColor" >Cadastro Relatório</h3>
         <div align="center">
             <div class="card">
                 <div class="card-body">
-                    <div class="form-group">
-                        <label class="form-label col-1" style="margin-right:20px">Avaliação</label>
-                        <div class="form-check">
-                            <input v-model="data.avaliacao" value="Bom" :checked="data.avaliacao == 'bom'" class="form-check-input radioInput" type="radio" name="avaliacao">
-                            <label class="form-check-label" for="avaliacao" style="margin-right:10px">
-                                Bom
-                            </label>
-                        </div>
 
-                        <div class="form-check">
-                            <input v-model="data.avaliacao" value="Regular" :checked="data.avaliacao == 'regular'" class="form-check-input radioInput" type="radio" name="avaliacao">
-                            <label class="form-check-label" for="avaliacao">
-                                Regular
-                            </label>
-                        </div>
 
-                        <div class="form-check">
-                            <input v-model="data.avaliacao" value="Ruim" :checked="data.avaliacao == 'ruim'" class="form-check-input radioInput" type="radio" name="avaliacao">
-                            <label class="form-check-label" for="avaliacao">
-                                Ruim
-                            </label>
+                    <div class="form-group col-10">
+                            <label class="form-label col-2">Avaliação</label>
+                            <div class="form-check">
+                                <input v-model="relatorio.aval" value="Bom" :checked="relatorio.aval == 'bom'" class="form-check-input radioInput" type="radio" name="avaliacao" @change="validarForm">
+                                <label class="form-check-label" for="avaliacao">
+                                    Bom
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input v-model="relatorio.aval" value="Regular" :checked="relatorio.aval == 'regular'" class="form-check-input radioInput" type="radio" name="avaliacao" @change="validarForm">
+                                <label class="form-check-label" for="avaliacao">
+                                    Regular
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input v-model="relatorio.aval" value="Ruim" :checked="relatorio.aval == 'ruim'" class="form-check-input radioInput" type="radio" name="avaliacao" @change="validarForm">
+                                <label class="form-check-label" for="avaliacao">
+                                    Ruim
+                                </label>
+                            </div>
+                            <div v-if="erros.aval" style="display:contents">
+                                <span style="margin-left:10px" class="spanErro">{{erros.aval.msg}}</span>   
+                            </div> 
+                    </div>
+                        
+
+                    <div class="form-group col-10">
+                        <label class="form-label col-2">Data</label>  
+                            <div class="col-2" >
+                                <input v-model="relatorio.data" type="date" id="data" class="form-control">                     
+                            </div>                           
+                    </div>
+
+                    <div class="form-group col-10">
+                        <label class="form-label col-2" style="margin-right:20px">Observação</label>
+                        <div class="col-9" >
+                            <textarea v-model="relatorio.corpo" class="form-control" id="exampleFormControlTextarea1" rows="3" @keyup="validarForm"></textarea>
+                            <div v-if="erros.corpo" style="display:contents">
+                                <span style="margin-left:10px" class="spanErro">{{erros.corpo.msg}}</span>   
+                            </div> 
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label class="form-label col-1" style="margin-right:20px">Data</label>
-                        <input v-model="data.data" type="date" id="nome" class="form-control" style="width:200px" placeholder="Nome">
-                    </div>
-
-                    <div class="form-group" style="margin-top:40px">
-                        <label class="form-label col-1" style="margin-right:20px">Observação</label>
-                        <textarea v-model="data.observacao" class="form-control" id="exampleFormControlTextarea1" style="width:600px;" rows="3"></textarea>
-                    </div>
 
                     <div id="actionButtons" style="margin-top:20px">
-                        <button @click="salvar(data)" style="margin-right: 5px;" type="button" class="btn btn-success">Salvar</button>
-                        <button @click="excluir(data.codigo)" type="button" class="btn btn-secondary">Excluir</button>
+                        <button @click="salvar(relatorio)" style="margin-right: 5px;" type="button" class="btn btn-success primaryColorBtn">Salvar</button>
+                        <button @click="excluir(relatorio)" type="button" class="btn btn-secondary primaryColorBtn2">Excluir</button>
                         <ModalPergunta ref="modalPergunta"></ModalPergunta>
                     </div>
                 </div>
@@ -51,55 +63,88 @@
 
 <script>
   import ModalPergunta from '../../components/ModalPergunta.vue'
+  import axios from 'axios'
   export default {
         name: 'CadastroEdicaoRelatorioView',
         components: { ModalPergunta },
         data() {
             return {
-                data: {
-                    codigo: this.$route.params.codigoRelatorio,
-                    avaliacao: this.$route.params.avaliacao,
-                    data: this.$route.params.data,
-                    observacao: this.$route.params.observacao
-                }
+                relatorio: {
+                    id: this.$route.params.codigoRelatorio,
+                    pid: this.$route.params.codigoPaciente,
+                    usid: 2,
+                    aval: null,
+                    corpo: null,
+                    data: null
+                },
+                erros:{}
             }
         },
         methods: {
-            salvar(relatorio) { //implementar requisição de cadastroedicao
-                console.log(relatorio)
-                alert('Relatorio de codigo ' + relatorio.codigo + ' salvo com sucesso.')
+            salvar(relatorio) { 
+                this.submitted = true
+                if(this.validarForm()){
+                    if(relatorio.id > 0){
+                        axios.post('http://localhost:4000/relatorio/edit', relatorio).then(
+                            this.$swal("Sucesso", "Paciente registrado com sucesso!", "success"),
+                            this.$router.back()
+                        )
+                    }
+                    else{
+                        axios.post('http://localhost:4000/relatorio/add', relatorio).then(
+                            this.$swal("Sucesso", "Paciente registrado com sucesso!", "success"),
+                            this.$router.back()
+                        )
+                    }
+                }       
             },           
-            async excluir(codigo) { 
+            async excluir(relatorio) { 
                 const ok = await this.$refs.modalPergunta.show({
                     title: 'Excluir Relatório',
                     message: 'Tem certeza que gostaria de excluir o relatório?',
                     okButton: 'Sim',
                 })
 
-                if (ok) { //implementar a requisição de exclusao
-                    alert('Relatório com codigo ' + codigo + ' excluido com sucesso.')
+                if (ok) {
+                    axios.post('http://localhost:4000/relatorio/remove', {id: relatorio.id}).then(() => { 
+                        this.$swal("Sucesso", "Paciente excluído com sucesso!", "success"),
+                        this.$router.back()
+                    })
                 }
             },
-            recuperarDados() { //implementar requisição para buscar paciente por codigo
-                this.data.avaliacao = localStorage.getItem('avaliacaoRelatorio')
-                this.data.data = localStorage.getItem('dataRelatorio')
-                this.data.observacao = localStorage.getItem('observacaoRelatorio')
+            recuperarDados() { 
+                axios.post('http://localhost:4000/relatorio/carregarRegistro', {id: this.relatorio.id}).then( (result) => {
+                    console.log(result.data)
+                    this.relatorio.aval = result.data[0].aval
+                    this.relatorio.corpo = result.data[0].corpo                    
+                   }
+                )
             },
-            guardarDados() {  //remover função após implementaçãoo de requisição por codigo
-                localStorage.setItem('avaliacaoRelatorio', this.data.avaliacao)
-                localStorage.setItem('dataRelatorio', this.data.data)
-                localStorage.setItem('observacaoRelatorio', this.data.observacao)
+            validarForm(){
+                if(this.submitted){
+                    this.erros = {}
+
+                    if(!this.relatorio.aval)
+                        this.erros.aval = { erro: true, msg:'Avaliação obrigatória.'}
+                    else
+                        this.erros.aval = false
+                    
+                    if(!this.relatorio.corpo)
+                        this.erros.corpo = { erro: true, msg:'Observação obrigatória.'}
+                    else
+                        this.erros.corpo = false 
+                        
+                    if(this.erros.aval || this.erros.corpo) 
+                        return false
+                    else
+                        return true
+                }                                           
             },
         },
-        mounted() {
-            window.addEventListener('beforeunload', this.guardarDados) //remover função após implementaçãoo de requisição por codigo
-            window.addEventListener('load', this.recuperarDados)
-        },
-        unmounted() { //remover função após implementaçãoo de requisição por codigo
-            localStorage.removeItem('avaliacaoRelatorio');
-            localStorage.removeItem('dataRelatorio');
-            localStorage.removeItem('observacaoRelatorio');
+        mounted(){
+            this.recuperarDados()
         }
+
         
     }
 </script>
@@ -107,12 +152,6 @@
 <style>
     .form-group {
         margin-bottom:30px;
-    }
-
-    .form-check-input:checked {
-        background-color: #28a745 !important;
-        border-color: #28a745 !important;
-        margin-left: 10px;
     }
 
     .card {

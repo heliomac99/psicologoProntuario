@@ -113,7 +113,7 @@ app.post('/paciente/carregarRegistro', (req, res) => {
 });
 
 app.post('/paciente/add', (req, res) => {
-    db.run(`INSERT INTO Pacientes (nome, usid, idade, municipio, estado, sexo, genero) VALUES (?, ?, ?, ?, ?, ?, ?)`, [req.body.nome, req.body.usid, req.body.idade, req.body.estado, req.body.sexo, req.body.genero], (err) => {
+    db.run(`INSERT INTO Pacientes (nome, usid, idade, municipio, estado, sexo, genero) VALUES (?, ?, ?, ?, ?, ?, ?)`, [req.body.nome, req.body.usid, req.body.idade, req.municipio, req.body.estado, req.body.sexo, req.body.genero], (err) => {
         if (err) {
             console.error(err.message);
             res.send({status: 500, message: err.message});
@@ -133,7 +133,7 @@ app.post('/paciente/remove', (req, res) => {
         }
     });
 });
-//
+
 app.post('/paciente/edit', (req, res) => {
     db.run(`UPDATE Pacientes SET nome = ?, idade = ?, estado = ?, sexo = ?, genero = ?, municipio = ? WHERE id = ?`, [req.body.nome, req.body.idade, req.body.estado, req.body.sexo, req.body.genero, req.body.municipio, req.body.id], (err) => {
         if (err) {
@@ -147,6 +147,12 @@ app.post('/paciente/edit', (req, res) => {
 
 app.post('/relatorio', (req, res) => {
     db.all(`SELECT * FROM Relatorios`, (err, rows) => {
+        res.send(rows);
+    });
+});
+
+app.post('/relatorio/carregarRegistro', (req, res) => {
+    db.all(`SELECT * FROM Relatorios WHERE id = ?`, [req.body.id], (err, rows) => {
         res.send(rows);
     });
 });
@@ -172,6 +178,7 @@ app.post('/relatorio/remove', (req, res) => {
         }
     });
 });
+
 
 app.post('/relatorio/edit', (req, res) => {
     db.run(`UPDATE Relatorios SET pid = ?, usid = ?, corpo = ?, aval = ? WHERE id = ?`, [req.body.pid, req.body.usid, req.body.corpo, req.body.aval, req.body.id], (err) => {

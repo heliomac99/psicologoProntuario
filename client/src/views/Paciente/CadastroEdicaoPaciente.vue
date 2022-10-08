@@ -1,38 +1,103 @@
-<template>
+Ôªø<template>
     <div align="center" id="content">
-            <h3>Cadastro Paciente</h3>
+            <h3 class="primaryColor" >Cadastro Paciente</h3>
             <div align="center" >
                 <div class="card">
                         <div class="card-body">
-                            <div class="form-group ">
-                                <label class="form-label col-1" style="margin-right:20px">Nome</label>
-                                <input v-model="data.nome" id="nome" class="form-control" style="width:500px" placeholder="Nome">
+
+                            <div class="form-group col-10">
+                                <label class="form-label col-2" style="margin-right:20px">Nome</label>
+                                <div class="col-10" >
+                                    <input v-model="paciente.nome" id="nome" class="form-control" @keyup="validarForm"> 
+                                    <div v-if="erros.nome" style="display:contents">
+                                        <span class="spanErro">{{erros.nome.msg}}</span>   
+                                    </div>   
+                                </div>
                             </div>
 
-                            <div class="form-group">
-                                <label class="form-label col-1" style="margin-right:20px">Idade</label>
-                                <input v-model="data.idade" class="form-control" style="width:100px" type="number">
+                            <div class="form-group col-10">
+                                    <label class="form-label col-2">Estado</label>  
+                                    <div class="col-10" >
+                                        <select v-model="paciente.estado" id="estado" class="form-select" name="estado" @change="validarForm">
+                                            <option value=""></option>
+                                            <option value="AC">Acre</option>
+                                            <option value="AL">Alagoas</option>
+                                            <option value="AP">Amap√°</option>
+                                            <option value="AM">Amazonas</option>
+                                            <option value="BA">Bahia</option>
+                                            <option value="CE">Cear√°</option>
+                                            <option value="DF">Distrito Federal</option>
+                                            <option value="ES">Esp√≠rito Santo</option>
+                                            <option value="GO">Goi√°s</option>
+                                            <option value="MA">Maranh√£o</option>
+                                            <option value="MT">Mato Grosso</option>
+                                            <option value="MS">Mato Grosso do Sul</option>
+                                            <option value="MG">Minas Gerais</option>
+                                            <option value="PA">Par√°</option>
+                                            <option value="PB">Para√≠ba</option>
+                                            <option value="PR">Paran√°</option>
+                                            <option value="PE">Pernambuco</option>
+                                            <option value="PI">Piau√≠</option>
+                                            <option value="RJ">Rio de Janeiro</option>
+                                            <option value="RN">Rio Grande do Norte</option>
+                                            <option value="RS">Rio Grande do Sul</option>
+                                            <option value="RO">Rond√¥nia</option>
+                                            <option value="RR">Roraima</option>
+                                            <option value="SC">Santa Catarina</option>
+                                            <option value="SP">S√£o Paulo</option>
+                                            <option value="SE">Sergipe</option>
+                                            <option value="TO">Tocantins</option>
+                                            <option value="EX">Estrangeiro</option>
+                                        </select>
+                                        <div v-if="erros.estado" style="display:contents">
+                                            <span class="spanErro">{{erros.estado.msg}}</span>   
+                                        </div>                    
+                                  </div>                           
                             </div>
 
-                            <div class="form-group">
-                                <label class="form-label col-1" style="margin-right:20px">Sexo</label>
+                            <div class="form-group col-10">
+                                <label class="form-label col-2">Munic√≠pio</label>
+                                <div class="col-10">
+                                    <input v-model="paciente.municipio" id="endereco" class="form-control">
+                                    <div v-if="erros.municipio" style="display:contents">
+                                        <span class="spanErro">{{erros.municipio.msg}}</span>   
+                                    </div>                                                     
+                                </div>    
+                            </div>
+
+                            <div class="form-group col-10">
+                                <label class="form-label col-2" style="margin-right:20px">Sexo</label>
                                 <div class="form-check">
-                                    <input v-model="data.sexo" value="Masculino" :checked="data.sexo == 'Masculino'" class="form-check-input" type="radio" name="sexo" id="sexoM">
+                                    <input v-model="paciente.sexo" value="M" :checked="paciente.sexo == 'M'" class="form-check-input" type="radio" name="sexo" id="sexoM">
                                     <label class="form-check-label" for="sexo" style="margin-right:10px">
                                         Masculino
                                     </label>
                                 </div>
                                 <div class="form-check col-1">
-                                    <input v-model="data.sexo" value="Feminino" :checked="data.sexo == 'Feminino'" class="form-check-input" type="radio" name="sexo" id="sexoF">
+                                    <input v-model="paciente.sexo" value="F" :checked="paciente.sexo == 'F'" class="form-check-input" type="radio" name="sexo" id="sexoF">
                                     <label class="form-check-label" for="sexo">
                                         Feminino
                                     </label>
-                                </div>
+                                </div>                                                  
+                            </div>
+
+                            <div class="form-group col-10">
+                                <label class="form-label col-2">G√™nero</label>  
+                                <div class="col-6" >
+                                    <input v-model="paciente.genero" type="text" id="genero" class="form-control">                      
+                                </div>   
+                            </div>
+
+                            <div class="form-group col-10">
+                                    <label class="form-label col-2">Idade</label>  
+                                    <div class="col-1" >
+                                        <input v-model="paciente.idade" type="number" id="idade" class="form-control">                      
+                                  </div>                           
                             </div>
 
                             <div id="actionButtons" style="margin-top:20px">
-                                <button @click="salvar(data)" style="margin-right: 5px;" type="button" class="btn btn-success">Salvar</button>
-                                <button @click="excluir(data.codigo)" type="button" class="btn btn-secondary">Excluir</button>
+                                <button @click="salvar(paciente)" style="margin-right: 5px;" type="button" class="btn btn-primary primaryColorBtn">Salvar</button>
+                                <button @click="excluir(paciente)" type="button" class="btn btn-primary primaryColorBtn2">Excluir</button>
                                 <ModalPergunta ref="modalPergunta"></ModalPergunta>
                             </div>
                         </div>
@@ -44,55 +109,103 @@
 
 <script>
   import ModalPergunta from '../../components/ModalPergunta.vue'
+  import axios from 'axios'
   export default {
         name: 'CadastroEdicaoPacienteView',
         components: { ModalPergunta },
         data() {
             return {
-                data: {
-                    codigo: this.$route.params.codigoPaciente,
-                    nome: this.$route.params.nome,
-                    idade: this.$route.params.idade,
-                    sexo: this.$route.params.sexo             
-                }
+                paciente: {
+                        id: this.$route.params.codigoPaciente,
+                        nome: null,
+                        usid: 2, //alterar para codigousuariologado
+                        idade: null,
+                        estado: null,
+                        municipio: null,
+                        sexo: null,
+                        genero: null,
+                    },
+                erros: {},
+                submitted: false
             }
         },
         methods: {
-            salvar(paciente) { //implementar requisiÁao de cadastroedicao
+            salvar(paciente) { 
                 console.log(paciente)
-                alert('Paciente de codigo ' + paciente.codigo + ' salvo com sucesso.')
-            },           
-            async excluir(codigo) { 
+                this.submitted = true
+                if(this.validarForm()){
+                    if(paciente.id > 0){
+                        axios.post('http://localhost:4000/paciente/edit', paciente).then(
+                            this.$swal("Sucesso", "Paciente registrado com sucesso!", "success"),
+                            this.$router.back()
+                        )
+                    }
+                    else{
+                        axios.post('http://localhost:4000/paciente/add', paciente).then(
+                            this.$swal("Sucesso", "Paciente registrado com sucesso!", "success"),
+                            this.$router.back()
+                        )
+                    }
+                }         
+            },       
+            async excluir(paciente) { 
                 const ok = await this.$refs.modalPergunta.show({
                     title: 'Excluir Paciente',
                     message: 'Tem certeza que gostaria de excluir o paciente?',
                     okButton: 'Sim',
                 })
 
-                if (ok) { //implementar a requisiÁ„o de exclusao
-                    alert('Paciente com codigo ' + codigo + ' excluido com sucesso.')
+                if (ok) { 
+                    axios.post('http://localhost:4000/paciente/remove', {id: paciente.id}).then(() => { 
+                        this.$swal("Sucesso", "Paciente exclu√≠do com sucesso!", "success"),
+                        this.$router.back()
+                    })
                 }
             },
-            recuperarDados() { //implementar requisiÁ„o para buscar paciente por codigo
-                this.data.nome = localStorage.getItem('nomePaciente')
-                this.data.idade = localStorage.getItem('idadePaciente')
-                this.data.sexo = localStorage.getItem('sexoPaciente')
+            recuperarDados() { 
+                axios.post('http://localhost:4000/paciente/carregarRegistro', {id: this.paciente.id}).then( (result) => {
+                        console.log(result.data)
+                        this.paciente.nome = result.data[0].nome
+                        this.paciente.municipio = result.data[0].municipio
+                        this.paciente.idade = result.data[0].idade
+                        this.paciente.estado = result.data[0].estado
+                        this.paciente.sexo = result.data[0].sexo
+                        this.paciente.genero = result.data[0].genero
+                   }
+                )
             },
-            guardarDados() {  //remover funÁao apÛs implementaÁ„o de requisiÁ„o por codigo
-                localStorage.setItem('nomePaciente', this.data.nome)
-                localStorage.setItem('idadePaciente', this.data.idade)
-                localStorage.setItem('sexoPaciente', this.data.sexo)
+            validarForm(){
+                if(this.submitted){
+                    this.erros = {}
+
+                    if(!this.paciente.nome)
+                        this.erros.nome = { erro: true, msg:'Nome obrigat√≥rio.'}
+                    else
+                        this.erros.nome = false
+
+                    if(!this.paciente.estado)
+                        this.erros.estado = { erro: true, msg:'Estado obrigat√≥rio.'}
+                    else
+                        this.erros.estado = false
+
+                    if(!this.paciente.municipio)
+                        this.erros.municipio = { erro: true, msg:'Munic√≠pio obrigat√≥rio.'}
+                    else
+                        this.erros.municipio = false
+                                              
+                        
+                    if(this.erros.nome || this.erros.estado || this.erros.municipio)
+                        return false
+                    else
+                        return true
+                }                                           
             },
         },
-        mounted() {
-            window.addEventListener('beforeunload', this.guardarDados) //remover funÁao apÛs implementaÁ„o de requisiÁ„o por codigo
-            window.addEventListener('load', this.recuperarDados) 
-        },
-        unmounted() { //remover funÁao apÛs implementaÁ„o de requisiÁ„o por codigo
-            localStorage.removeItem('nomePaciente');
-            localStorage.removeItem('idadePaciente');
-            localStorage.removeItem('sexoPaciente');
+        mounted(){
+            if(this.paciente.id > 0)
+                this.recuperarDados()
         }
+
         
     }
 </script>
@@ -101,11 +214,6 @@
     .form-group {
         display:flex;
         margin: 15px;
-    }
-
-    .form-check-input:checked {
-        background-color: #28a745 !important;
-        border-color: #28a745 !important;
     }
 
     .card {

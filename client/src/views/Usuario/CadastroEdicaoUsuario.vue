@@ -1,35 +1,80 @@
-<template>
+Ôªø<template>
     <div id="content">
-                <h3>Cadastro Usuario</h3>
-                <div align="center" style="padding:30px">
+                <h3 class="primaryColor" id="titulo">Cadastro Usuario</h3>
+                <div align="center" style="">
                     <div class="card">
                         <div class="card-body">
-                            <div  class="form-group">
-                                <div class="input-group" style="width:80%;">
-                                    <label class="form-label col-1">Nome</label>
-                                    <input v-model="data.nome" id="nome" class="form-control col-4" style="width:700px" placeholder="Nome">
-                                </div>
-                            </div>
+                            <form @submit.prevent="onSubmit">
 
-                            <div class="form-group">
-                                <div class="input-group" style="width:80%;">
-                                    <label class="form-label col-1">E-mail</label>
-                                    <input v-model="data.email" type="email" id="email" class="form-control" style="width:700px" placeholder="E-mail">
-                                </div>
-                            </div>
+                                <div  class="form-group col-10">
+                                    <label class="form-label col-2">Nome</label>
+                                    <div class="col-9">
+                                        <input v-model="usuario.nome" id="nome" class="form-control" @keyup="validarForm">
+                                        <div v-if="erros.nome" class="col-10" style="display:contents">
+                                            <span class="spanErro">{{erros.nome.msg}}</span>   
+                                        </div>                                                              
+                                    </div>    
+                                </div> 
 
-                            <div class="form-group">
-                                <div class="input-group" style="width:80%;">
-                                    <label class="form-label col-1">Senha</label>
-                                    <input v-model="data.senha" id="senha" class="form-control" style="width:700px" placeholder="Senha">
+                                <div class="form-group col-10">
+                                    <label class="form-label col-2">E-mail</label>
+                                    <div class="col-9">
+                                        <input v-model="usuario.email" id="email" class="form-control" @keyup="validarForm">
+                                        <div v-if="erros.email" style="display:contents">
+                                            <span class="spanErro">{{erros.email.msg}}</span>   
+                                        </div>                                              
+                                    </div>    
                                 </div>
-                            </div>
 
-                            <div id="actionButtons">
-                                <button @click="salvar(data)" style="margin-right: 5px;" type="button" class="btn btn-success">Salvar</button>
-                                <button @click="excluir(data.codigo)" type="button" class="btn btn-secondary">Excluir</button>
-                                <ModalPergunta ref="modalPergunta"></ModalPergunta>
-                            </div>
+                                <div class="form-group col-10">
+                                    <label class="form-label col-2">Senha</label>
+                                    <div class="col-9">
+                                        <input v-model="usuario.senha" id="senha" class="form-control" @keyup="validarForm" type="password">
+                                        <div v-if="erros.senha" style="display:contents">
+                                            <span class="spanErro">{{erros.senha.msg}}</span>   
+                                        </div>                                              
+                                    </div>    
+                                </div>
+
+                                <div class="form-group col-10">
+                                    <label class="form-label col-2">Confirma Senha</label>
+                                    <div class="col-9">
+                                        <input v-model="usuario.confirmaSenha" id="confirmaSenha" class="form-control" @keyup="validarForm" type="password">
+                                        <div v-if="erros.confirmaSenha" style="display:contents">
+                                            <span class="spanErro">{{erros.confirmaSenha.msg}}</span>   
+                                        </div>                                              
+                                    </div>    
+                                </div>
+
+                                <div class="form-group col-10">
+                                    <label class="form-label col-2">Endere√ßo</label>
+                                    <div class="col-9">
+                                        <input v-model="usuario.endereco" id="endereco" class="form-control" @keyup="validarForm">                                                     
+                                    </div>    
+                                </div>
+                                
+                                <div class="form-group col-10">
+                                    <label class="form-label col-2">Munic√≠pio</label>
+                                    <div class="col-9">
+                                        <input v-model="usuario.municipio" id="endereco" class="form-control" @keyup="validarForm">                                                     
+                                    </div>    
+                                </div>
+    
+
+                                <div class="form-group col-10">
+                                    <label class="form-label col-2">Idade</label>  
+                                    <div class="col-1" >
+                                        <input v-model="usuario.idade" type="number" id="idade" class="form-control">                      
+                                  </div>                           
+                                </div>
+        
+
+                                <div id="actionButtons">
+                                    <button @click="salvar(usuario)" style="margin-right: 5px;" type="button" class="btn btn-primary primaryColorBtn">Salvar</button>
+                                    <button @click="excluir(usuario)" v-if="usuario.id>0" type="button" class="btn btn-primary primaryColorBtn2">Excluir</button>
+                                    <ModalPergunta ref="modalPergunta"></ModalPergunta>
+                                </div>
+                        </form>
                         </div>
                     </div>            
                 </div>
@@ -37,61 +82,121 @@
 </template>
 
 <script>
+  import axios from 'axios'
   import ModalPergunta from '../../components/ModalPergunta.vue'
   export default {
         name: 'CadastroEdicaoUsuarioView',
-        components: { ModalPergunta },
+        components: { ModalPergunta},
         data() {
             return {
-                data: {
-                    codigo: this.$route.params.codigoUsuario,
-                    nome: this.$route.params.nome,
-                    email: this.$route.params.email,
-                    login: this.$route.params.login,
-                    senha: this.$route.params.senha
-                }
+                usuario: {
+                    id: this.$route.params.codigoUsuario,
+                    nome: null,
+                    email: null,
+                    senha: null,
+                    confirmaSenha: null,
+                    endereco: null,
+                    municipio: null,
+                    idade: null,
+                },
+                erros: {},
+                submitted: false
             }
         },
         methods: {
-            salvar(usuario) {  //implementar requisiÁ„o de cadastroedicao
-                console.log(usuario)
-                alert('Usuario de codigo ' + usuario.codigo + ' salvo com sucesso.')
+            validarForm(){
+                if(this.submitted){
+                    this.erros = {}
+                    
+                    const regexEmail = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
+
+                    if(!this.usuario.nome)
+                        this.erros.nome = { erro: true, msg:'Nome obrigat√≥rio.'}
+                    else
+                        this.erros.nome = false
+                        
+
+                    if(!this.usuario.email)
+                         this.erros.email = { erro: true, msg:'E-mail obrigat√≥rio.'}
+                    else{
+                        if (!regexEmail.test(this.usuario.email))
+                          this.erros.email = { erro: true, msg:'E-mail inv√°lido.'}
+                        else
+                          this.erros.email = false
+                    }
+                                           
+                    if(!this.usuario.senha)
+                        this.erros.senha = { erro: true, msg:'Senha obrigat√≥ria.'}
+                    else{
+                        if(this.usuario.senha.length < 6)
+                            this.erros.senha = { erro: true, msg:'Senha deve conter pelo menos 6 digitos.'}
+                        else
+                            this.erros.senha = false
+                    }
+
+                    if(this.usuario.senha != this.usuario.confirmaSenha)
+                        this.erros.confirmaSenha = { erro: true, msg:'Senhas n√£o conferem.'}            
+                    else
+                    this.erros.confirmaSenha = false
+                    
+                                     
+                        
+                    if(this.erros.nome || this.erros.email || this.erros.senha || this.erros.confirmaSenha )
+                        return false
+                    else
+                        return true
+                }                                           
             },
-            async excluir(codigo) {
+            salvar(usuario) { 
+                this.submitted = true
+                if(this.validarForm()){
+                    if(usuario.id > 0){
+                        axios.post('http://localhost:4000/usuario/edit', usuario).then(
+                            this.$swal("Sucesso", "Usu√°rio registrado com sucesso!", "success"),
+                            this.$router.back()
+                        )
+                    }
+                    else{
+                        axios.post('http://localhost:4000/usuario/add', usuario).then(
+                            this.$swal("Sucesso", "Usu√°rio registrado com sucesso!", "success"),
+                            this.$router.back()
+                        )
+                    }
+                }         
+            },
+            async excluir(usuario) {
                 const ok = await this.$refs.modalPergunta.show({
                     title: 'Excluir Usuario',
                     message: 'Tem certeza que gostaria de excluir o Usuario?',
                     okButton: 'Sim',
                 })
 
-                if (ok) { //implementar a requisiÁ„o de exclusao
-                    alert('Usuario com codigo ' + codigo + ' excluido com sucesso.')
+                if (ok) { 
+                    axios.post('http://localhost:4000/usuario/remove', {id: usuario.id}).then(() => { 
+                        this.$swal("Sucesso", "Usu√°rio exclu√≠do com sucesso!", "success"),
+                        this.$router.back()
+                    })
                 }
             },
-            recuperarDados() { //implementar requisiÁ„o para buscar Usuario por codigo
-                this.data.nome = localStorage.getItem('nomeUsuario')
-                this.data.email = localStorage.getItem('emailUsuario')
-                this.data.login = localStorage.getItem('loginUsuario')
-                this.data.senha = localStorage.getItem('senhaUsuario')
+            recuperarDados() { 
+                axios.post('http://localhost:4000/usuario/carregarRegistro', {id: this.usuario.id}).then( (result) => {
+                        console.log(result)
+                        this.usuario.nome = result.data[0].nome
+                        this.usuario.email = result.data[0].email
+                        this.usuario.senha = result.data[0].senha
+                        this.usuario.confirmaSenha = result.data[0].senha
+                        this.usuario.endereco = result.data[0].endereco
+                        this.usuario.municipio = result.data[0].municipio
+                        this.usuario.idade = result.data[0].idade
+                   }
+                )
             },
-            guardarDados() {  //remover funÁao apÛs implementaÁ„o de requisiÁ„o por codigo
-                localStorage.setItem('nomeUsuario', this.data.nome)
-                localStorage.setItem('emailUsuario', this.data.email)
-                localStorage.setItem('loginUsuario', this.data.login)
-                localStorage.setItem('senhaUsuario', this.data.senha)
-            },
+
         },
         mounted() {
-            window.addEventListener('beforeunload', this.guardarDados) //remover funÁao apÛs implementaÁ„o de requisiÁ„o por codigo
-            window.addEventListener('load', this.recuperarDados)
-        },
-        unmounted() { //remover funÁao apÛs implementaÁ„o de requisiÁ„o por codigo
-            localStorage.removeItem('nomeUsuario');
-            localStorage.removeItem('emailUsuario');
-            localStorage.removeItem('loginUsuario');
-            localStorage.removeItem('senhaUsuario');
-        }
-        
+            if(this.usuario.id > 0)
+                this.recuperarDados()
+        },        
     }
 </script>
 
@@ -100,12 +205,7 @@
         display:flex;
         margin: 15px;
     }
-
-    .form-check-input:checked {
-        background-color: #28a745 !important;
-        border-color: #28a745 !important;
-    }
-
+    
     #actionButtons{
         margin-top:40px !important;
     }
@@ -114,6 +214,15 @@
         margin-right:20px;
     }
 
+    li{
+        margin-right: 20px;
+        width:fit-content;
+    }
+    
+    .error{
+        font-size:smaller;
+        color:red;
+    }
 
 </style>
 

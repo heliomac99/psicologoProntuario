@@ -1,11 +1,11 @@
 ﻿<template>
     <div align="center" id="content">
-        <h3 style="margin-bottom:20px;">Lista de Relatórios</h3>
-        <button style="margin-bottom:15px;" type="button" class="btn btn-success" @click="inserir">
+        <h3 class="primaryColor" style="margin-bottom:40px;">Lista de Relatórios</h3>
+        <button style="margin-bottom:15px;" type="button" class="btn btn-success primaryColorBtn" @click="inserir">
             <font-awesome-icon icon="fa-solid fa-plus" style="margin-right:7px" />
             Inserir Relatorio
         </button>
-        <DataTable :colLabels="colLabels" :dataFields="dataFields" :data="relatorios" :id="'codigo'" :showEditButton="true" :showRemoveButton="true" @editar="editar" @excluir="excluir" ></DataTable>
+        <DataTable :key="dataTableKey" :colLabels="colLabels" :dataFields="dataFields" :id="'id'" :dataUrl="'http://localhost:4000/relatorio'" :showEditButton="true" :showRemoveButton="true" @editar="editar" @excluir="excluir" ></DataTable>
         <ModalPergunta ref="modalExclusao"></ModalPergunta>
     </div>
 </template>
@@ -13,7 +13,7 @@
 <script>
   import ModalPergunta from '../../components/ModalPergunta.vue'
   import DataTable from '../../components/DataTable.vue'
-  import moment from 'moment';
+  import axios from 'axios'
   export default {
         name: 'RelatorioListaRelatorioView',
         components: {
@@ -22,29 +22,18 @@
         },
         data() {
             return {
-                dataFields: ['data', 'avaliacao', 'observacao'],
+                dataFields: ['data', 'aval', 'corpo'],
                 colLabels: ['Data', 'Avaliação', 'Observação'],
-                relatorios:    [
-                    { "data": "11/09/2022", "avaliacao": 'ruim', "observacao": "Estava agitado.", "codigo": "1" },
-                    { "data": "23/09/2022", "avaliacao": 'regular', "observacao": "", "codigo": "2" },
-                    { "data": "08/08/2022", "avaliacao": 'ruim', "observacao": "Estava triste.", "codigo": "3" },
-                    { "data": "07/05/2022", "avaliacao": 'bom', "observacao": "Estava feliz", "codigo": "4" },
-                    { "data": "13/06/2021", "avaliacao": 'bom', "observacao": "", "codigo": "5" },
-                ]
+                dataTableKey: 0
             }
         },
-        methods: {
-            formatarData(data){ //dd/mm/yyyy to yyyy-mm-dd
-                return  moment(data.split(' ')[0].split("/").reverse().join("-"))._i;
-            },            
+        methods: {           
             editar(relatorio) {
                 this.$router.push({
                     name: 'cadastroedicaorelatorio',
                     params: {
-                        codigoRelatorio: relatorio.codigo,
-                        data: this.formatarData(relatorio.data),
-                        avaliacao: relatorio.avaliacao,
-                        observacao: relatorio.observacao,
+                        codigoRelatorio: relatorio.id,
+                        codigoPaciente: this.$route.params.codigoPaciente
                     },
                 });
             },
@@ -53,6 +42,7 @@
                     name: 'cadastroedicaorelatorio',
                     params: {
                         codigoRelatorio: 0,
+                        codigoPaciente: this.$route.params.codigoPaciente
                     },
                 });
             },
@@ -64,8 +54,10 @@
                 })
 
                 if (ok) {
-                    //implementar fun�ao de exclusao
-                    alert('relatorio com codigo ' + relatorio.codigo + ' excluido com sucesso.' )
+                    axios.post('http://localhost:4000/relatorio/remove', {id: relatorio.id}).then(() => { 
+                        this.dataTableKey += 1,
+                        this.$swal("Sucesso", "Relatório excluído com sucesso!", "success")
+                    })
                 }
             },
         },

@@ -1,12 +1,12 @@
 ﻿<template>
     <div align="center">
         <div id="content">
-            <h3 style="margin-bottom:20px;">Lista de Usuários</h3>
-            <button style="margin-bottom:15px;" type="button" class="btn btn-success" @click="inserir">
+            <h3 class="primaryColor" style="margin-bottom:40px;">Lista de Usuários</h3>
+            <button style="margin-bottom:15px;" type="button" class="btn btn-primary primaryColorBtn" @click="inserir">
                 <font-awesome-icon icon="fa-solid fa-plus" style="margin-right:7px" />
                 Inserir Usuário
             </button>
-            <DataTable :colLabels="colLabels" :dataFields="dataFields" :data="usuarios" :showEditButton="true" :showRemoveButton="true" @editar="editar" @excluir="excluir"></DataTable>
+            <DataTable :colLabels="colLabels" :dataFields="dataFields" :dataUrl="'http://localhost:4000/usuario'" showEditButton="true" :showRemoveButton="true" @editar="editar" @excluir="excluir" :key="dataTableKey"></DataTable>
             <ModalPergunta ref="modalExclusao"></ModalPergunta>
         </div>
     </div>
@@ -15,6 +15,7 @@
 <script>
   import ModalPergunta from '../../components/ModalPergunta.vue'
   import DataTable from '../../components/DataTable.vue'
+  import axios from 'axios'
   export default {
         name: 'UsuarioView',
         components: {
@@ -23,27 +24,17 @@
         },
         data() {
             return {
-                colLabels : ['Nome', 'E-mail', 'Login'],
-                dataFields: ['nome', 'email', 'login'],
-                usuarios:    [
-                    { "nome": "Helio", "email": 'helio.1999.neto@gmail.com', "login": 'heliomac', "senha": 'helio2020', "codigo": "1" },
-                    { "nome": "Jade", "email": 'teste@gmail.com', "login": 'jade123', "senha": 'jademir123', "codigo": "2" },
-                    { "nome": "Renato", "email": 'teste2@gmail.com', "login": 'teste1', "senha": 'juju', "codigo": "3" },
-                    { "nome": "Soraia", "email": 'teste3@gmail.com', "login": 'teste2', "senha": 'juju2', "codigo": "4" },
-                ]
+                colLabels : ['Nome', 'E-mail', 'Endereço', 'Município', 'Idade'],
+                dataFields: ['nome', 'email', 'endereco', 'municipio', 'idade'],
+                dataTableKey: 0
             }
         },
         methods: {
             editar(usuario) {
-                console.log(usuario)
                 this.$router.push({
                     name: 'cadastroedicaousuario',
                     params: {
-                        codigoUsuario: usuario.codigo,
-                        nome: usuario.nome,
-                        email: usuario.email,
-                        login: usuario.login,
-                        senha: usuario.senha
+                        codigoUsuario: usuario.id,
                     },
                 });
             },
@@ -55,7 +46,7 @@
                     },
                 });
             },
-            async excluir(Usuario) {
+            async excluir(usuario) {
                 const ok = await this.$refs.modalExclusao.show({
                     title: 'Excluir Usuário',
                     message: 'Tem certeza que gostaria de excluir o usuário?',
@@ -63,8 +54,10 @@
                 })
 
                 if (ok) {
-                    //implementar fun�ao de exclusao
-                    alert('usuario com codigo ' + Usuario.codigo + ' excluido com sucesso.' )
+                    axios.post('http://localhost:4000/usuario/remove', {id: usuario.id}).then(() => { 
+                        this.dataTableKey += 1,
+                        this.$swal("Sucesso", "Usuário excluído com sucesso!", "success")
+                    })
                 }
             },
         },

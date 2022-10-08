@@ -3,8 +3,8 @@
         <h2 style="margin-top: 0">{{ title }}</h2>
         <p>{{ message }}</p>
         <div class="btns">
-            <button @click="_cancel" type="button" class="btn btn-secondary">{{ cancelButton }}</button>
-            <button @click="_confirm" type="button" class="btn btn-danger">{{ okButton }}</button>
+            <button @click="_cancel" type="button" class="btn btn-secondary primaryColorBtn">{{ cancelButton }}</button>
+            <button @click="_confirm" type="button" class="btn btn-danger primaryColorBtn2">{{ okButton }}</button>
         </div>
     </popup-modal>
 </template>
