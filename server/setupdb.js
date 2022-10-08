@@ -15,32 +15,28 @@ db.run(`CREATE TABLE Users (
         idade INTEGER,
         endereco TEXT,
         municipio TEXT,
-        estado TEXT
+		senha TEXT
         )`);
 
 db.run(`CREATE TABLE Pacientes (
     id INTEGER PRIMARY KEY ASC,
-    usid INTEGER,
+    pid INTEGER,
     nome TEXT,
     idade INTEGER,
-    sexo TEXT,
-    municipio TEXT,
-    genero TEXT,
-    estado TEXT
+    municipio TEXT
     )`);
-
 
 db.run(`CREATE TABLE Relatorios (
     id INTEGER PRIMARY KEY ASC,
     usid INTEGER,
     aval INTEGER,
     corpo TEXT,
-    CONSTRAINT pid
+    pid INT,
+    CONSTRAINT fk_pid
         FOREIGN KEY (id)
         REFERENCES Pacientes(id)
         ON DELETE CASCADE
     )`);
-	
 
 db.close((err) => {
     if (err) {
