@@ -170,7 +170,7 @@ app.post('/relatorio/carregarRegistro', (req, res) => {
 });
 
 app.post('/relatorio/add', (req, res) => {
-    db.run(`INSERT INTO Relatorios (pid, usid, corpo, aval) VALUES (?,?,?,?)`, [req.body.pid, req.body.usid, req.body.corpo, req.body.aval], (err) => {
+    db.run(`INSERT INTO Relatorios (pid, usid, corpo, aval, data) VALUES (?,?,?,?,?)`, [req.body.pid, req.body.usid, req.body.corpo, req.body.aval, req.body.data], (err) => {
         if (err) {
             console.error(err.message);
             res.send({status: 500, message: err.message});
@@ -193,7 +193,7 @@ app.post('/relatorio/remove', (req, res) => {
 
 
 app.post('/relatorio/edit', (req, res) => {
-    db.run(`UPDATE Relatorios SET pid = ?, usid = ?, corpo = ?, aval = ? WHERE id = ?`, [req.body.pid, req.body.usid, req.body.corpo, req.body.aval, req.body.id], (err) => {
+    db.run(`UPDATE Relatorios SET pid = ?, usid = ?, corpo = ?, aval = ?, data = ? WHERE id = ?`, [req.body.pid, req.body.usid, req.body.corpo, req.body.aval, req.body.data, req.body.id], (err) => {
         if (err) {
             console.error(err.message);
             res.send({status: 500, message: err.message});

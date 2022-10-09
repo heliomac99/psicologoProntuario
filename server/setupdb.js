@@ -34,6 +34,7 @@ db.run(`CREATE TABLE Relatorios (
     pid INTEGER,
     usid INTEGER,
     aval INTEGER,
+    data DATE,
     corpo TEXT
     )`);
 

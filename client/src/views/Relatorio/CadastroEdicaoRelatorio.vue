@@ -82,6 +82,7 @@
         },
         methods: {
             salvar(relatorio) { 
+                console.log(relatorio)
                 this.submitted = true
                 if(this.validarForm()){
                     if(relatorio.id > 0){
@@ -115,7 +116,8 @@
             recuperarDados() { 
                 axios.post('http://localhost:4000/relatorio/carregarRegistro', {id: this.relatorio.id}).then( (result) => {
                     this.relatorio.aval = result.data[0].aval
-                    this.relatorio.corpo = result.data[0].corpo                    
+                    this.relatorio.corpo = result.data[0].corpo
+                    this.relatorio.data = result.data[0].data                 
                    }
                 )
             },
