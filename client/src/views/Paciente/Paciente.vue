@@ -32,7 +32,15 @@
         },
         data() {
             return {
-                dataFields: ['nome', 'idade', 'sexo', 'genero','estado', 'municipio'],
+                //dataFields: ['nome', 'idade', 'sexo', 'genero','estado', 'municipio'],
+                dataFields: [
+                    { value: 'nome', type: 'text'},
+                    { value: 'idade', type: 'number'},
+                    { value: 'sexo', type: 'char'},
+                    { value: 'genero', type: 'text'},
+                    { value: 'estado', type: 'text'},
+                    { value: 'municipio', type: 'text'},                               
+                ],  
                 colLabels: ['Nome', 'Idade', 'Sexo', 'Gênero','Estado', 'Município'],
                 filtroNome: null,
                 dataTableKey: 0
@@ -74,12 +82,9 @@
                 })
 
                 if (ok) {
-                    axios.post('http://localhost:4000/paciente/remove', {id: paciente.id}).then(() => { 
-                    }).then(() => {
-                            axios.post('http://localhost:4000/paciente/removeRelatorios', {id: paciente.id}).then(() => { 
-                                this.dataTableKey += 1,
-                                this.$swal("Sucesso", "Paciente excluído com sucesso!", "success")
-                        })
+                    axios.post('http://localhost:4000/paciente/remove', {id: paciente.id}).then(() => {
+                        this.dataTableKey += 1,
+                        this.$swal("Sucesso", "Paciente excluído com sucesso!", "success")
                     })
                 }
             },

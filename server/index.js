@@ -157,7 +157,7 @@ app.post('/paciente/edit', (req, res) => {
 });
 
 app.post('/relatorio', (req, res) => {
-    db.all(`SELECT * FROM Relatorios`, (err, rows) => {
+    db.all(`SELECT * FROM Relatorios WHERE pid = ? ORDER BY data DESC`, [req.body.pid], (err, rows) => {
         res.send(rows);
     });
 });

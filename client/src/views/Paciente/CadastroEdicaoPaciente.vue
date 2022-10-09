@@ -159,13 +159,11 @@
                 })
 
                 if (ok) { 
-                    axios.post('http://localhost:4000/paciente/remove', {id: paciente.id}).then(() => { 
-                    }).then(() => {
-                            axios.post('http://localhost:4000/paciente/removeRelatorios', {id: paciente.id}).then(() => { 
-                            this.$swal("Sucesso", "Paciente excluído com sucesso!", "success"),
-                            this.$router.back()
-                        })
-                    })
+                    axios.post('http://localhost:4000/paciente/remove', {id: paciente.id}).then(() => {
+                        this.$swal("Sucesso", "Paciente excluído com sucesso!", "success"),
+                        this.$router.back()
+                     }
+                    )
                 }
             },
             recuperarDados() { 

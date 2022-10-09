@@ -25,8 +25,17 @@
         data() {
             return {
                 colLabels : ['Nome', 'E-mail', 'Estado', 'Município'],
-                dataFields: ['nome', 'email', 'estado', 'municipio'],
-                dataTableKey: 0
+                dataFields: [
+                    { value: 'nome', type: 'text'},
+                    { value: 'email', type: 'text'},
+                    { value: 'estado', type: 'text'},
+                    { value: 'municipio', type: 'text'},
+                ],              
+                dataTableKey: 0,
+                teste: {
+                    login:null,
+                    senha:null
+                }
             }
         },
         methods: {

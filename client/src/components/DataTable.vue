@@ -20,7 +20,7 @@
                     </button>
 
                 </td>
-                <td v-for="(value, index) in dataFields" :key="index">{{item[value]}}</td>
+                <td v-for="(dataField, index) in dataFields" :key="index">{{item[dataField.value]}}</td>
             </tr>
         </tbody>
     </table>
@@ -53,23 +53,39 @@
                     this.filteredData = this.filteredData.filter(function (el) {
                         return el[propertyName].toLowerCase().includes(value.toLowerCase())
                     });
-
                 } 
+            },
+            formatDate(date){
+                const [ano, mes, dia] = date.split('-');
+                const result = `${dia}/${mes}/${ano}`;
+                return result
+            },
+            dataFormater() {
+                var dateDataFields = this.dataFields.filter(function (el) { return el.type == 'date' });
+
+                var i = 0
+                var j = 0
+
+                for(i = 0; i < dateDataFields.length; i++)
+                    for(j = 0; j < this.filteredData.length; j++)
+                        this.filteredData[j][dateDataFields[i].value] = this.formatDate(this.filteredData[j][dateDataFields[i].value])            
             }
         },
         async created() {
             if(!this.paramsUrl){
                 await axios.post(this.dataUrl).then( (result) => {
-                    this.filteredData = result.data
                     this.originalData = result.data
+                    this.filteredData = this.originalData
+                    this.dataFormater()     
                 })
             }
             else{
                 await axios.post(this.dataUrl, this.paramsUrl).then( (result) => {
-                    this.filteredData = result.data
                     this.originalData = result.data
+                    this.filteredData = this.originalData 
+                    this.dataFormater()                   
                 })
-            }
+            } 
         }
     }
 </script>
