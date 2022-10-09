@@ -63,11 +63,10 @@ app.post('/usuario/add', (req, res) => {
     //dados do usuario
     let nome = req.body.nome
     let email = req.body.email
-    let idade = req.body.idade
-    let endereco = req.body.endereco
+    let estado = req.body.estado
     let municipio = req.body.municipio
     let senha = req.body.senha
-    db.run(`INSERT INTO Users (nome, email, idade, endereco, municipio, senha) VALUES (?,?,?,?,?,?)`, [nome, email, idade, endereco, municipio, senha], (err) => {
+    db.run(`INSERT INTO Users (nome, email, estado, municipio, senha) VALUES (?,?,?,?,?)`, [nome, email, estado, municipio, senha], (err) => {
         if (err) {
             console.error(err.message);
             res.send({status: 500, message: err.message});
@@ -89,7 +88,7 @@ app.post('/usuario/remove', (req, res) => {
 });
 
 app.post('/usuario/edit', (req, res) => {
-    db.run(`UPDATE Users SET nome = ?, email = ?, idade = ?, endereco = ?, municipio = ?, senha = ? WHERE id = ?`, [req.body.nome, req.body.email, req.body.idade, req.body.endereco, req.body.municipio, req.body.senha, req.body.id], (err) => {
+    db.run(`UPDATE Users SET nome = ?, email = ? estado = ?, municipio = ?, senha = ? WHERE id = ?`, [req.body.nome, req.body.email, req.body.estado, req.body.municipio, req.body.senha, req.body.id], (err) => {
         if (err) {
             console.error(err.message);
             res.send({status: 500, message: err.message});

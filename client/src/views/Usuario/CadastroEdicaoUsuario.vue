@@ -218,14 +218,12 @@
             },
             recuperarDados() { 
                 axios.post('http://localhost:4000/usuario/carregarRegistro', {id: this.usuario.id}).then( (result) => {
-                        console.log(result)
                         this.usuario.nome = result.data[0].nome
                         this.usuario.email = result.data[0].email
                         this.usuario.senha = result.data[0].senha
                         this.usuario.confirmaSenha = result.data[0].senha
-                        this.usuario.endereco = result.data[0].endereco
+                        this.usuario.estado = result.data[0].estado
                         this.usuario.municipio = result.data[0].municipio
-                        this.usuario.idade = result.data[0].idade
                    }
                 )
             },

@@ -4,6 +4,6 @@
     "\\server",
     "\\server\\database"
   ],
-  "SelectedNode": "\\server\\index.js",
+  "SelectedNode": "\\server\\setupdb.js",
   "PreviewInSolutionExplorer": false
 }

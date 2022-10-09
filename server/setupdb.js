@@ -18,19 +18,22 @@ db.run(`CREATE TABLE Users (
 
 db.run(`CREATE TABLE Pacientes (
     id INTEGER PRIMARY KEY ASC,
-    pid INTEGER,
+    usid INTEGER,
     nome TEXT,
     idade INTEGER,
-    municipio TEXT
+    municipio TEXT,
+    estado TEXT,
+    sexo CHAR(1),
+    genero TEXT
     )`);
 
 db.run(`CREATE TABLE Relatorios (
     id INTEGER PRIMARY KEY ASC,
     usid INTEGER,
+    pid INTEGER,
     aval INTEGER,
     data DATE,
     corpo TEXT,
-    pid INT,
     CONSTRAINT fk_pid
         FOREIGN KEY (id)
         REFERENCES Pacientes(id)
