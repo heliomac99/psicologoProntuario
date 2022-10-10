@@ -48,6 +48,28 @@ app.post('/usuario/pacientes', (req, res) => {
     });
 });
 
+app.post('/usuario/pacientes/ordenadoPorEstado', (req, res) => {
+    db.all(`SELECT * FROM Pacientes WHERE usid = ? ORDER BY estado`, [req.body.usid], (err, rows) => {
+        if (err) {
+            console.error(err.message);
+            res.send({status: 500, message: err.message});
+        } else {
+            res.send(rows);
+        }
+    });
+});
+
+app.post('/usuario/pacientes/joinRelatorio', (req, res) => {
+    db.all(`SELECT * FROM Pacientes INNER JOIN Relatorios ON Pacientes.id=Relatorios.pid WHERE Pacientes.usid = ?`, [req.body.usid], (err, rows) => {
+        if (err) {
+            console.error(err.message);
+            res.send({status: 500, message: err.message});
+        } else {
+            res.send(rows);
+        }
+    });
+});
+
 app.post('/usuario/paciente/relatorios', (req, res) => {
     db.all(`SELECT * FROM Relatorios WHERE pid = ? AND usid = ?`, [req.body.pid, req.body.usid], (err, rows) => {
         if (err) {
@@ -95,13 +117,6 @@ app.post('/usuario/edit', (req, res) => {
         } else {
             res.send({status: 200});
         }
-    });
-});
-
-
-app.post('/paciente', (req, res) => {
-    db.all(`SELECT * FROM Pacientes`, (err, rows) => {
-        res.send(rows);
     });
 });
 
@@ -153,12 +168,6 @@ app.post('/paciente/edit', (req, res) => {
         } else {
             res.send({status: 200});
         }
-    });
-});
-
-app.post('/relatorio', (req, res) => {
-    db.all(`SELECT * FROM Relatorios WHERE pid = ? ORDER BY data DESC`, [req.body.pid], (err, rows) => {
-        res.send(rows);
     });
 });
 

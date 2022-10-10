@@ -5,7 +5,7 @@
             <font-awesome-icon icon="fa-solid fa-plus" style="margin-right:7px" />
             Inserir Relatorio
         </button>
-        <DataTable :key="dataTableKey" :colLabels="colLabels" :dataFields="dataFields" :id="'id'" :dataUrl="'http://localhost:4000/relatorio'" :paramsUrl="{pid: codigoPaciente }" :showEditButton="true" :showRemoveButton="true" @editar="editar" @excluir="excluir" ></DataTable>
+        <DataTable :key="dataTableKey" :colLabels="colLabels" :dataFields="dataFields" :id="'id'" :dataUrl="'http://localhost:4000/usuario/paciente/relatorios'" :paramsUrl="{ usid: 2 ,pid: codigoPaciente }" :showEditButton="true" :showRemoveButton="true" @editar="editar" @excluir="excluir" ></DataTable>
         <ModalPergunta ref="modalExclusao"></ModalPergunta>
     </div>
 </template>
