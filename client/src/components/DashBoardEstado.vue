@@ -6,7 +6,6 @@
                         
           <h5 class="primaryColor" style="margin-bottom:20px" >Avaliação por Estado</h5>
             <div class="col-4">
-                    <label>Estado</label>
                     <select class="form-select" v-model="estadoSelecionado" name="estado" @change="carregarRelatoriosPorEstado">
                         <option value="AC">Acre</option>
                         <option value="AL">Alagoas</option>
