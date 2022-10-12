@@ -6,7 +6,7 @@ import UsuarioView from '@/views/Usuario/Usuario.vue';
 import CadastroEdicaoUsuarioView from '@/views/Usuario/CadastroEdicaoUsuario.vue';
 import RelatorioListaRelatorioView from '@/views/Relatorio/Relatorio.vue';
 import CadastroEdicaoRelatorioView from '@/views/Relatorio/CadastroEdicaoRelatorio.vue';
-import LoginScreen from '@/views/LoginScreen.vue'
+import LoginScreen from '@/views/Login/Login.vue'
 
 
 

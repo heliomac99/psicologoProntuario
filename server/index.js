@@ -216,7 +216,7 @@ app.post('/relatorio/edit', (req, res) => {
 
 
 //login
-app.post('/login', [req.body.login, req.body.senha], (req, res) => {
+app.post('/login', (req, res) => {
     let username = req.body.login
     let password = req.body.senha
     if (username && password) {
