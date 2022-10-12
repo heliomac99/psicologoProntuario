@@ -33,11 +33,7 @@ db.run(`CREATE TABLE Relatorios (
     pid INTEGER,
     aval INTEGER,
     data DATE,
-    corpo TEXT,
-    CONSTRAINT fk_pid
-        FOREIGN KEY (pid)
-        REFERENCES Pacientes(id)
-        ON DELETE CASCADE
+    corpo TEXT
     )`);
 
 db.close((err) => {

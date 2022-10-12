@@ -78,25 +78,17 @@
     }
 
     .divBarChart{
-        height:500px;
         width:700px;
         margin-right:30px;
     }
 
     .divBarChartEstado{
-        height:500px;
-        width:900px;
-        margin-right:30px;
+        width:800px;
+        margin-bottom: 50px
     }
     .divPieChart{
         height:350px;
         width:350px;
-    }
-
-    .dashBoard {
-        background-color: rgb(255, 255, 255);
-        opacity: 1.0;
-        display: inherit !important;
     }
 
     .card{

@@ -99,14 +99,16 @@ app.post('/usuario/add', (req, res) => {
 });
 
 app.post('/usuario/remove', (req, res) => {
-    db.run(`DELETE FROM Users WHERE id = ?`, [req.body.id], (err) => {
+    db.run(`DELETE FROM Users WHERE id = ?`, [req.body.id],)
+    .run(`DELETE FROM Pacientes WHERE usid = ?`, [req.body.id])
+    .run(`DELETE FROM Relatorios WHERE usid = ?`, [req.body.id], (err) => {
         if (err) {
             console.error(err.message);
             res.send({status: 500, message: err.message});
         } else {
             res.send({status: 200});
         }
-    });
+    })
 });
 
 app.post('/usuario/edit', (req, res) => {
@@ -138,14 +140,15 @@ app.post('/paciente/add', (req, res) => {
 });
 
 app.post('/paciente/remove', (req, res) => {
-    db.run(`DELETE FROM Pacientes WHERE id = ?`, [req.body.id], (err) => {
+    db.run(`DELETE FROM Pacientes WHERE id = ?`, [req.body.id]).run(`DELETE FROM Relatorios WHERE pid = ?`, [req.body.id], (err) =>{
         if (err) {
-            console.error(err.message);
-            res.send({status: 500, message: err.message});
-        } else {
-            res.send({status: 200});
+             console.error(err.message);
+             res.send({status: 500, message: err.message});
         }
-    })   
+        else {
+             res.send({status: 200});
+        }
+    })
 });
 
 app.post('/paciente/removeRelatorios', (req, res) => {
@@ -213,22 +216,17 @@ app.post('/relatorio/edit', (req, res) => {
 
 
 //login
-app.post('/login', (req, res) => {
-    //usuário e senha
+app.post('/login', [req.body.login, req.body.senha], (req, res) => {
     let username = req.body.login
     let password = req.body.senha
-    console.log(username)
     if (username && password) {
         sql = `SELECT id FROM Users WHERE login = ? AND senha = ?`
         db.get(sql, [username, password], (err, result) => {
             if (err) {
-                console.error(err.message);
                 res.send({status: 500, message: err.message});
             } else {
-                console.log(result)
                 //testa se a linha existe
                 if (result) {
-                    console.log("Usuario encontrrrado")
                     res.send({status: 200});
                 } else {
                     console.log("Senha ou usuário incorretos")

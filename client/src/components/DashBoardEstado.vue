@@ -1,12 +1,7 @@
 ﻿<template>
-          <h5 class="primaryColor" style="margin-bottom:20px;margin-top:20px" >Pacientes por Estado</h5>
-          <div class="divBarChartEstado">
-               <BarChart :chart-data="chartDataPacientePorEstado" />
-          </div>
-                        
-          <h5 class="primaryColor" style="margin-bottom:20px" >Avaliação por Estado</h5>
+
+            <h5 class="primaryColor" style="margin-bottom:20px; margin-top:20px" >Avaliação por Estado</h5>
             <div class="col-4">
-                    <label>Estado</label>
                     <select class="form-select" v-model="estadoSelecionado" name="estado" @change="carregarRelatoriosPorEstado">
                         <option value="AC">Acre</option>
                         <option value="AL">Alagoas</option>
@@ -46,7 +41,13 @@
                 <div class="divPieChart">
                     <PieChart :chart-data="chartDataAvaliacaoPorEstado" />
                 </div>
-            </div>    
+            </div>
+
+            <h5 class="primaryColor" style="margin-bottom:20px;margin-top:20px" >Pacientes por Estado</h5>
+            <div class="divBarChartEstado">
+               <BarChart :chart-data="chartDataPacientePorEstado" />
+            </div>
+                            
 </template>
 
 <script>
@@ -119,6 +120,7 @@
             },
             carregarRelatoriosPorEstado(){
                 axios.post('http://localhost:4000/usuario/pacientes/joinRelatorioPorEstado', {usid: 2, estado: this.estadoSelecionado}).then( (result) => {  
+                    console.log(result)
                     this.pacientesJoinRelatoriosPorEstado = result.data
                     this.calculaDadosAvaliacaoPorEstado()
                 })
