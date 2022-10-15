@@ -88,14 +88,25 @@ app.post('/usuario/add', (req, res) => {
     let estado = req.body.estado
     let municipio = req.body.municipio
     let senha = req.body.senha
-    db.run(`INSERT INTO Users (nome, email, estado, municipio, senha) VALUES (?,?,?,?,?)`, [nome, email, estado, municipio, senha], (err) => {
+    db.all(`SELECT * FROM Users Where email = ?`, [email], (err, rows) => {
         if (err) {
             console.error(err.message);
-            res.send({status: 500, message: err.message});
+            res.send({status: 500, message: "Erro ao verificar registros"});
         } else {
-            res.send({status: 200});
+            if (rows.length > 0){
+                res.send({status: 200, check: true});
+                return
+            }
+            db.run(`INSERT INTO Users (nome, email, estado, municipio, senha) VALUES (?,?,?,?,?)`, [nome, email, estado, municipio, senha], (err) => {
+                if (err) {
+                    console.error(err.message);
+                    res.send({status: 500, message: err.message});
+                } else {
+                    res.send({status: 200, check: false});
+                }
+            });
         }
-    });
+    })
 });
 
 app.post('/usuario/remove', (req, res) => {
@@ -181,14 +192,25 @@ app.post('/relatorio/carregarRegistro', (req, res) => {
 });
 
 app.post('/relatorio/add', (req, res) => {
-    db.run(`INSERT INTO Relatorios (pid, usid, corpo, aval, data) VALUES (?,?,?,?,?)`, [req.body.pid, req.body.usid, req.body.corpo, req.body.aval, req.body.data], (err) => {
+    db.all(`SELECT * FROM Relatorios Where data = ? and pid = ? and usid = ?`, [req.body.data, req.body.pid, req.body.usid], (err, rows) =>{
         if (err) {
             console.error(err.message);
-            res.send({status: 500, message: err.message});
+            res.send({status: 500, message: "Erro ao verificar registros"});
         } else {
-            res.send({status: 200});
+            if (rows.length > 0){
+                res.send({status: 200, check: true});
+                return
+            }
         }
-    });
+        db.run(`INSERT INTO Relatorios (pid, usid, corpo, aval, data) VALUES (?,?,?,?,?)`, [req.body.pid, req.body.usid, req.body.corpo, req.body.aval, req.body.data], (err) => {
+            if (err) {
+                console.error(err.message);
+                res.send({status: 500, message: err.message});
+            } else {
+                res.send({status: 200});
+            }
+        });
+    })
 });
 
 app.post('/relatorio/remove', (req, res) => {
