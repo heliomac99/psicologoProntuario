@@ -1,6 +1,6 @@
 ﻿<template>
     <div align="center" id="home">
-        <div class="card">
+        <div class="card DashBoardCard">
             <div class="card-header">
                 <button @click="toogleAvaliacao" v-if="avaliacaoVisible" type="button" class="asText mr-10" style="color:gray">Avaliação</button>
                 <button @click="toogleAvaliacao" v-else type="button" class="asText mr-10">Avaliação</button>
@@ -62,7 +62,7 @@
                 this.sexoVisible = false 
                 this.estadoVisible = true                 
             },
-        }
+        },
     }
 </script>
 <style>
@@ -91,8 +91,9 @@
         width:350px;
     }
 
-    .card{
+    .DashBoardCard{
         padding: 0 !important;
+        height: 1117px !important;
     }
 </style>
 

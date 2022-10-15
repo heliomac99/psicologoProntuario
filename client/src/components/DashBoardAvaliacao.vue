@@ -9,25 +9,26 @@
         </select>
     </div>
 
-
+    <div style="margin-top:40px">
+        <h5 class="primaryColor" style="margin-bottom:20px" >Linha do Tempo Avaliação Pacientes</h5>
+        <div style="display:inline-flex; margin-top:20px">
+            <div class="divBarChart" style="width: 800px !important">
+                <BarChart :chart-data="chartDataAvaliacaoPorTempo" ref="bar" />
+            </div>
+        </div> 
+    </div>
     
-
-    <h5 class="primaryColor" style="margin-bottom:20px" >Distribuição Avaliação dos Pacientes</h5>
-    <div style="display:inline-flex; margin:20px">
-        <div class="divBarChart">
-            <BarChart :chart-data="chartDataAvaliacao" />
-        </div>
-        <div class="divPieChart">
-            <PieChart :chart-data="chartDataAvaliacao" />
-        </div>
-    </div>    
-    
-    <h5 class="primaryColor" style="margin-bottom:20px" >Linha do Tempo Avaliação Pacientes</h5>
-    <div style="display:inline-flex; margin-top:20px">
-        <div class="divBarChart" style="width: 800px !important">
-            <BarChart :chart-data="chartDataAvaliacaoPorTempo" ref="bar" />
-        </div>
-    </div> 
+    <div style="margin-top:40px">
+        <h5 class="primaryColor" style="margin-bottom:20px" >Distribuição Avaliação dos Pacientes</h5>
+        <div style="display:inline-flex; margin:20px">
+            <div class="divBarChart">
+                <BarChart :chart-data="chartDataAvaliacao" />
+            </div>
+            <div class="divPieChart">
+                <PieChart :chart-data="chartDataAvaliacao" />
+            </div>
+        </div>    
+    </div>
     
 </template>
 
@@ -100,7 +101,7 @@
                 this.chartDataAvaliacaoPorTempo.datasets[0].data = result
             },
             carregarRelatorios(codigoPaciente){
-                axios.post('http://localhost:4000/usuario/paciente/relatorios', {usid: 2, pid: codigoPaciente}).then( (result) => {   
+                axios.post('http://localhost:4000/usuario/paciente/relatorios', {usid: this.$store.getters.getUsuarioId, pid: codigoPaciente}).then( (result) => {   
                         this.relatorios = result.data
                         this.carregarLabelsData()
                         this.calculaDadosAvaliacaoPorTempoRelatorio()
@@ -120,10 +121,10 @@
                     this.datasRelatorios[i] = this.formatDate(this.datasRelatorios[i])
                 }
                 this.$refs.bar.chartData.labels = this.datasRelatorios
-            }
+            },
         },
         mounted(){
-            axios.post('http://localhost:4000/usuario/pacientes', {usid: 2}).then( (result) => {  
+            axios.post('http://localhost:4000/usuario/pacientes', {usid: this.$store.getters.getUsuarioId}).then( (result) => {  
                     this.pacientes = result.data        
             })
         }

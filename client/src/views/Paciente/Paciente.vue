@@ -14,7 +14,7 @@
                 <input id="nome" style="margin-right: 10px; width: 500px;" class="form-control" placeholder="Nome" v-model="filtroNome"  @keyup="filtrarPorNome" >
             </div>
 
-            <DataTable ref="dataTable" :colLabels="colLabels" :dataFields="dataFields" :dataUrl="'http://localhost:4000/usuario/pacientes'" :paramsUrl="{usid: 2}" :showEditButton="true" :showAddButton="true" :showRemoveButton="true" @editar="editar" @excluir="excluir" @addItem="adicionarRelatorio" :key="dataTableKey" :id="'id'"></DataTable>
+            <DataTable ref="dataTable" :colLabels="colLabels" :dataFields="dataFields" :dataUrl="'http://localhost:4000/usuario/pacientes'" :paramsUrl="{usid: this.$store.getters.getUsuarioId}" :showEditButton="true" :showAddButton="true" :showRemoveButton="true" @editar="editar" @excluir="excluir" @addItem="adicionarRelatorio" :key="dataTableKey" :id="'id'"></DataTable>
             <ModalPergunta ref="modalExclusao"></ModalPergunta>
         </div>
     </div>
@@ -32,7 +32,6 @@
         },
         data() {
             return {
-                //dataFields: ['nome', 'idade', 'sexo', 'genero','estado', 'municipio'],
                 dataFields: [
                     { value: 'nome', type: 'text'},
                     { value: 'idade', type: 'number'},
@@ -92,6 +91,7 @@
                 this.$refs.dataTable.filter('nome', this.filtroNome)
             }
         },
+
     }
 </script>
 

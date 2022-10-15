@@ -72,7 +72,7 @@
                 relatorio: {
                     id: this.$route.params.codigoRelatorio,
                     pid: this.$route.params.codigoPaciente,
-                    usid: 2,
+                    usid: this.$store.getters.getUsuarioId,
                     aval: null,
                     corpo: null,
                     data: null

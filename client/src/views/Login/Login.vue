@@ -1,30 +1,78 @@
 <template>
-    <br>
-    <input id="email" class="form-control" placeholder="Email" style="margin-right: 10px;margin-left: 80px; width: 500px;">
-    <br>
-    <input id="password" class="form-control" placeholder="Senha" type="password" style="margin-right: 10px; margin-left: 80px; width: 500px;">
-    <br>
-    <button type="button" class="btn btn-primary primaryColorBtn" @click="Entrar" style="margin-right: 10px; margin-left: 205px; width: 250px;">
-        Entrar
-    </button>
+    <div class="backGroundLogin">
+        <div class="col-12 center">
+            <div class="card cardLogin">
+                <div class="card-header">
+                    Login
+                </div>
+                <div class="card-body" align="center">
+                    <div class="form-group col-10">
+                        <label class="form-label col-2">E-mail</label>
+                        <div class="col-8">
+                            <input v-model="email" id="email" class="form-control">                                                   
+                        </div>    
+                    </div>
+                    <div class="form-group col-10">
+                        <label class="form-label col-2">Senha</label>
+                        <div class="col-8">
+                            <input v-model="senha" id="senha" class="form-control" type="password">  
+                            <div v-if="erros.login" style="display:contents">
+                                <span class="spanErro">{{erros.login.msg}}</span>   
+                            </div>                                                     
+                        </div>    
+                    </div>
+                    <button type="button" class="btn btn-primary primaryColorBtn" @click="Entrar">
+                        Entrar
+                    </button>
+                </div>
+            </div>       
+        </div>
+    </div>
 </template>
 
 <script>
-//import axios from 'axios'
+import axios from 'axios'
   export default {
     name: 'LoginScreen',
     data(){
         return{
-
+            email: null,
+            senha: null,
+            erros: {}
         }
     },
     methods: {
         Entrar(){
-
-        },
+            this.erros = {}
+            axios.post('http://localhost:4000/login', {email: this.email,senha: this.senha}).then( (result) => {
+                    var usuarioLogado = result.data[0]
+                    if(usuarioLogado.id > 0)
+                    {
+                        this.$store.commit('login', usuarioLogado)
+                        this.$router.push('/home')
+                    }
+                    else{
+                        this.erros.login = {msg:'Usuário ou senha inválidos.'}
+                    }
+                })
+        }
   }
 }
 </script>
 
 <style>
+
+    .center{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 80vh;
+    }
+
+    .cardLogin{
+        padding: 0 !important;
+        width: 700px;
+    }
+
+
 </style>

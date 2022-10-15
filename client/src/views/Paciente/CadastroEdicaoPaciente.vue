@@ -122,7 +122,7 @@
                 paciente: {
                         id: this.$route.params.codigoPaciente,
                         nome: null,
-                        usid: 2, //alterar para codigousuariologado
+                        usid: this.$store.getters.getUsuarioId,
                         idade: null,
                         estado: null,
                         municipio: null,

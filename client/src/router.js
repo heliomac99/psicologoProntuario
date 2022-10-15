@@ -7,13 +7,16 @@ import CadastroEdicaoUsuarioView from '@/views/Usuario/CadastroEdicaoUsuario.vue
 import RelatorioListaRelatorioView from '@/views/Relatorio/Relatorio.vue';
 import CadastroEdicaoRelatorioView from '@/views/Relatorio/CadastroEdicaoRelatorio.vue';
 import LoginScreen from '@/views/Login/Login.vue'
-
-
-
+import store from './vuex'
 
 const routes = [
     {
         path: '/',
+        name: 'Login',
+        component: LoginScreen,
+    },
+    {
+        path: '/home',
         name: 'home',
         component: HomeView
     },
@@ -47,16 +50,19 @@ const routes = [
         name: 'cadastroedicaorelatorio',
         component: CadastroEdicaoRelatorioView,
     },
-    {
-        path: '/login',
-        name: 'LogIn',
-        component: LoginScreen,
-    },
 ]
 
 const router = createRouter({
     history: createWebHistory(),
     routes
 })
+
+router.beforeEach((to, from, next) => {
+    if(!store.getters.isLoggedIn && to.path !== '/')
+        next({ name: 'Login' })
+    else
+        next()
+  })
+
 
 export default router;

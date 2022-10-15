@@ -112,7 +112,7 @@ app.post('/usuario/remove', (req, res) => {
 });
 
 app.post('/usuario/edit', (req, res) => {
-    db.run(`UPDATE Users SET nome = ?, email = ? estado = ?, municipio = ?, senha = ? WHERE id = ?`, [req.body.nome, req.body.email, req.body.estado, req.body.municipio, req.body.senha, req.body.id], (err) => {
+    db.run(`UPDATE Users SET nome = ?, email = ?, senha = ?, estado = ?, municipio = ? WHERE id = ?`, [req.body.nome, req.body.email, req.body.senha, req.body.estado, req.body.municipio, req.body.id], (err) => {
         if (err) {
             console.error(err.message);
             res.send({status: 500, message: err.message});
@@ -217,20 +217,20 @@ app.post('/relatorio/edit', (req, res) => {
 
 //login
 app.post('/login', (req, res) => {
-    let username = req.body.login
-    let password = req.body.senha
-    if (username && password) {
-        sql = `SELECT id FROM Users WHERE login = ? AND senha = ?`
-        db.get(sql, [username, password], (err, result) => {
+    let email = req.body.email
+    let senha = req.body.senha
+    if (email && senha) {
+        sql = `SELECT * FROM Users WHERE email = ? AND senha = ?`
+        db.all(sql, [email, senha], (err, row) => {
             if (err) {
                 res.send({status: 500, message: err.message});
             } else {
                 //testa se a linha existe
-                if (result) {
-                    res.send({status: 200});
-                } else {
-                    console.log("Senha ou usuário incorretos")
-                    res.send({status: 500, message: "Senha ou usuário incorretos"});
+                if (row.length > 0) {
+                    res.status(200).send(row)
+                }
+                 else {
+                    res.status(200).send('Autenticacao falhou.')
                 }   
             }
         })
@@ -238,6 +238,8 @@ app.post('/login', (req, res) => {
         res.send('Digite um usuário e senha!')
     }
 })
+
+
 
 //retorna registro do usuário
 

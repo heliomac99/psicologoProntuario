@@ -34,7 +34,7 @@
                     </select>
             </div>
 
-            <div style="display:inline-flex; margin-top:20px">
+            <div style="display:inline-flex; margin-top:40px">
                 <div class="divBarChart">
                     <BarChart :chart-data="chartDataAvaliacaoPorEstado" />
                 </div>
@@ -43,7 +43,7 @@
                 </div>
             </div>
 
-            <h5 class="primaryColor" style="margin-bottom:20px;margin-top:20px" >Pacientes por Estado</h5>
+            <h5 class="primaryColor" style="margin-top:40px" >Pacientes por Estado</h5>
             <div class="divBarChartEstado">
                <BarChart :chart-data="chartDataPacientePorEstado" />
             </div>
@@ -119,7 +119,7 @@
                 this.chartDataPacientePorEstado.datasets[0].data = result
             },
             carregarRelatoriosPorEstado(){
-                axios.post('http://localhost:4000/usuario/pacientes/joinRelatorioPorEstado', {usid: 2, estado: this.estadoSelecionado}).then( (result) => {  
+                axios.post('http://localhost:4000/usuario/pacientes/joinRelatorioPorEstado', {usid: this.$store.getters.getUsuarioId, estado: this.estadoSelecionado}).then( (result) => {  
                     console.log(result)
                     this.pacientesJoinRelatoriosPorEstado = result.data
                     this.calculaDadosAvaliacaoPorEstado()
@@ -127,11 +127,11 @@
             }
         },
         mounted(){
-            axios.post('http://localhost:4000/usuario/pacientes', {usid: 2}).then( (result) => {  
+            axios.post('http://localhost:4000/usuario/pacientes', {usid: this.$store.getters.getUsuarioId}).then( (result) => {  
                     this.pacientes = result.data
                     this.calculaNumeroPacientesPorEstado()           
             })
-            axios.post('http://localhost:4000/usuario/pacientes/joinRelatorio', {usid: 2}).then( (result) => {  
+            axios.post('http://localhost:4000/usuario/pacientes/joinRelatorio', {usid: this.$store.getters.getUsuarioId}).then( (result) => {  
                     this.pacientesJoinRelatorios = result.data     
             })
         }

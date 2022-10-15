@@ -47,7 +47,7 @@
             },
         },
         mounted(){
-            axios.post('http://localhost:4000/usuario/pacientes', {usid: 2}).then( (result) => {  
+            axios.post('http://localhost:4000/usuario/pacientes', {usid: this.$store.getters.getUsuarioId}).then( (result) => {  
                     this.pacientes = result.data
                     this.calculaDadosSexo()            
             })
