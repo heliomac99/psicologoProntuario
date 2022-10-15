@@ -189,15 +189,24 @@
                 this.submitted = true
                 if(this.validarForm()){
                     if(usuario.id > 0){
-                        axios.post('http://localhost:4000/usuario/edit', usuario).then(
-                            this.$swal("Sucesso", "Usuário registrado com sucesso!", "success"),
-                            this.$router.back()
+                        axios.post('http://localhost:4000/usuario/edit', usuario).then( (result) =>{
+                                console.log(result)
+                                if(result.data.emailValido){
+                                    this.$swal("Sucesso", "Usuário editado com sucesso!", "success"),
+                                    this.$router.back() 
+                                }
+                            }                   
                         )
                     }
                     else{
-                        axios.post('http://localhost:4000/usuario/add', usuario).then(
-                            this.$swal("Sucesso", "Usuário registrado com sucesso!", "success"),
-                            this.$router.back()
+                        axios.post('http://localhost:4000/usuario/add', usuario).then( (result) =>{
+                                if(result.data.emailValido){
+                                    this.$swal("Sucesso", "Usuário registrado com sucesso!", "success"),
+                                    this.$router.back() 
+                                }
+                                else
+                                    this.erros.email = { erro: true, msg:'E-mail está sendo utilizado.'}
+                            }                    
                         )
                     }
                 }         
