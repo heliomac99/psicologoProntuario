@@ -10,6 +10,9 @@
 
                 <button @click="toogleEstado" v-if="estadoVisible" type="button" class="asText" style="color:gray">Estado</button>
                 <button @click="toogleEstado" v-else type="button" class="asText">Estado</button>
+
+                <button @click="tooglePeriodo" v-if="periodoVisible" type="button" class="asText" style="color:gray">Periodo</button>
+                <button @click="tooglePeriodo" v-else type="button" class="asText">Periodo</button>
             </div>
             <div class="card-body">
 
@@ -26,7 +29,10 @@
                 <div v-if="estadoVisible">
                     <DashBoardEstado></DashBoardEstado>
                 </div>
-
+                
+                <div v-if="periodoVisible">
+                    <DashBoardPeriodo></DashBoardPeriodo>
+                </div>
             </div>
         </div>
     </div>
@@ -36,31 +42,42 @@
   import DashBoardSexo from '../components/DashBoardSexo.vue'
   import DashBoardAvaliacao from '../components/DashBoardAvaliacao.vue'
   import DashBoardEstado from '../components/DashBoardEstado.vue'
+  import DashBoardPeriodo from '../components/DashBoardPeriodo.vue'
   export default {
         name: 'HomeView',
-        components: { DashBoardSexo, DashBoardAvaliacao, DashBoardEstado },
+        components: { DashBoardSexo, DashBoardAvaliacao, DashBoardEstado, DashBoardPeriodo },
         data() {
             return {
                 avaliacaoVisible: false,
                 sexoVisible: true,
                 estadoVisible: false,
+                periodoVisible: false,
             }
         },
         methods: {
             toogleAvaliacao(){
                 this.avaliacaoVisible = true
                 this.sexoVisible = false  
-                this.estadoVisible = false             
+                this.estadoVisible = false
+                this.periodoVisible = false             
             },
             toogleSexo(){
                 this.avaliacaoVisible = false
                 this.sexoVisible = true     
-                this.estadoVisible = false          
+                this.estadoVisible = false   
+                this.periodoVisible = false       
             },
             toogleEstado(){
                 this.avaliacaoVisible = false
                 this.sexoVisible = false 
-                this.estadoVisible = true                 
+                this.estadoVisible = true
+                this.periodoVisible = false                 
+            },
+            tooglePeriodo(){
+                this.avaliacaoVisible = false
+                this.sexoVisible = false 
+                this.estadoVisible = false
+                this.periodoVisible = true
             },
         },
     }
