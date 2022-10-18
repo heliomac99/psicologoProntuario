@@ -2,7 +2,12 @@
     <h5 class="primaryColor" style="margin-bottom:20px; margin-top:20px">Avaliação por Período</h5>
     <div class="col-4">
         <p>Selecione o intervalo de tempo a ser considerado</p>
-        <input v-model="dataP" id="email" class="form-control" type="month" placeholder="Desse Mês" @change="carregarRelatoriosPorPeriodo"> até <input v-model="dataF" id="email" class="form-control" type="date" placeholder="Até esse mês" @change="carregarRelatoriosPorPeriodo">
+        <input v-model="dataP" id="email" class="form-control my-2" type="month" placeholder="Desse Mês" @change="carregarRelatoriosPorPeriodo"> 
+        até 
+        <input v-model="dataF" id="email" class="form-control my-2" type="month" placeholder="Até esse mês" @change="carregarRelatoriosPorPeriodo">
+        <button type="button" class="btn btn-primary primaryColorBtn mx-3 my-2" @click="testa">
+            Filtrar
+        </button>
     </div>
     <div style="display:inline-flex; margin-top:40px">
             <div class="divBarChart">
@@ -17,7 +22,7 @@
 <script>
     import BarChart from '../components/BarChart.vue'
     import PieChart from '../components/PieChart.vue'
-    import axios from 'axios'
+    //import axios from 'axios'
     export default {
         name: 'DashBoardPeriodo',
         components: { BarChart, PieChart },
@@ -37,8 +42,26 @@
             }
         },
         methods: {
+            incrementaMes(a){
+                let aux = parseInt(a.slice(5,7))+1
+                let year = parseInt(a.slice(0,4))
+                if(aux>12){
+                    year++
+                    aux = 1
+                }
+                return year.toString()+'-'+aux.toLocaleString('en-US', {minimumIntegerDigits: 2})
+            },
+            testa(){
+                let a = this.dataP
+                let b = this.dataF
+                console.log(a)
+                console.log(b)
+                console.log(typeof(a))
+                console.log(this.incrementaMes(a))
+                console.log(this.incrementaMes(b))
+            },
             calculaDadosAvaliacaoPorMes(){
-                if ((this.dataP!=null)&&(this.dataF!=null)){
+               /* if ((this.dataP!=null)&&(this.dataF!=null)){
                     if (this.dataP>this.dataF){
                         //exceção
                     }
@@ -47,11 +70,11 @@
                     let n = this.dataF
                     let result = []
                     var count = 0
-                    for(i = this.dataP; i!=n ; nextMonth(i)){//definir função nextMonth
+                    for(i = this.dataP;i != n;i = nextMonth(i)){//definir função nextMonth
                         count = 0
                         
-                    }
-                }
-            }
+                    }*/
+                },
+            },
         }
 </script>
