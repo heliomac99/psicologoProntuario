@@ -1,5 +1,5 @@
 <template>
-    <div class="backGroundLogin">
+<div class="backGroundLogin">
         <div class="col-12 center">
             <div class="card cardLogin">
                 <div class="card-header">
@@ -21,11 +21,11 @@
                             </div>                                                     
                         </div>    
                     </div>
-                    <button type="button" class="btn btn-primary primaryColorBtn" @click="Entrar">
+                    <button type="button" class="btn btn-primary primaryColorBtn mx-3" @click="Entrar">
                         Entrar
                     </button>
 
-                    <button type="button" class="btn btn-primary primaryColorBtn" @click="NovoUsuario">
+                    <button type="button" class="btn btn-primary primaryColorBtn mx-3" @click="NovoUsuario">
                         Criar conta
                     </button>
                 </div>
@@ -86,5 +86,15 @@ import axios from 'axios'
         width: 700px;
     }
 
-
+    .row{
+        background: rgb(193, 218, 223);
+        border-radius: 30px;
+    }
+    .img{
+        border-top-left-radius: 30px;
+        border-bottom-right-radius: 30px;
+    }
+    .centerInput{
+        text-align: center;
+    }
 </style>
