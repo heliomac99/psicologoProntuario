@@ -24,6 +24,10 @@
                     <button type="button" class="btn btn-primary primaryColorBtn" @click="Entrar">
                         Entrar
                     </button>
+
+                    <button type="button" class="btn btn-primary primaryColorBtn" @click="NovoUsuario">
+                        Criar conta
+                    </button>
                 </div>
             </div>       
         </div>
@@ -55,6 +59,14 @@ import axios from 'axios'
                         this.erros.login = {msg:'Usuário ou senha inválidos.'}
                     }
                 })
+        },
+        NovoUsuario() {
+            this.$router.push({
+                name: 'cadastroedicaousuario',
+                params: {
+                    codigoUsuario: 0,
+                },
+            });
         }
   }
 }

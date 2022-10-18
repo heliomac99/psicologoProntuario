@@ -5,8 +5,8 @@
                 <button @click="toogleAvaliacao" v-if="avaliacaoVisible" type="button" class="asText mr-10" style="color:gray">Avaliação</button>
                 <button @click="toogleAvaliacao" v-else type="button" class="asText mr-10">Avaliação</button>
 
-                <button @click="toogleSexo" v-if="sexoVisible" type="button" class="asText" style="color:gray">Gênero</button>
-                <button @click="toogleSexo" v-else type="button" class="asText">Gênero</button>
+                <button @click="toogleSexo" v-if="sexoVisible" type="button" class="asText" style="color:gray">Sexo</button>
+                <button @click="toogleSexo" v-else type="button" class="asText">Sexo</button>
 
                 <button @click="toogleEstado" v-if="estadoVisible" type="button" class="asText" style="color:gray">Estado</button>
                 <button @click="toogleEstado" v-else type="button" class="asText">Estado</button>
