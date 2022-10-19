@@ -48,6 +48,17 @@ app.post('/usuario/pacientes', (req, res) => {
     });
 });
 
+app.post('/usuario/relatorioPorIntervalo', (req, res) => {//Mudar querry pra buscar intervalo e testar
+    db.all('SELECT * FROM Relatorios WHERE Relatorios.usid = ?',[req.body.usid], (err, rows) =>{
+        if (err) {
+            console.error(err.message);
+            res.send({status: 500, message: err.message});
+        } else {
+            res.send(rows);
+        }
+    });
+});
+
 app.post('/usuario/pacientes/joinRelatorioPorEstado', (req, res) => {
     db.all(`SELECT * FROM Pacientes INNER JOIN Relatorios ON Pacientes.id=Relatorios.pid WHERE Pacientes.usid = ? AND Pacientes.estado = ?`, [req.body.usid, req.body.estado], (err, rows) => {
         if (err) {
