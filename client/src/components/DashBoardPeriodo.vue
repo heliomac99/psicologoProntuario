@@ -2,9 +2,9 @@
     <h5 class="primaryColor" style="margin-bottom:20px; margin-top:20px">Avaliação por Período</h5>
     <div class="col-4">
         <p>Selecione o intervalo de tempo a ser considerado</p>
-        <input v-model="dataP" id="email" class="form-control my-2" type="month" placeholder="Desse Mês" @change="carregarRelatoriosPorPeriodo"> 
+        <input v-model="dataP" id="email" class="form-control my-2" type="month" placeholder="Desse Mês"> 
         até 
-        <input v-model="dataF" id="email" class="form-control my-2" type="month" placeholder="Até esse mês" @change="carregarRelatoriosPorPeriodo">
+        <input v-model="dataF" id="email" class="form-control my-2" type="month" placeholder="Até esse mês">
         <button type="button" class="btn btn-primary primaryColorBtn mx-3 my-2" @click="testa">
             Filtrar
         </button>
@@ -59,6 +59,13 @@
                 }
                 return false
             },
+            carregarRelatoriosPorPeriodo(){//Editar
+                axios.post('http://localhost:4000/usuario/relatorioPorIntervalo', {usid: this.$store.getters.getUsuarioId, inicio: this.dataP, fim: this.dataF}).then( (result) => {  
+                console.log(result)
+                this.relatorioPorPeriodo = result.data
+                console.log(result.data)
+                })
+            },
             testa(){
                 let a = this.dataP
                 let b = this.dataF
@@ -68,15 +75,12 @@
                 console.log(this.incrementaMes(a))
                 console.log(this.incrementaMes(b))
                 console.log(this.depois(a,b))
+                a = a+'-01'
+                b = b+'-01'
+                console.log(a)
+                console.log(b)
                 this.carregarRelatoriosPorPeriodo()
             },
-            carregarRelatoriosPorPeriodo(){//Editar
-                axios.post('http://localhost:4000/usuario/relatorioPorIntervalo', {usid: this.$store.getters.getUsuarioId/*, inicio: this.dataP, fim: this.dataF*/}).then( (result) => {  
-                console.log(result)
-                this.relatorioPorPeriodo = result.data
-                console.log('tá indo')
-                })
-            }
             /*calculaDadosAvaliacaoPorMes(){
                 var i = this.dataP
                 let n = this.dataF
