@@ -36,7 +36,10 @@
                         <label class="form-label col-2">Data</label>  
                             <div class="col-2" >
                                 <input v-model="relatorio.data" type="date" id="data" class="form-control">                     
-                            </div>                           
+                            </div>  
+                            <div v-if="erros.aval" style="display:contents">
+                                <span style="margin-left:10px" class="spanErro">{{erros.data.msg}}</span>   
+                            </div>                          
                     </div>
 
                     <div class="form-group col-10">
@@ -134,8 +137,13 @@
                         this.erros.corpo = { erro: true, msg:'Observação obrigatória.'}
                     else
                         this.erros.corpo = false 
+
+                    if(!this.relatorio.data)
+                        this.erros.data = { erro: true, msg:'Data obrigatória.'}
+                    else
+                        this.erros.data = false 
                         
-                    if(this.erros.aval || this.erros.corpo) 
+                    if(this.erros.aval || this.erros.corpo || this.erros.data ) 
                         return false
                     else
                         return true

@@ -100,8 +100,9 @@ app.post('/usuario/add', (req, res) => {
     let municipio = req.body.municipio
     let senha = req.body.senha
     let admin = false
+    
     if(req.body.admin) {
-        admin = true
+         admin = true
     }
     db.all(`SELECT * FROM Users Where email = ?`, [email], (err, rows) => {
         if (err) {
@@ -171,7 +172,7 @@ app.post('/paciente/carregarRegistro', (req, res) => {
             console.error(err.message);
             res.status(500).send({message: err.message});
         } else {
-            res.status(200).send();
+            res.status(200).send(rows);
         }
     });
 });
@@ -292,7 +293,7 @@ app.post('/login', (req, res) => {
             }
         })
     } else {
-        res.status(200).send('Digite um usuÃ¡rio e senha!')
+        res.status(200).send('Digite um usuário e senha!')
     }
 })
 
@@ -306,7 +307,7 @@ app.post('/usuario/carregarRegistro', (req, res) => {
             if (result) {
                 res.status(200).send(result)
             } else {
-                res.status(500).send({message: "UsuÃ¡rio nÃ£o existe"})
+                res.status(500).send({message: "Usuário não existe"})
             }             
         }
     })

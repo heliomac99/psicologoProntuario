@@ -15,6 +15,9 @@ const store = createStore({
       },
       logout(state){
         state.usuario = { "id" : -1, "nome": '' }
+      },
+      setNomeUsuario(state, nome){
+        state.usuario.nome = nome
       }
     },
     getters:  {

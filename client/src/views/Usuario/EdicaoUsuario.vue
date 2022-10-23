@@ -122,7 +122,8 @@
                     axios.post('http://localhost:4000/usuario/edit', usuario).then( (result) =>{
                             if(result.data.emailValido){  
                                 this.$swal("Sucesso", "Usuário editado com sucesso!", "success"),
-                                this.$router.back() 
+                                this.recuperarDados()
+                                this.$store.commit('setNomeUsuario', this.usuario.nome)
                             }
                             else
                                 this.erros.email = { erro: true, msg:'E-mail está sendo utilizado.'}
