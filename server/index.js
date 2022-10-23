@@ -59,6 +59,17 @@ app.post('/usuario/relatorioPorIntervalo', (req, res) => {
     });
 });
 
+app.post('/usuario/relatorioPacientePorIntervalo', (req, res) => {
+    db.all(`SELECT * FROM Relatorios WHERE Relatorios.usid = ? AND (Relatorios.data BETWEEN ? and ?) AND Relatorios.pid=?`,[req.body.usid,req.body.inicio, req.body.fim, req.body.paciente], (err, rows) =>{
+        if (err) {
+            console.error(err.message);
+            res.status(500).send({message: err.message});
+        } else {
+            res.status(200).send(rows);
+        }
+    });
+});
+
 app.post('/usuario/pacientes/joinRelatorioPorEstado', (req, res) => {
     db.all(`SELECT * FROM Pacientes INNER JOIN Relatorios ON Pacientes.id=Relatorios.pid WHERE Pacientes.usid = ? AND Pacientes.estado = ?`, [req.body.usid, req.body.estado], (err, rows) => {
         if (err) {

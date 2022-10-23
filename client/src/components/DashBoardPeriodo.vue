@@ -1,11 +1,18 @@
 <template>
     <h5 class="primaryColor" style="margin-bottom:20px; margin-top:20px">Avaliação por Período</h5>
     <div class="col-4">
+        <select class="form-control" placeholder="paciente" v-model="pacienteSelecionado" style="max-width:400px; margin-bottom:20px;" @change="tooglePeriodoPorPaciente" @click="carregaPacientes">
+            <template v-for="(paciente, index) in pacientes" :key="index">
+                <option :value="paciente.id">
+                    {{paciente.nome}}
+                </option>
+            </template>
+        </select>
         <p>Selecione o intervalo de tempo a ser considerado</p>
         <input v-model="dataP" id="email" class="form-control my-2" type="month" placeholder="Desse Mês"> 
         até 
         <input v-model="dataF" id="email" class="form-control my-2" type="month" placeholder="Até esse mês">
-        <button type="button" class="btn btn-primary primaryColorBtn mx-3 my-2" @click="carregarRelatoriosPorPeriodo">
+        <button type="button" class="btn btn-primary primaryColorBtn mx-3 my-2" @click="executa">
             Filtrar
         </button>
     </div>
@@ -40,6 +47,8 @@
                 dataP: null,
                 dataF: null,
                 relatorioPorPeriodo: [],
+                pacientes: [],
+                flag: 0,
             }
         },
         methods: {
@@ -56,7 +65,14 @@
                 }
                 return year.toString()+'-'+aux
             },
-            
+            executa(){
+                console.log(this.pacienteSelecionado)
+                if(this.flag){
+                    this.carregarRelatoriosPacientePorPeriodo()
+                } else {
+                    this.carregarRelatoriosPorPeriodo()
+                }
+            },
             carregarRelatoriosPorPeriodo(){
                 axios.post('http://localhost:4000/usuario/relatorioPorIntervalo', {usid: this.$store.getters.getUsuarioId, inicio: this.dataP, fim: this.incrementaMes(this.dataF)}).then( (result) => {  
                 console.log(result)
@@ -79,10 +95,25 @@
                             else if(this.relatorioPorPeriodo[j].aval.toLowerCase() == 'ruim')
                                 countRuim++
                     }
-                    
                     this.chartDataAvaliacaoPorPeriodo.datasets[0].data = [countBom, countRegular, countRuim]
                 }
-                }
+            },
+            tooglePeriodoPorPaciente(){
+                    this.flag = 1
+            },
+            carregarRelatoriosPacientePorPeriodo(){
+                axios.post('http://localhost:4000/usuario/relatorioPacientePorIntervalo', {usid: this.$store.getters.getUsuarioId, inicio: this.dataP, fim: this.incrementaMes(this.dataF), paciente: this.pacienteSelecionado}).then( (result) => {  
+                console.log(result)
+                this.relatorioPorPeriodo = result.data
+                console.log(result.data)
+                this.calculaDadosAvaliacaoPorMes()
+                })
+            },
+            carregaPacientes(){
+            axios.post('http://localhost:4000/usuario/pacientes', {usid: this.$store.getters.getUsuarioId}).then( (result) => {  
+                    this.pacientes = result.data        
+            })
+        }
             },
         }
 </script>
