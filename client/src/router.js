@@ -60,6 +60,8 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
     if(!store.getters.isLoggedIn && to.path !== '/')
         next({ name: 'Login' })
+    else if(store.getters.isLoggedIn && ((to.path == '/')||(to.path == '/usuario/cadastroedicao/0')))
+        next({ name: 'home' })
     else
         next()
   })
