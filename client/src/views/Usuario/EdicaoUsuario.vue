@@ -48,7 +48,6 @@
 
                                 <div id="actionButtons">
                                     <button @click="salvar(usuario)" style="margin-right: 5px;" type="button" class="btn btn-primary primaryColorBtn">Salvar</button>
-                                    <ModalPergunta ref="modalPergunta"></ModalPergunta>
                                 </div>
                         </form>
                         </div>
@@ -59,14 +58,12 @@
 
 <script>
   import axios from 'axios'
-  import ModalPergunta from '../../components/ModalPergunta.vue'
   export default {
         name: 'EdicaoUsuarioView',
-        components: { ModalPergunta},
         data() {
             return {
                 usuario: {
-                    id: this.$route.params.codigoUsuario,
+                    id: this.$store.getters.getUsuarioId,
                     nome: null,
                     email: null,
                     senha: null,
@@ -122,43 +119,29 @@
             salvar(usuario) { 
                 this.submitted = true
                 if(this.validarForm()){
-                    if(usuario.id > 0){
-                        axios.post('http://localhost:4000/usuario/edit', usuario).then( (result) =>{
-                                if(result.data.emailValido){  
-                                    this.$swal("Sucesso", "Usuário editado com sucesso!", "success"),
-                                    this.$router.back() 
-                                }
-                                else
-                                    this.erros.email = { erro: true, msg:'E-mail está sendo utilizado.'}
-                            }                   
-                        )
-                    }
-                    else{
-                        axios.post('http://localhost:4000/usuario/add', usuario).then( (result) =>{
-                                if(result.data.emailValido){
-                                    this.$swal("Sucesso", "Usuário registrado com sucesso!", "success"),
-                                    this.$router.back() 
-                                }
-                                else
-                                    this.erros.email = { erro: true, msg:'E-mail está sendo utilizado.'}
-                            }                    
-                        )
-                    }
+                    axios.post('http://localhost:4000/usuario/edit', usuario).then( (result) =>{
+                            if(result.data.emailValido){  
+                                this.$swal("Sucesso", "Usuário editado com sucesso!", "success"),
+                                this.$router.back() 
+                            }
+                            else
+                                this.erros.email = { erro: true, msg:'E-mail está sendo utilizado.'}
+                        }                   
+                    )
                 }         
             },
             recuperarDados() { 
                 axios.post('http://localhost:4000/usuario/carregarRegistro', {id: this.usuario.id}).then( (result) => {
-                        this.usuario.nome = result.data[0].nome
-                        this.usuario.email = result.data[0].email
-                        this.usuario.senha = result.data[0].senha
-                        this.usuario.confirmaSenha = result.data[0].senha
+                        this.usuario.nome = result.data.nome
+                        this.usuario.email = result.data.email
+                        this.usuario.senha = result.data.senha
+                        this.usuario.confirmaSenha = result.data.senha
                    }
                 )
             },
 
         },
         mounted() {
-            if(this.usuario.id > 0)
                 this.recuperarDados()
         },        
     }
