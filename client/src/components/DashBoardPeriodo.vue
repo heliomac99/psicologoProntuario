@@ -5,7 +5,7 @@
         <input v-model="dataP" id="email" class="form-control my-2" type="month" placeholder="Desse Mês"> 
         até 
         <input v-model="dataF" id="email" class="form-control my-2" type="month" placeholder="Até esse mês">
-        <button type="button" class="btn btn-primary primaryColorBtn mx-3 my-2" @click="testa">
+        <button type="button" class="btn btn-primary primaryColorBtn mx-3 my-2" @click="carregarRelatoriosPorPeriodo">
             Filtrar
         </button>
     </div>
@@ -28,7 +28,7 @@
         components: { BarChart, PieChart },
         data() {
             return {
-                chartDataAvaliacaoPorPeríodo: {
+                chartDataAvaliacaoPorPeriodo: {
                     labels: ['Bom', 'Regular', 'Ruim'],
                     color: "blue",
                     datasets: [{
@@ -37,70 +37,52 @@
                         data: null
                     }],
                 },
-                dataP: null,
-                dataF: null,
+                dataP: '2022-01',
+                dataF: '2022-03',
                 relatorioPorPeriodo: [],
             }
         },
         methods: {
             incrementaMes(a){
-                let aux = parseInt(a.slice(5,7))+1
-                let year = parseInt(a.slice(0,4))
+                var aux = parseInt(a.slice(5,7))
+                var year = parseInt(a.slice(0,4))
+                aux = aux+1
                 if(aux>12){
                     year++
                     aux = 1
                 }
-                return year.toString()+'-'+aux.toLocaleString({minimumIntegerDigits: 2})
-            },
-            depois(a,b){
-                if(a.slice(0,4)>b.slice(0,4)) return true
-                else if(a.slice(0,4)==b.slice(0,4)){
-                    if(a.slice(5,7)>b.slice(5,7)) return true
+                if (aux<10){
+                    return year.toString()+'-0'+aux
                 }
-                return false
+                return year.toString()+'-'+aux
             },
-            carregarRelatoriosPorPeriodo(){//Editar
-                axios.post('http://localhost:4000/usuario/relatorioPorIntervalo', {usid: this.$store.getters.getUsuarioId, inicio: this.dataP, fim: this.dataF}).then( (result) => {  
+            
+            carregarRelatoriosPorPeriodo(){
+                axios.post('http://localhost:4000/usuario/relatorioPorIntervalo', {usid: this.$store.getters.getUsuarioId, inicio: this.dataP, fim: this.incrementaMes(this.dataF)}).then( (result) => {  
                 console.log(result)
                 this.relatorioPorPeriodo = result.data
                 console.log(result.data)
+                this.calculaDadosAvaliacaoPorMes()
                 })
             },
-            testa(){
-                let a = this.dataP
-                let b = this.dataF
-                console.log(a)
-                console.log(b)
-                console.log(typeof(a))
-                console.log(this.incrementaMes(a))
-                console.log(this.incrementaMes(b))
-                console.log(this.depois(a,b))
-                a = a+'-01'
-                b = b+'-01'
-                console.log(a)
-                console.log(b)
-                this.carregarRelatoriosPorPeriodo()
-            },
-            /*calculaDadosAvaliacaoPorMes(){
-                var i = this.dataP
-                let n = this.dataF
+            calculaDadosAvaliacaoPorMes(){
                if ((this.dataP!=null)&&(this.dataF!=null)){
-                    if (this.depois(i,j)){
-                        //exceção
-                    }
                     var j = 0
-                    let result = []
                     var countBom = 0
                     var countRuim = 0
                     var countRegular = 0
-                    for(i = this.dataP;i != n;i = incrementaMes(i)){
-                        countBom = 0
-                        countRuim = 0
-                        countRegular = 0
-
-                        result.push(count)
+                    for(j = 0; j < this.relatorioPorPeriodo.length; j++){
+                            if(this.relatorioPorPeriodo[j].aval.toLowerCase() == 'bom')
+                                countBom++
+                            else if(this.relatorioPorPeriodo[j].aval.toLowerCase() == 'regular')
+                                countRegular++
+                            else if(this.relatorioPorPeriodo[j].aval.toLowerCase() == 'ruim')
+                                countRuim++
                     }
-                }*/
+                    
+                    this.chartDataAvaliacaoPorPeriodo.datasets[0].data = [countBom, countRegular, countRuim]
+                }
+                }
             },
         }
 </script>

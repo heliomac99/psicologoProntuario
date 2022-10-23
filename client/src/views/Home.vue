@@ -12,7 +12,7 @@
                 <button @click="toogleEstado" v-else type="button" class="asText">Estado</button>
 
                 <button @click="tooglePeriodo" v-if="periodoVisible" type="button" class="asText" style="color:gray">Periodo</button>
-                <button @click="tooglePeriodo" v-else type="button" class="asText">Periodo</button>
+                <button @click="tooglePeriodo" v-else type="button" class="asText mr-10">Período</button>
             </div>
             <div class="card-body">
 
@@ -45,7 +45,7 @@
   import DashBoardPeriodo from '../components/DashBoardPeriodo.vue'
   export default {
         name: 'HomeView',
-        components: { DashBoardSexo, DashBoardAvaliacao, DashBoardEstado, DashBoardPeriodo },
+        components: { DashBoardSexo, DashBoardAvaliacao, DashBoardEstado, DashBoardPeriodo},
         data() {
             return {
                 avaliacaoVisible: false,
