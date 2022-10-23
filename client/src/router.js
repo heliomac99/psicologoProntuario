@@ -58,7 +58,7 @@ const routes = [
         component: CadastroUsuarioView,
     },
     {
-        path: '/usuario/edicao',
+        path: '/edicaousuario',
         name: 'edicaousuario',
         component: EdicaoUsuarioView,
     },

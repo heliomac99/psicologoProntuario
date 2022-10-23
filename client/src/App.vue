@@ -31,7 +31,6 @@ export default {
         data(){
             return{
                 showNavbar: true,
-                teste: '/Usuario/cadastroEdicao/' + this.$store.getUsuario
             }
         },
         methods:{
@@ -45,9 +44,6 @@ export default {
             editarUsuario(){
                 this.$router.push({
                     name: 'edicaousuario',
-                    params: {
-                        codigoUsuario: this.$store.getters.getUsuarioId,
-                    },
                 });
             }
         },
