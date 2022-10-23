@@ -61,7 +61,8 @@ import axios from 'axios'
                 })
         },
         NovaConta(){
-            this.$router.push('/usuario/cadastro')
+            console.log('teste')
+            this.$router.push('/cadastrousuario')
         }
   },
 }
@@ -76,8 +77,8 @@ import axios from 'axios'
         text-align: center;
     }
     .login{
-        width:600px;
-        padding: 180px 55px 55px;
+        width: 600px!important;
+        padding: 170px 55px 55px;
     }
     .center{
         display: flex;
@@ -109,4 +110,5 @@ import axios from 'axios'
         background-size: cover;
         width: 100vw;
     } 
+
 </style>

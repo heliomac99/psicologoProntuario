@@ -53,7 +53,7 @@ const routes = [
         component: CadastroEdicaoRelatorioView,
     },
     {
-        path: '/usuario/cadastro',
+        path: '/cadastrousuario',
         name: 'cadastrousuario',
         component: CadastroUsuarioView,
     },
@@ -70,7 +70,7 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-    if(!store.getters.isLoggedIn && to.path !== '/' && to.path !== '/usuario/cadastro')
+    if(!store.getters.isLoggedIn && to.path !== '/' && to.path !== '/cadastrousuario')
         next({ name: 'Login' })
     else
         next()

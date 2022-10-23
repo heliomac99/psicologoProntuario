@@ -155,8 +155,8 @@
         text-align: center;
     }
     .cadastro{
-        width:600px;
-        padding: 180px 30px 30px;
+        width:600px !important;
+        padding: 170px 55px 55px;
     }
     
 

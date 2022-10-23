@@ -52,8 +52,8 @@ export default {
             }
         },
         watch: {
-            $route(to) {
-                if(to.path === '/' || to.path === '/usuario/cadastro')
+            $route() {
+                if(!this.$store.getters.isLoggedIn)
                     this.showNavbar = false
                 else
                     this.showNavbar = true
