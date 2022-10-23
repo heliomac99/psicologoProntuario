@@ -37,8 +37,8 @@
                         data: null
                     }],
                 },
-                dataP: '2022-01',
-                dataF: '2022-03',
+                dataP: null,
+                dataF: null,
                 relatorioPorPeriodo: [],
             }
         },
