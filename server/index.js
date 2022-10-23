@@ -49,7 +49,7 @@ app.post('/usuario/pacientes', (req, res) => {
 });
 
 app.post('/usuario/relatorioPorIntervalo', (req, res) => {
-    db.all(`SELECT * FROM Relatorios WHERE Relatorios.usid = ? AND (Relatorios.data BETWEEN ? and ?)`,[req.body.usid,req.body.inicio+'-01', req.body.fim+'-01'], (err, rows) =>{
+    db.all(`SELECT * FROM Relatorios WHERE Relatorios.usid = ? AND (Relatorios.data BETWEEN ? and ?)`,[req.body.usid,req.body.inicio, req.body.fim], (err, rows) =>{
         if (err) {
             console.error(err.message);
             res.send({status: 500, message: err.message});
