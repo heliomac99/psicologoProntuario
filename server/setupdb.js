@@ -13,7 +13,8 @@ db.run(`CREATE TABLE Users (
         email TEXT UNIQUE,
         senha TEXT,
         municipio TEXT,
-        estado TEXT
+        estado TEXT,
+        admin BOOL
         )`);
 
 db.run(`CREATE TABLE Pacientes (
