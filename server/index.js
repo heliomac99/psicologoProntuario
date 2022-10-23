@@ -31,7 +31,8 @@ app.post('/usuario', (req, res) => {
 
 app.post('/usuario/pacientes', (req, res) => {
     let sql = `SELECT * FROM Pacientes WHERE usid = ?`
-    db.all(sql, [req.body.usid], (err, rows) => {
+    let usid = req.body.usid
+    db.all(sql, [usid], (err, rows) => {
         if (err) {
             console.error(err.message);
             res.status(500).send({status: 500, message: err.message});
