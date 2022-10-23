@@ -4,9 +4,6 @@ const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const sqlite3 = require('sqlite3');
 
-// db.all(`SELECT * FROM Users`, [], (err, rows) => {
-//     if (err) return console.error(err.message);
-
 let db = new sqlite3.Database(__dirname + '\\database\\psionico.db', sqlite3.OPEN_READWRITE, (err) => {
     if (err) {
         console.log(err.message);
@@ -31,14 +28,9 @@ app.post('/usuario', (req, res) => {
     });
 });
 
-// app.post('/usuario/carregarRegistro', (req, res) => {
-//     db.all(`SELECT * FROM Users WHERE id = ?`, [req.body.id], (err, rows) => {
-//         res.status(200).send(rows);
-//     });
-// });
-
 app.post('/usuario/pacientes', (req, res) => {
-    db.all(`SELECT * FROM Pacientes WHERE usid = ?`, [req.body.usid], (err, rows) => {
+    let sql = `SELECT * FROM Pacientes WHERE usid = ?`
+    db.all(sql, [req.body.usid], (err, rows) => {
         if (err) {
             console.error(err.message);
             res.status(500).send({status: 500, message: err.message});
@@ -49,7 +41,11 @@ app.post('/usuario/pacientes', (req, res) => {
 });
 
 app.post('/usuario/relatorioPorIntervalo', (req, res) => {
-    db.all(`SELECT * FROM Relatorios WHERE Relatorios.usid = ? AND (Relatorios.data BETWEEN ? and ?)`,[req.body.usid,req.body.inicio, req.body.fim], (err, rows) =>{
+    let sql = `SELECT * FROM Relatorios WHERE Relatorios.usid = ? AND (Relatorios.data BETWEEN ? and ?)`
+    let usid = req.body.usid
+    let inicio = req.body.inicio
+    let fim = req.body.fim
+    db.all(sql,[usid, inicio, fim], (err, rows) =>{
         if (err) {
             console.error(err.message);
             res.status(500).send({message: err.message});
@@ -60,7 +56,12 @@ app.post('/usuario/relatorioPorIntervalo', (req, res) => {
 });
 
 app.post('/usuario/relatorioPacientePorIntervalo', (req, res) => {
-    db.all(`SELECT * FROM Relatorios WHERE Relatorios.usid = ? AND (Relatorios.data BETWEEN ? and ?) AND Relatorios.pid=?`,[req.body.usid,req.body.inicio, req.body.fim, req.body.paciente], (err, rows) =>{
+    let sql = `SELECT * FROM Relatorios WHERE Relatorios.usid = ? AND (Relatorios.data BETWEEN ? and ?) AND Relatorios.pid=?`
+    let usid = req.body.usid
+    let inicio = req.body.inicio
+    let fim = req.body.fim
+    let paciente = req.body.paciente
+    db.all(sql, [usid, inicio, fim, paciente], (err, rows) =>{
         if (err) {
             console.error(err.message);
             res.status(500).send({message: err.message});
@@ -71,7 +72,10 @@ app.post('/usuario/relatorioPacientePorIntervalo', (req, res) => {
 });
 
 app.post('/usuario/pacientes/joinRelatorioPorEstado', (req, res) => {
-    db.all(`SELECT * FROM Pacientes INNER JOIN Relatorios ON Pacientes.id=Relatorios.pid WHERE Pacientes.usid = ? AND Pacientes.estado = ?`, [req.body.usid, req.body.estado], (err, rows) => {
+    let sql = `SELECT * FROM Pacientes INNER JOIN Relatorios ON Pacientes.id=Relatorios.pid WHERE Pacientes.usid = ? AND Pacientes.estado = ?`
+    let usid = req.body.usid
+    let estado = req.body.estado
+    db.all(sql, [usid, estado], (err, rows) => {
         if (err) {
             console.error(err.message);
             res.status(500).send({message: err.message});
@@ -82,7 +86,9 @@ app.post('/usuario/pacientes/joinRelatorioPorEstado', (req, res) => {
 });
 
 app.post('/usuario/pacientes/joinRelatorio', (req, res) => {
-    db.all(`SELECT * FROM Pacientes INNER JOIN Relatorios ON Pacientes.id=Relatorios.pid WHERE Pacientes.usid = ?`, [req.body.usid], (err, rows) => {
+    let sql = `SELECT * FROM Pacientes INNER JOIN Relatorios ON Pacientes.id=Relatorios.pid WHERE Pacientes.usid = ?`
+    let usid = req.body.usid
+    db.all(sql, [usid], (err, rows) => {
         if (err) {
             console.error(err.message);
             res.status(500).send({message: err.message});
@@ -93,7 +99,10 @@ app.post('/usuario/pacientes/joinRelatorio', (req, res) => {
 });
 
 app.post('/usuario/paciente/relatorios', (req, res) => {
-    db.all(`SELECT * FROM Relatorios WHERE pid = ? AND usid = ?`, [req.body.pid, req.body.usid], (err, rows) => {
+    let sql = `SELECT * FROM Relatorios WHERE pid = ? AND usid = ?`
+    let pid = req.body.pid
+    let usid = req.body.usid
+    db.all(sql, [pid, usid], (err, rows) => {
         if (err) {
             console.error(err.message);
             res.status(500).send({status: 500, message: err.message});
@@ -111,10 +120,13 @@ app.post('/usuario/add', (req, res) => {
     let municipio = req.body.municipio
     let senha = req.body.senha
     let admin = false
+    
     if(req.body.admin) {
         admin = true
     }
-    db.all(`SELECT * FROM Users Where email = ?`, [email], (err, rows) => {
+
+    let sqlMail = `SELECT * FROM Users Where email = ?`
+    db.all(sqlMail, [email], (err, rows) => {
         if (err) {
             res.status(500).send({message: "Erro ao verificar registros"});
         } 
@@ -123,7 +135,8 @@ app.post('/usuario/add', (req, res) => {
                 res.status(200).send({emailValido: false});
                 return;
             }
-            db.run(`INSERT INTO Users (nome, email, estado, municipio, senha, admin) VALUES (?,?,?,?,?,?)`, [nome, email, estado, municipio, senha, admin], (err) => {
+            let sql = `INSERT INTO Users (nome, email, estado, municipio, senha, admin) VALUES (?,?,?,?,?,?)`
+            db.run(sql, [nome, email, estado, municipio, senha, admin], (err) => {
                 if (err) {
                     res.status(500).send({message: err.message});
                 } else {
@@ -135,9 +148,13 @@ app.post('/usuario/add', (req, res) => {
 });
 
 app.post('/usuario/remove', (req, res) => {
-    db.run(`DELETE FROM Users WHERE id = ?`, [req.body.id],)
-    .run(`DELETE FROM Pacientes WHERE usid = ?`, [req.body.id])
-    .run(`DELETE FROM Relatorios WHERE usid = ?`, [req.body.id], (err) => {
+    let sqlDelete1 = `DELETE FROM Users WHERE id = ?`
+    let sqlDelete2 = `DELETE FROM Pacientes WHERE usid = ?`
+    let sqlDelete3 = `DELETE FROM Relatorios WHERE usid = ?`
+    let id = req.body.id
+    db.run(sqlDelete1, [id],)
+    .run(sqlDelete2, [id])
+    .run(sqlDelete3, [id], (err) => {
         if (err) {
             console.error(err.message);
             res.status(500).send({message: err.message});
@@ -148,6 +165,7 @@ app.post('/usuario/remove', (req, res) => {
 });
 
 app.post('/usuario/edit', (req, res) => {
+    let sqlSelect = `SELECT * FROM Users Where email = ? AND id != ?`
     let nome = req.body.nome
     let email = req.body.email
     let estado = req.body.estado
@@ -155,7 +173,7 @@ app.post('/usuario/edit', (req, res) => {
     let senha = req.body.senha
     let id = req.body.id
 
-    db.all(`SELECT * FROM Users Where email = ? AND id != ?`, [email, id], (err, rows) => {
+    db.all(sqlSelect, [email, id], (err, rows) => {
         if (err) {
             res.status(500).send({ message: "Erro ao verificar registros" });
         }
@@ -164,7 +182,8 @@ app.post('/usuario/edit', (req, res) => {
                 res.status(200).send({ emailValido: false });
                 return;
             }
-            db.run(`UPDATE Users SET nome = ?, email = ?, senha = ?, estado = ?, municipio = ? WHERE id = ?`, [nome, email, senha, estado, municipio, id], (err) => {
+            let sqlUpdate = `UPDATE Users SET nome = ?, email = ?, senha = ?, estado = ?, municipio = ? WHERE id = ?`
+            db.run(sqlUpdate, [nome, email, senha, estado, municipio, id], (err) => {
                 if (err) {
                     res.status(500).send({ message: err.message });
                 } else {
@@ -177,7 +196,9 @@ app.post('/usuario/edit', (req, res) => {
 });
 
 app.post('/paciente/carregarRegistro', (req, res) => {
-    db.all(`SELECT * FROM Pacientes WHERE id = ?`, [req.body.id], (err, rows) => {
+    let sql = `SELECT * FROM Pacientes WHERE id = ?`
+    let id = req.body.id
+    db.all(sql, [id], (err, rows) => {
         if (err) {
             console.error(err.message);
             res.status(500).send({message: err.message});
@@ -188,7 +209,15 @@ app.post('/paciente/carregarRegistro', (req, res) => {
 });
 
 app.post('/paciente/add', (req, res) => {
-    db.run(`INSERT INTO Pacientes (nome, usid, idade, municipio, estado, sexo, genero) VALUES (?, ?, ?, ?, ?, ?, ?)`, [req.body.nome, req.body.usid, req.body.idade, req.body.municipio, req.body.estado, req.body.sexo, req.body.genero], (err) => {
+    let sql = `INSERT INTO Pacientes (nome, usid, idade, municipio, estado, sexo, genero) VALUES (?, ?, ?, ?, ?, ?, ?)`
+    let nome = req.body.nome
+    let usid = req.body.usid
+    let idade = req.body.idade
+    let mun = req.body.municipio
+    let estado = req.body.estado
+    let sexo = req.body.sexo
+    let genero = req.body.genero
+    db.run(sql, [nome, usid, idade, mun, estado, sexo, genero], (err) => {
         if (err) {
             console.error(err.message);
             res.status(500).send({message: err.message});
@@ -199,7 +228,10 @@ app.post('/paciente/add', (req, res) => {
 });
 
 app.post('/paciente/remove', (req, res) => {
-    db.run(`DELETE FROM Pacientes WHERE id = ?`, [req.body.id]).run(`DELETE FROM Relatorios WHERE pid = ?`, [req.body.id], (err) =>{
+    let sqlDelete1 = `DELETE FROM Pacientes WHERE id = ?`
+    let sqlDelete2 = `DELETE FROM Relatorios WHERE pid = ?`
+    let id = req.body.id
+    db.run(sqlDelete1, [id]).run(sqlDelete2, [id], (err) =>{
         if (err) {
              console.error(err.message);
              res.status(500).send({message: err.message});
@@ -211,7 +243,9 @@ app.post('/paciente/remove', (req, res) => {
 });
 
 app.post('/paciente/removeRelatorios', (req, res) => {
-    db.run(`DELETE FROM Relatorios WHERE pid = ?`, [req.body.id], (err) => {
+    let sql = `DELETE FROM Relatorios WHERE pid = ?`
+    let id = req.body.id
+    db.run(sql, [id], (err) => {
         console.log('teste')
         if (err) {
             console.error(err.message);
@@ -223,7 +257,15 @@ app.post('/paciente/removeRelatorios', (req, res) => {
 });
 
 app.post('/paciente/edit', (req, res) => {
-    db.run(`UPDATE Pacientes SET nome = ?, idade = ?, estado = ?, sexo = ?, genero = ?, municipio = ? WHERE id = ?`, [req.body.nome, req.body.idade, req.body.estado, req.body.sexo, req.body.genero, req.body.municipio, req.body.id], (err) => {
+    let sql = `UPDATE Pacientes SET nome = ?, idade = ?, estado = ?, sexo = ?, genero = ?, municipio = ? WHERE id = ?`
+    let nome = req.body.nome
+    let idade = req.body.idade
+    let estado = req.body.estado
+    let sexo = req.body.sexo
+    let genero = req.body.genero
+    let mun = req.body.municipio
+    let id = req.body.id
+    db.run(sql, [nome, idade, estado, sexo, genero, mun, id], (err) => {
         if (err) {
             console.error(err.message);
             res.status(500).send({message: err.message});
@@ -234,13 +276,19 @@ app.post('/paciente/edit', (req, res) => {
 });
 
 app.post('/relatorio/carregarRegistro', (req, res) => {
-    db.all(`SELECT * FROM Relatorios WHERE id = ?`, [req.body.id], (err, rows) => {
+    let sql = `SELECT * FROM Relatorios WHERE id = ?`
+    let id = req.body.id
+    db.all(sql, [id], (err, rows) => {
         res.status(200).send(rows);
     });
 });
 
 app.post('/relatorio/add', (req, res) => {
-    db.all(`SELECT * FROM Relatorios Where data = ? and pid = ? and usid = ?`, [req.body.data, req.body.pid, req.body.usid], (err, rows) =>{
+    let sqlSelect = `SELECT * FROM Relatorios Where data = ? and pid = ? and usid = ?`
+    let data = req.body.data
+    let pid = req.body.pid
+    let usid = req.body.usid
+    db.all(sqlSelect, [data, pid, usid], (err, rows) =>{
         if (err) {
             console.error(err.message);
             res.status(500).send({message: "Erro ao verificar registros"});
@@ -249,7 +297,10 @@ app.post('/relatorio/add', (req, res) => {
                 res.status(200).send({check: true});
             }
         }
-        db.run(`INSERT INTO Relatorios (pid, usid, corpo, aval, data) VALUES (?,?,?,?,?)`, [req.body.pid, req.body.usid, req.body.corpo, req.body.aval, req.body.data], (err) => {
+        let sqlInsert = `INSERT INTO Relatorios (pid, usid, corpo, aval, data) VALUES (?,?,?,?,?)`
+        let corpo = req.body.corpo
+        let aval = req.body.aval
+        db.run(sqlInsert, [pid, usid, corpo, aval, data], (err) => {
             if (err) {
                 console.error(err.message);
                 res.status(500).send({message: err.message});
@@ -261,7 +312,9 @@ app.post('/relatorio/add', (req, res) => {
 });
 
 app.post('/relatorio/remove', (req, res) => {
-    db.run(`DELETE FROM Relatorios WHERE id = ?`, [req.body.id], (err) => {
+    let sql = `DELETE FROM Relatorios WHERE id = ?`
+    let id = req.body.id
+    db.run(sql, [id], (err) => {
         if (err) {
             console.error(err.message);
             res.status(500).send({message: err.message});
@@ -272,7 +325,14 @@ app.post('/relatorio/remove', (req, res) => {
 });
 
 app.post('/relatorio/edit', (req, res) => {
-    db.run(`UPDATE Relatorios SET pid = ?, usid = ?, corpo = ?, aval = ?, data = ? WHERE id = ?`, [req.body.pid, req.body.usid, req.body.corpo, req.body.aval, req.body.data, req.body.id], (err) => {
+    let sql = `UPDATE Relatorios SET pid = ?, usid = ?, corpo = ?, aval = ?, data = ? WHERE id = ?`
+    let pid = req.body.pid
+    let usid = req.body.usid
+    let corpo = req.body.corpo
+    let aval = req.body.aval
+    let data = req.body.data
+    let id = req.body.id
+    db.run(sql, [pid, usid, corpo, aval, data, id], (err) => {
         if (err) {
             console.error(err.message);
             res.status(500).send({message: err.message});
@@ -288,7 +348,7 @@ app.post('/login', (req, res) => {
     let email = req.body.email
     let senha = req.body.senha
     if (email && senha) {
-        sql = `SELECT * FROM Users WHERE email = ? AND senha = ?`
+        let sql = `SELECT * FROM Users WHERE email = ? AND senha = ?`
         db.all(sql, [email, senha], (err, row) => {
             if (err) {
                 res.status(500).send({message: err.message});
@@ -308,7 +368,7 @@ app.post('/login', (req, res) => {
 })
 
 app.post('/usuario/carregarRegistro', (req, res) => {
-    sql = `SELECT * FROM Users WHERE id = ?`
+    let sql = `SELECT * FROM Users WHERE id = ?`
     let userId = req.body.id
     db.get(sql, [userId], (err, result) => {
         if (err) {
