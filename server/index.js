@@ -23,7 +23,8 @@ app.get('/', (req, res) => {
 });
 
 app.post('/usuario', (req, res) => {
-    db.all(`SELECT * FROM Users`, (err, rows) => {
+    let sql = `SELECT * FROM Users`
+    db.all(sql, (err, rows) => {
         res.status(200).send(rows);
     });
 });
