@@ -1,35 +1,35 @@
 <template>
-<div class="backGroundLogin">
-        <div class="col-12 center">
-            <div class="card cardLogin">
-                <div class="card-header">
-                    Login
-                </div>
-                <div class="card-body" align="center">
-                    <div class="form-group col-10">
-                        <label class="form-label col-2">E-mail</label>
-                        <div class="col-8">
-                            <input v-model="email" id="email" class="form-control">                                                   
-                        </div>    
+    <div class="backGroundLogin">
+        <div class="col-12" style="display:flex">
+            <div class="divLogin login center">
+                <div style="width:100%">
+                    <h2 class="title primaryColor">Login</h2>  
+                    <div>
+                        <div class="form-group">
+                                <input v-model="email" id="email" class="form-control" placeholder="E-mail">                                                    
+                        </div>
+                        <div class="form-group" style="display:block">
+                                <input v-model="senha" id="senha" class="form-control" type="password" placeholder="Senha">
+                                <div v-if="erros.login" style="display:contents">
+                                    <span class="spanErro">{{erros.login.msg}}</span>   
+                                </div>                                                      
+                        </div>
+                        <div style="display:flex; justify-content: center; margin-top:20px !important">
+                            <button type="button" class="btn btn-primary primaryColorBtn mr-3" @click="Entrar">
+                                Entrar
+                            </button> 
+                        </div> 
+                        <div style="display:flex; justify-content: center; margin-top:50px !important">
+                            <a @click="NovaConta" class="criarConta primaryColor">
+                                Criar conta?
+                            </a> 
+                        </div>
                     </div>
-                    <div class="form-group col-10">
-                        <label class="form-label col-2">Senha</label>
-                        <div class="col-8">
-                            <input v-model="senha" id="senha" class="form-control" type="password">  
-                            <div v-if="erros.login" style="display:contents">
-                                <span class="spanErro">{{erros.login.msg}}</span>   
-                            </div>                                                     
-                        </div>    
-                    </div>
-                    <button type="button" class="btn btn-primary primaryColorBtn mx-3" @click="Entrar">
-                        Entrar
-                    </button>
-
-                    <button type="button" class="btn btn-primary primaryColorBtn mx-3" @click="NovoUsuario">
-                        Criar conta
-                    </button>
                 </div>
-            </div>       
+                
+                
+            </div>
+            <div class="divLogin wallpaper"></div>
         </div>
     </div>
 </template>
@@ -42,7 +42,7 @@ import axios from 'axios'
         return{
             email: null,
             senha: null,
-            erros: {}
+            erros: {},            
         }
     },
     methods: {
@@ -60,30 +60,33 @@ import axios from 'axios'
                     }
                 })
         },
-        NovoUsuario() {
-            this.$router.push({
-                name: 'cadastroedicaousuario',
-                params: {
-                    codigoUsuario: 0,
-                },
-            });
+        NovaConta(){
+            this.$router.push('/usuario/cadastro')
         }
-  }
+  },
 }
 </script>
 
 <style>
-
+    .divLogin{
+        height: 100vh;
+    }
+    .title{
+        margin-bottom:50px;
+        text-align: center;
+    }
+    .login{
+        width:600px;
+        padding: 180px 55px 55px;
+    }
     .center{
         display: flex;
         justify-content: center;
-        align-items: center;
-        height: 80vh;
     }
 
-    .cardLogin{
-        padding: 0 !important;
-        width: 700px;
+    .criarConta{
+        text-decoration: none !important;
+        cursor: pointer;
     }
 
     .row{
@@ -97,4 +100,13 @@ import axios from 'axios'
     .centerInput{
         text-align: center;
     }
+
+    .wallpaper{
+        background-image: url(../../assets/wallpaper.jpg); 
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+        width: 100vw;
+    } 
 </style>

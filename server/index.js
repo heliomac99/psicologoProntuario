@@ -133,14 +133,32 @@ app.post('/usuario/remove', (req, res) => {
 });
 
 app.post('/usuario/edit', (req, res) => {
-    db.run(`UPDATE Users SET nome = ?, email = ?, senha = ?, estado = ?, municipio = ? WHERE id = ?`, [req.body.nome, req.body.email, req.body.senha, req.body.estado, req.body.municipio, req.body.id], (err) => {
+    let nome = req.body.nome
+    let email = req.body.email
+    let estado = req.body.estado
+    let municipio = req.body.municipio
+    let senha = req.body.senha
+    let id = req.body.id
+
+    db.all(`SELECT * FROM Users Where email = ? AND id != ?`, [email, id], (err, rows) => {
         if (err) {
-            console.error(err.message);
-            res.send({status: 500, message: err.message});
-        } else {
-            res.send({status: 200});
+            res.status(500).send({ message: "Erro ao verificar registros" });
         }
-    });
+        else {
+            if (rows.length > 0) {
+                res.status(200).send({ emailValido: false });
+                return;
+            }
+            db.run(`UPDATE Users SET nome = ?, email = ?, senha = ?, estado = ?, municipio = ? WHERE id = ?`, [nome, email, senha, estado, municipio, id], (err) => {
+                if (err) {
+                    res.status(500).send({ message: err.message });
+                } else {
+                    res.status(200).send({ emailValido: true });
+                }
+            });
+        }
+    })
+
 });
 
 app.post('/paciente/carregarRegistro', (req, res) => {

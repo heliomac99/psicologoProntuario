@@ -44,62 +44,10 @@
                                             <span class="spanErro">{{erros.confirmaSenha.msg}}</span>   
                                         </div>                                              
                                     </div>    
-                                </div>
-
-                                <div class="form-group col-10">
-                                    <label class="form-label col-2">Estado</label>  
-                                    <div class="col-9" >
-                                        <select v-model="usuario.estado" id="estado" class="form-select" name="estado" @change="validarForm">
-                                            <option value=""></option>
-                                            <option value="AC">Acre</option>
-                                            <option value="AL">Alagoas</option>
-                                            <option value="AP">Amapá</option>
-                                            <option value="AM">Amazonas</option>
-                                            <option value="BA">Bahia</option>
-                                            <option value="CE">Ceará</option>
-                                            <option value="DF">Distrito Federal</option>
-                                            <option value="ES">Espírito Santo</option>
-                                            <option value="GO">Goiás</option>
-                                            <option value="MA">Maranhão</option>
-                                            <option value="MT">Mato Grosso</option>
-                                            <option value="MS">Mato Grosso do Sul</option>
-                                            <option value="MG">Minas Gerais</option>
-                                            <option value="PA">Pará</option>
-                                            <option value="PB">Paraíba</option>
-                                            <option value="PR">Paraná</option>
-                                            <option value="PE">Pernambuco</option>
-                                            <option value="PI">Piauí</option>
-                                            <option value="RJ">Rio de Janeiro</option>
-                                            <option value="RN">Rio Grande do Norte</option>
-                                            <option value="RS">Rio Grande do Sul</option>
-                                            <option value="RO">Rondônia</option>
-                                            <option value="RR">Roraima</option>
-                                            <option value="SC">Santa Catarina</option>
-                                            <option value="SP">São Paulo</option>
-                                            <option value="SE">Sergipe</option>
-                                            <option value="TO">Tocantins</option>
-                                            <option value="EX">Estrangeiro</option>
-                                        </select>
-                                        <div v-if="erros.estado" style="display:contents">
-                                            <span class="spanErro">{{erros.estado.msg}}</span>   
-                                        </div>                    
-                                  </div>                           
-                                </div>
-                                
-                                <div class="form-group col-10">
-                                    <label class="form-label col-2">Município</label>
-                                    <div class="col-9">
-                                        <input v-model="usuario.municipio" id="endereco" class="form-control" @keyup="validarForm">  
-                                        <div v-if="erros.municipio" style="display:contents">
-                                            <span class="spanErro">{{erros.municipio.msg}}</span>   
-                                        </div>                                                     
-                                    </div>    
-                                </div>
-        
+                                </div>                        
 
                                 <div id="actionButtons">
                                     <button @click="salvar(usuario)" style="margin-right: 5px;" type="button" class="btn btn-primary primaryColorBtn">Salvar</button>
-                                    <button @click="excluir(usuario)" v-if="usuario.id>0" type="button" class="btn btn-primary primaryColorBtn2">Excluir</button>
                                     <ModalPergunta ref="modalPergunta"></ModalPergunta>
                                 </div>
                         </form>
@@ -113,7 +61,7 @@
   import axios from 'axios'
   import ModalPergunta from '../../components/ModalPergunta.vue'
   export default {
-        name: 'CadastroEdicaoUsuarioView',
+        name: 'EdicaoUsuarioView',
         components: { ModalPergunta},
         data() {
             return {
@@ -123,8 +71,6 @@
                     email: null,
                     senha: null,
                     confirmaSenha: null,
-                    estado: null,
-                    municipio: null,
                 },
                 erros: {},
                 submitted: false
@@ -164,22 +110,10 @@
                     if(this.usuario.senha != this.usuario.confirmaSenha)
                         this.erros.confirmaSenha = { erro: true, msg:'Senhas não conferem.'}            
                     else
-                    this.erros.confirmaSenha = false
-
-                    
-                    if(!this.usuario.estado)
-                        this.erros.estado = { erro: true, msg:'Estado obrigatório.'}
-                    else
-                        this.erros.municipio = false
-
-                    if(!this.usuario.municipio)
-                        this.erros.municipio = { erro: true, msg:'Município obrigatório.'}
-                    else
-                        this.erros.municipio = false
-                    
+                    this.erros.confirmaSenha = false                    
                                      
                         
-                    if(this.erros.nome || this.erros.email || this.erros.senha || this.erros.confirmaSenha || this.erros.municipio || this.erros.estado )
+                    if(this.erros.nome || this.erros.email || this.erros.senha || this.erros.confirmaSenha )
                         return false
                     else
                         return true
@@ -212,28 +146,12 @@
                     }
                 }         
             },
-            async excluir(usuario) {
-                const ok = await this.$refs.modalPergunta.show({
-                    title: 'Excluir Usuario',
-                    message: 'Tem certeza que gostaria de excluir o Usuario?',
-                    okButton: 'Sim',
-                })
-
-                if (ok) { 
-                    axios.post('http://localhost:4000/usuario/remove', {id: usuario.id}).then(() => {
-                        this.$swal("Sucesso", "Usuário excluído com sucesso!", "success"),
-                        this.$router.back()
-                    })
-                }
-            },
             recuperarDados() { 
                 axios.post('http://localhost:4000/usuario/carregarRegistro', {id: this.usuario.id}).then( (result) => {
                         this.usuario.nome = result.data[0].nome
                         this.usuario.email = result.data[0].email
                         this.usuario.senha = result.data[0].senha
                         this.usuario.confirmaSenha = result.data[0].senha
-                        this.usuario.estado = result.data[0].estado
-                        this.usuario.municipio = result.data[0].municipio
                    }
                 )
             },

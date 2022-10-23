@@ -24,7 +24,7 @@
         },
         data() {
             return {
-                colLabels : ['Nome', 'E-mail', 'Estado', 'Município'],
+                colLabels : ['Nome', 'E-mail'],
                 dataFields: [
                     { value: 'nome', type: 'text'},
                     { value: 'email', type: 'text'},
@@ -32,10 +32,6 @@
                     { value: 'municipio', type: 'text'},
                 ],              
                 dataTableKey: 0,
-                teste: {
-                    login:null,
-                    senha:null
-                }
             }
         },
         methods: {
