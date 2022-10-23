@@ -7,6 +7,8 @@ import CadastroEdicaoUsuarioView from '@/views/Usuario/CadastroEdicaoUsuario.vue
 import RelatorioListaRelatorioView from '@/views/Relatorio/Relatorio.vue';
 import CadastroEdicaoRelatorioView from '@/views/Relatorio/CadastroEdicaoRelatorio.vue';
 import LoginScreen from '@/views/Login/Login.vue'
+import CadastroUsuarioView from '@/views/Login/CadastroUsuario.vue'
+import EdicaoUsuarioView from '@/views/Usuario/EdicaoUsuario.vue'
 import store from './vuex'
 
 const routes = [
@@ -50,6 +52,16 @@ const routes = [
         name: 'cadastroedicaorelatorio',
         component: CadastroEdicaoRelatorioView,
     },
+    {
+        path: '/cadastrousuario',
+        name: 'cadastrousuario',
+        component: CadastroUsuarioView,
+    },
+    {
+        path: '/usuario/edicao',
+        name: 'edicaousuario',
+        component: EdicaoUsuarioView,
+    },
 ]
 
 const router = createRouter({
@@ -58,7 +70,7 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-    if(!store.getters.isLoggedIn && to.path !== '/')
+    if(!store.getters.isLoggedIn && to.path !== '/' && to.path !== '/cadastrousuario')
         next({ name: 'Login' })
     else if(store.getters.isLoggedIn && ((to.path == '/')||(to.path == '/usuario/cadastroedicao/0')))
         next({ name: 'home' })

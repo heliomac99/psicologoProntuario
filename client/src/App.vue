@@ -9,7 +9,7 @@
                     <router-link to="/Home" class="nav-link">Home</router-link>
                 </li>
                 <li class="nav-item">
-                    <router-link to="/Usuario" class="nav-link">Usuário</router-link>
+                    <a @click="editarUsuario" class="nav-link">Usuário</a>
                 </li>
                 <li class="nav-item">
                     <router-link to="/Paciente" class="nav-link">Paciente</router-link>
@@ -31,6 +31,7 @@ export default {
         data(){
             return{
                 showNavbar: true,
+                teste: '/Usuario/cadastroEdicao/' + this.$store.getUsuario
             }
         },
         methods:{
@@ -40,11 +41,19 @@ export default {
             },
             getNomeUsuarioLogado(){
                 return this.$store.getters.getUsuario.nome
+            },
+            editarUsuario(){
+                this.$router.push({
+                    name: 'edicaousuario',
+                    params: {
+                        codigoUsuario: this.$store.getters.getUsuarioId,
+                    },
+                });
             }
         },
         watch: {
-            $route(to) {
-                if(to.path === '/')
+            $route() {
+                if(!this.$store.getters.isLoggedIn)
                     this.showNavbar = false
                 else
                     this.showNavbar = true
@@ -99,7 +108,7 @@ export default {
     }
 
     .spanErro{
-        color:red!important;
+        color:4C6793!important;
         font-size: small;
         float:left;
     }
@@ -107,6 +116,11 @@ export default {
     .form-check-input:checked {
         background-color: #4C6793 !important;
         border-color: #4C6793 !important;
+    }
+
+    .card{
+        box-shadow: 1px 2px 3px 5px rgb(5 5 5 / 5%);
+        border:0cm;
     }
   
 </style>
