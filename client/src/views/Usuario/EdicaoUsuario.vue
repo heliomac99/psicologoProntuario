@@ -1,6 +1,6 @@
 ﻿<template>
     <div id="content">
-                <h3 class="primaryColor" id="titulo">Edição Usuário</h3>
+                <h3 class="primaryColor" id="titulo">Edição de Usuário</h3>
                 <div align="center" style="">
                     <div class="card">
                         <div class="card-body">
