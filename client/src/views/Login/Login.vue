@@ -14,7 +14,7 @@
                                     <span class="spanErro">{{erros.login.msg}}</span>   
                                 </div>                                                      
                         </div>
-                        <div style="display:flex; justify-content: center; margin-top:20px !important">
+                        <div style="display:flex; justify-content: center; margin-top:40px !important">
                             <button type="button" class="btn btn-primary primaryColorBtn mr-3" @click="Entrar">
                                 Entrar
                             </button> 
