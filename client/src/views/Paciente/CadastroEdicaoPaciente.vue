@@ -44,7 +44,10 @@
                             <div class="form-group col-10">
                                     <label class="form-label col-2">Idade</label>  
                                     <div class="col-2" >
-                                        <input v-model="paciente.idade" type="number" id="idade" class="form-control">                      
+                                        <input v-model="paciente.idade" type="number" id="idade" min="0" class="form-control" @change="validarForm">
+                                        <div v-if="erros.idade" style="display:contents">
+                                            <span class="spanErro">{{erros.idade.msg}}</span>   
+                                        </div>                        
                                   </div>                           
                             </div>
 
@@ -92,7 +95,7 @@
                             <div class="form-group col-10">
                                 <label class="form-label col-2">Município</label>
                                 <div class="col-10">
-                                    <input v-model="paciente.municipio" id="endereco" class="form-control">
+                                    <input v-model="paciente.municipio" id="endereco" class="form-control" @change="validarForm">
                                     <div v-if="erros.municipio" style="display:contents">
                                         <span class="spanErro">{{erros.municipio.msg}}</span>   
                                     </div>                                                     
@@ -179,6 +182,7 @@
             },
             validarForm(){
                 if(this.submitted){
+                    console.log('test')
                     this.erros = {}
 
                     if(!this.paciente.nome)
@@ -200,9 +204,14 @@
                         this.erros.sexo = { erro: true, msg:'Sexo obrigatório.'}
                     else
                         this.erros.sexo = false
+
+                    if(this.paciente.idade < 0)
+                        this.erros.idade = { erro: true, msg:'Idade deve ser positiva.'}
+                    else
+                        this.erros.idade = false
                                               
                         
-                    if(this.erros.nome || this.erros.estado || this.erros.municipio || this.erros.sexo)
+                    if(this.erros.nome || this.erros.estado || this.erros.municipio || this.erros.sexo || this.erros.idade)
                         return false
                     else
                         return true

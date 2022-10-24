@@ -1,6 +1,12 @@
 ﻿<template>
 
             <h5 class="primaryColor" style="margin-bottom:20px; margin-top:20px" >Avaliação por Estado</h5>
+
+            <h5 class="primaryColor" style="margin-top:40px" >Pacientes por Estado</h5>
+            <div class="divBarChartEstado">
+               <BarChart :chart-data="chartDataPacientePorEstado" />
+            </div>
+
             <div class="col-4">
                     <select class="form-select" v-model="estadoSelecionado" name="estado" @change="carregarRelatoriosPorEstado">
                         <option value="AC">Acre</option>
@@ -41,11 +47,6 @@
                 <div class="divPieChart">
                     <PieChart :chart-data="chartDataAvaliacaoPorEstado" />
                 </div>
-            </div>
-
-            <h5 class="primaryColor" style="margin-top:40px" >Pacientes por Estado</h5>
-            <div class="divBarChartEstado">
-               <BarChart :chart-data="chartDataPacientePorEstado" />
             </div>
                             
 </template>
