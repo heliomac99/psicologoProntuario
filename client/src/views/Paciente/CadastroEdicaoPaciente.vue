@@ -182,7 +182,6 @@
             },
             validarForm(){
                 if(this.submitted){
-                    console.log('test')
                     this.erros = {}
 
                     if(!this.paciente.nome)
