@@ -9,12 +9,12 @@
         name: 'ValidationForm',
         props: {
             model: null,
-            validations: [],
         },
         data() {
             return{
                 erros: 0,
-                submitted: false
+                submitted: false,
+                validations: []
             }
         },
         methods: {
@@ -49,6 +49,18 @@
                 spans.forEach(element => {
                     element.innerHTML = ''
                 })
+            },
+            required(nome, label){
+                this.validations.push({"field": nome, "validation": "required", "label": label})
+            },
+            email(nome, label){
+                this.validations.push({"field": nome, "validation": "email", "label": label})
+            },
+            minLength(nome, label, length){
+                this.validations.push({"field": nome, "validation": "minLength", "label": label, "length": length})
+            },
+            equal(nome, nome2, label){
+                this.validations.push({"field": nome, "field2": nome2 ,"validation": "equal", "label": label})
             },
             validar(){
                 this.limparErros()

@@ -4,7 +4,7 @@
                 <div align="center" style="">
                     <div class="card">
                         <div class="card-body">           
-                                <ValidationForm :model="usuario" :validations="config" @save="salvar(usuario)">
+                                <ValidationForm :model="usuario" ref="validation" @save="salvar(usuario)">
                                     <div  class="form-group col-10">
                                         <label class="form-label col-2">Nome</label>
                                         <div class="col-9">
@@ -24,7 +24,7 @@
                                     <div class="form-group col-10">
                                         <label class="form-label col-2">Senha</label>
                                         <div class="col-9">
-                                            <input v-model="usuario.senha" id="senha" class="form-control" type="password" @keyup="validarForm">
+                                            <input v-model="usuario.senha" id="senha" class="form-control" type="password">
                                             <span name="senha" class="spanErro"></span>                                             
                                         </div>    
                                     </div>
@@ -32,7 +32,7 @@
                                     <div class="form-group col-10">
                                         <label class="form-label col-2">Confirma Senha</label>
                                         <div class="col-9">
-                                            <input v-model="usuario.confirmaSenha" id="confirmaSenha" class="form-control" type="password" @keyup="validarForm">
+                                            <input v-model="usuario.confirmaSenha" id="confirmaSenha" class="form-control" type="password">
                                             <span name="confirmaSenha" class="spanErro"></span>                                               
                                         </div>    
                                     </div>                        
@@ -41,7 +41,6 @@
                                         <button type="submit" class="btn btn-primary primaryColorBtn">Salvar</button>
                                     </div>
                                 </ValidationForm>
-
                         </div>
                     </div>            
                 </div>
@@ -63,17 +62,6 @@
                     senha: null,
                     confirmaSenha: null,
                 },
-                erros: {},
-                submitted: false,
-                config: [
-                    {"field": "nome", "validation": "required", "label": "Nome"},
-                    {"field": "email", "validation": "required", "label": "E-mail"},
-                    {"field": "senha", "validation": "required", "label": "Senha"},
-                    {"field": "confirmaSenha", "validation": "required", "label": "Confirmação de Senha"},
-                    {"field": "email", "validation": "email", "label": "E-mail"},
-                    {"field": "senha", "validation": "minLength", "label": "Senha", "length": 6},
-                    {"field": "confirmaSenha", "field2": "senha", "validation": "equal", "label": "Senhas"},
-                ]
             }
         },
         methods: {
@@ -91,6 +79,7 @@
             },
             recuperarDados() { 
                 axios.post('http://localhost:4000/usuario/carregarRegistro', {id: this.usuario.id}).then( (result) => {
+                        console.log(result)
                         this.usuario.nome = result.data.nome
                         this.usuario.email = result.data.email
                         this.usuario.senha = result.data.senha
@@ -102,6 +91,12 @@
         },
         mounted() {
                 this.recuperarDados()
+                this.$refs.validation.required("nome", "Nome")
+                this.$refs.validation.required("email", "E-mail")
+                this.$refs.validation.required("senha", "Senha")
+                this.$refs.validation.email("email", "E-mail")
+                this.$refs.validation.minLength("senha", "Senha", 6)
+                this.$refs.validation.equal("confirmaSenha","senha", "Senhas")
         },        
     }
 </script>

@@ -9,11 +9,11 @@
         <tbody>
             <tr v-for="(item, index) in filteredData" :key="index">
                 <td v-if="showEditButton || showRemoveButton ||  showAddButton" align="center">
-                    <button v-if="showAddButton" style="margin-left:10px;" type="button" @click="$emit('addItem', item[id] )" class="btn btn-primary primaryColorBtn">
-                        <font-awesome-icon icon="fa-solid fa-plus" />
-                    </button>
                     <button title="Editar"  style="margin-left:10px;"  v-if="showEditButton" type="button" @click="$emit('editar', item )" class="btn btn-primary primaryColorBtn">
                         <font-awesome-icon icon="fa-solid fa-pen" />
+                    </button>
+                    <button v-if="showAddButton" style="margin-left:10px;" type="button" @click="$emit('addItem', item[id] )" class="btn btn-primary primaryColorBtn">
+                        <font-awesome-icon icon="fa-solid fa-plus" />
                     </button>
                     <button title="Excluir"  v-if="showRemoveButton" style="margin-left:10px;" type="button" @click="$emit('excluir', item )" class="btn btn-secondary primaryColorBtn">
                         <font-awesome-icon icon="fa-solid fa-trash" />
