@@ -44,6 +44,9 @@
             insereErrorMessageEqual(field, label){
                 document.querySelectorAll('span[name=' + field + ']')[0].innerHTML = label + " não conferem"
             },
+            insereErrorMessageCustom(field, msg){
+                document.querySelectorAll('span[name=' + field + ']')[0].innerHTML = msg
+            },
             limparErros(){
                 let spans = document.querySelectorAll('span')
                 spans.forEach(element => {
@@ -62,12 +65,14 @@
             equal(nome, nome2, label){
                 this.validations.push({"field": nome, "field2": nome2 ,"validation": "equal", "label": label})
             },
+            customValidation(nome, func = (model) => {return true}, msg){
+                this.validations.push({"field": nome ,"validation": "custom", "msg": msg, "func": func})
+            },
             validar(){
                 this.limparErros()
                 this.erros = 0
 
                 if(this.submitted){
-                    document.querySelectorAll('span')
                     this.validations.forEach(element => {
                         if(element.validation === 'required'){
                             if(!this.model[element.field]){
@@ -92,6 +97,12 @@
                             if(this.model[element.field] != this.model[element.field2]){
                                 this.erros++
                                 this.insereErrorMessageEqual(element.field, element.label, element.length)
+                            }
+                        }
+                        else if(element.validation === 'custom'){
+                            if(!element.func(this.model)){
+                                this.erros++
+                                this.insereErrorMessageCustom(element.field, element.msg)
                             }
                         }
 

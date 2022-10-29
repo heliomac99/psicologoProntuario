@@ -33,7 +33,8 @@
                                 <div class="form-group col-10">
                                     <label class="form-label col-2">Gênero</label>  
                                     <div class="col-6" >
-                                        <input v-model="paciente.genero" type="text" id="genero" class="form-control">                      
+                                        <input v-model="paciente.genero" type="text" id="genero" class="form-control">
+                                        <span name="genero" class="spanErro"></span>                      
                                     </div>   
                                 </div>
 
@@ -176,6 +177,11 @@
             this.$refs.validation.required("idade", "Idade")
             this.$refs.validation.required("estado", "Estado")
             this.$refs.validation.required("municipio", "Município")
+            this.$refs.validation.customValidation("genero", function (model) {
+                if(model.genero != "teste")
+                    return false
+                return true
+            }, "Teste")
         }
 
         
