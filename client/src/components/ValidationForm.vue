@@ -25,7 +25,7 @@
                 }                
             },
             insereChangeEventInput(){
-                let inputs = document.querySelectorAll('input')
+                let inputs = document.querySelectorAll('input,select')
                 inputs.forEach(element => {
                     element.addEventListener('change', () => {
                         this.validar()
@@ -65,6 +65,7 @@
             equal(nome, nome2, label){
                 this.validations.push({"field": nome, "field2": nome2 ,"validation": "equal", "label": label})
             },
+            // eslint-disable-next-line no-unused-vars
             customValidation(nome, func = (model) => {return true}, msg){
                 this.validations.push({"field": nome ,"validation": "custom", "msg": msg, "func": func})
             },

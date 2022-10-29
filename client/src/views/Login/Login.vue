@@ -61,8 +61,7 @@ import axios from 'axios'
                 })
         },
         NovaConta(){
-            console.log('teste')
-            this.$router.push('/cadastrousuario')
+            this.$router.push('/Usuario/Cadastro')
         }
   },
 }

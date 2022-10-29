@@ -4,13 +4,13 @@ import createPersistedState from "vuex-persistedstate";
 const store = createStore({
     state () {
       return {
-        usuario: { "id" : -1, "nome": '' }
+        usuario: { "id" : -1, "nome": '', "admin": 0 }
       }
     },
     mutations: {
       login(state, usuario) {
         if(usuario) {
-            state.usuario = { "id" : usuario.id, "nome": usuario.nome }
+            state.usuario = { "id" : usuario.id, "nome": usuario.nome, "admin": usuario.admin}
         }
       },
       logout(state){
@@ -18,11 +18,19 @@ const store = createStore({
       },
       setNomeUsuario(state, nome){
         state.usuario.nome = nome
+      },
+      setAdminUsuario(state, admin){
+        state.usuario.admin = admin
       }
     },
     getters:  {
         isLoggedIn(state){
           return state.usuario.id != -1
+        },
+        isAdmin(state){
+          if(state.usuario.admin == 1)
+            return true
+          return false
         },
         getUsuarioNome(state){
           return state.usuario.nome

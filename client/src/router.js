@@ -1,10 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from '@/views/Home.vue';
 import CadastroEdicaoPacienteView from '@/views/Paciente/CadastroEdicaoPaciente.vue';
-import PacienteView from '@/views/Paciente/Paciente.vue';
-import UsuarioView from '@/views/Usuario/Usuario.vue';
-import CadastroEdicaoUsuarioView from '@/views/Usuario/CadastroEdicaoUsuario.vue';
-import RelatorioListaRelatorioView from '@/views/Relatorio/Relatorio.vue';
+import PacienteView from '@/views/Paciente/ListaPaciente.vue';
+import UsuarioView from '@/views/Usuario/ListaUsuario.vue';
+import RelatorioListaRelatorioView from '@/views/Relatorio/ListaRelatorio.vue';
 import CadastroEdicaoRelatorioView from '@/views/Relatorio/CadastroEdicaoRelatorio.vue';
 import LoginScreen from '@/views/Login/Login.vue'
 import CadastroUsuarioView from '@/views/Login/CadastroUsuario.vue'
@@ -18,47 +17,42 @@ const routes = [
         component: LoginScreen,
     },
     {
-        path: '/home',
+        path: '/Home',
         name: 'home',
         component: HomeView
     },
     {
-        path: '/paciente',
+        path: '/ListaPaciente',
         name: 'paciente',
         component: PacienteView
     },
     {
-        path: '/paciente/cadastroedicao/:codigoPaciente',
+        path: '/Paciente/CadastroEdicao/:codigoPaciente',
         name: 'cadastroedicaopaciente',
         component: CadastroEdicaoPacienteView,
     },
     {
-        path: '/usuario',
-        name: 'usuario',
+        path: '/ListaUsuario',
+        name: 'listausuario',
         component: UsuarioView
     },
     {
-        path: '/usuario/cadastroedicao/:codigoUsuario',
-        name: 'cadastroedicaousuario',
-        component: CadastroEdicaoUsuarioView,
-    },
-    {
-        path: '/relatorio/:codigoPaciente',
-        name: 'relatoriolistarelatorio',
+        path: '/ListaRelatorio/:codigoPaciente',
+        name: 'listarelatorio',
         component: RelatorioListaRelatorioView,
     },
     {
-        path: '/relatorio/cadastroedicao/:codigoRelatorio',
+        path: '/Relatorio/CadastroEdicao/:codigoRelatorio',
         name: 'cadastroedicaorelatorio',
         component: CadastroEdicaoRelatorioView,
     },
     {
-        path: '/cadastrousuario',
+        path: '/Usuario/Cadastro',
         name: 'cadastrousuario',
         component: CadastroUsuarioView,
     },
     {
-        path: '/edicaousuario',
+        path: '/Usuario/Edicao',
         name: 'edicaousuario',
         component: EdicaoUsuarioView,
     },
@@ -70,9 +64,11 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-    if(!store.getters.isLoggedIn && to.path !== '/' && to.path !== '/cadastrousuario')
+    if(!store.getters.isLoggedIn && to.path !== '/' && to.path !== '/Usuario/Cadastro')
         next({ name: 'Login' })
-    else if(store.getters.isLoggedIn && ((to.path == '/')||(to.path == '/cadastrousuario')))
+    else if(store.getters.isLoggedIn && ((to.path == '/')||(to.path == '/Usuario/Cadastro')))
+        next({ name: 'home' })
+    else if(!store.getters.isAdmin && to.path == '/ListaUsuario' )
         next({ name: 'home' })
     else
         next()

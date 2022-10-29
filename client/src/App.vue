@@ -11,8 +11,11 @@
                 <li class="nav-item">
                     <a @click="editarUsuario" class="nav-link">Usuário</a>
                 </li>
+                <li class="nav-item" v-if="$store.getters.isAdmin">
+                    <router-link to="/ListaUsuario" class="nav-link">Usuários</router-link>
+                </li>
                 <li class="nav-item">
-                    <router-link to="/Paciente" class="nav-link">Paciente</router-link>
+                    <router-link to="/ListaPaciente" class="nav-link">Pacientes</router-link>
                 </li>
             </ul>
         </div>
@@ -49,7 +52,7 @@ export default {
         },
         watch: {
             $route(to) {
-                if(to.path === '/' || to.path === '/cadastrousuario')
+                if(to.path === '/' || to.path === '/Usuario/Cadastro')
                     this.showNavbar = false
                 else
                     this.showNavbar = true

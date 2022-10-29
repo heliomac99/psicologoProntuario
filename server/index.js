@@ -174,6 +174,7 @@ app.post('/usuario/edit', (req, res) => {
     let municipio = req.body.municipio
     let senha = req.body.senha
     let id = req.body.id
+    let admin = req.body.admin
 
     db.all(sqlSelect, [email, id], (err, rows) => {
         if (err) {
@@ -184,8 +185,8 @@ app.post('/usuario/edit', (req, res) => {
                 res.status(200).send({ emailValido: false });
                 return;
             }
-            let sqlUpdate = `UPDATE Users SET nome = ?, email = ?, senha = ?, estado = ?, municipio = ? WHERE id = ?`
-            db.run(sqlUpdate, [nome, email, senha, estado, municipio, id], (err) => {
+            let sqlUpdate = `UPDATE Users SET nome = ?, email = ?, senha = ?, estado = ?, municipio = ?, admin = ? WHERE id = ?`
+            db.run(sqlUpdate, [nome, email, senha, estado, municipio, admin, id], (err) => {
                 if (err) {
                     res.status(500).send({ message: err.message });
                 } else {

@@ -67,7 +67,7 @@
             },
             adicionarRelatorio(codigo) {
                 this.$router.push({
-                    name: 'relatoriolistarelatorio',
+                    name: 'listarelatorio',
                     params: {
                         codigoPaciente: codigo,
                     },
