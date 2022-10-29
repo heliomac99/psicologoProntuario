@@ -9,7 +9,7 @@
                                 <input v-model="email" id="email" class="form-control" placeholder="E-mail">                                                    
                         </div>
                         <div class="form-group" style="display:block">
-                                <input v-model="senha" id="senha" class="form-control" type="password" placeholder="Senha">
+                                <input v-model="senha" id="senha" class="form-control" type="password" placeholder="Senha" v-on:keyup.enter="Entrar">
                                 <div v-if="erros.login" style="display:contents">
                                     <span class="spanErro">{{erros.login.msg}}</span>   
                                 </div>                                                      

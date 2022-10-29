@@ -8,7 +8,7 @@
                                 <div class="form-group col-10">
                                     <label class="form-label col-2" style="margin-right:20px">Nome</label>
                                     <div class="col-10" >
-                                        <input v-model="paciente.nome" id="nome" class="form-control" @keyup="validarForm"> 
+                                        <input v-model="paciente.nome" id="nome" class="form-control"> 
                                             <span name="nome" class="spanErro"></span>     
                                     </div>
                                 </div>
@@ -16,13 +16,13 @@
                                 <div class="form-group col-10">
                                     <label class="form-label col-2" style="margin-right:20px">Sexo</label>
                                     <div class="form-check">
-                                        <input v-model="paciente.sexo" value="M" :checked="paciente.sexo == 'M'" class="form-check-input" type="radio" name="sexo" id="sexoM" @change="validarForm">
+                                        <input v-model="paciente.sexo" value="M" :checked="paciente.sexo == 'M'" class="form-check-input" type="radio" name="sexo" id="sexoM">
                                         <label class="form-check-label" for="sexo" style="margin-right:10px">
                                             Masculino
                                         </label>
                                     </div>
                                     <div class="form-check">
-                                        <input v-model="paciente.sexo" value="F" :checked="paciente.sexo == 'F'" class="form-check-input" type="radio" name="sexo" id="sexoF" @change="validarForm">
+                                        <input v-model="paciente.sexo" value="F" :checked="paciente.sexo == 'F'" class="form-check-input" type="radio" name="sexo" id="sexoF">
                                         <label class="form-check-label" for="sexo">
                                             Feminino
                                         </label>
@@ -40,7 +40,7 @@
                                 <div class="form-group col-10">
                                         <label class="form-label col-2">Idade</label>  
                                         <div class="col-2" >
-                                            <input v-model="paciente.idade" type="number" id="idade" min="0" class="form-control" @change="validarForm">
+                                            <input v-model="paciente.idade" type="number" id="idade" min="0" class="form-control">
                                             <span name="idade" class="spanErro"></span>                        
                                     </div>                           
                                 </div>
@@ -48,7 +48,7 @@
                                 <div class="form-group col-10">
                                         <label class="form-label col-2">Estado</label>  
                                         <div class="col-10" >
-                                            <select v-model="paciente.estado" id="estado" class="form-select" name="estado" @change="validarForm">
+                                            <select v-model="paciente.estado" id="estado" class="form-select" name="estado">
                                                 <option value=""></option>
                                                 <option value="AC">Acre</option>
                                                 <option value="AL">Alagoas</option>
@@ -86,7 +86,7 @@
                                 <div class="form-group col-10">
                                     <label class="form-label col-2">Município</label>
                                     <div class="col-10">
-                                        <input v-model="paciente.municipio" id="endereco" class="form-control" @change="validarForm">
+                                        <input v-model="paciente.municipio" id="endereco" class="form-control">
                                         <span name="municipio" class="spanErro"></span>                                                       
                                     </div>    
                                 </div>

@@ -82,8 +82,8 @@
                                 this.insereErrorMessageEmail(element.field, element.label)
                             }
                         }
-                        else if(element.validation === 'minLength'){
-                            if(this.model[element.field].length < element.length){
+                        else if(element.validation === 'minLength'){    
+                            if(!this.model[element.field] || this.model[element.field].length < element.length){
                                 this.erros++
                                 this.insereErrorMessageMinlength(element.field, element.label, element.length)
                             }
