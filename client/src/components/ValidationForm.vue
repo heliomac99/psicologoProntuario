@@ -14,7 +14,8 @@
             return{
                 erros: 0,
                 submitted: false,
-                validations: []
+                validations: [],
+                newValidations: {},
             }
         },
         methods: {
@@ -33,7 +34,7 @@
                 })
             },
             insereErrorMessageRequired(field, label){
-                document.querySelectorAll('span[name=' + field + ']')[0].innerHTML = label + " obrigatório"
+                document.querySelectorAll('span[name=' + field + ']')[0].innerHTML = label + " é obrigatório"
             },
             insereErrorMessageEmail(field, label){
                 document.querySelectorAll('span[name=' + field + ']')[0].innerHTML = label + " inválido"
@@ -69,6 +70,13 @@
             customValidation(nome, func = (model) => {return true}, msg){
                 this.validations.push({"field": nome ,"validation": "custom", "msg": msg, "func": func})
             },
+            // eslint-disable-next-line no-unused-vars
+            newValidation(nome, func = (model) => {return true}, msg){
+                this.newValidations[nome] = {"func": func, "msg": msg}
+            },
+            applyValidation(nome, validation){
+                this.validations.push({"field": nome ,"validation": "new", "msg": this.newValidations[validation].msg, "func": this.newValidations[validation].func})
+            },
             validar(){
                 this.limparErros()
                 this.erros = 0
@@ -101,6 +109,12 @@
                             }
                         }
                         else if(element.validation === 'custom'){
+                            if(!element.func(this.model)){
+                                this.erros++
+                                this.insereErrorMessageCustom(element.field, element.msg)
+                            }
+                        }
+                        else if(element.validation === 'new'){
                             if(!element.func(this.model)){
                                 this.erros++
                                 this.insereErrorMessageCustom(element.field, element.msg)

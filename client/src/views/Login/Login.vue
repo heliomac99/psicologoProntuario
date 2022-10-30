@@ -5,25 +5,26 @@
                 <div style="width:100%">
                     <h2 class="title primaryColor">Login</h2>  
                     <div>
-                        <div class="form-group">
-                                <input v-model="email" id="email" class="form-control" placeholder="E-mail">                                                    
-                        </div>
-                        <div class="form-group" style="display:block">
-                                <input v-model="senha" id="senha" class="form-control" type="password" placeholder="Senha" v-on:keyup.enter="Entrar">
-                                <div v-if="erros.login" style="display:contents">
-                                    <span class="spanErro">{{erros.login.msg}}</span>   
-                                </div>                                                      
-                        </div>
-                        <div style="display:flex; justify-content: center; margin-top:40px !important">
-                            <button type="button" class="btn btn-primary primaryColorBtn mr-3" @click="Entrar">
-                                Entrar
-                            </button> 
-                        </div> 
-                        <div style="display:flex; justify-content: center; margin-top:50px !important">
-                            <a @click="NovaConta" class="criarConta primaryColor">
-                                Criar conta?
-                            </a> 
-                        </div>
+                        <ValidationForm :model="login" ref="validation" @save="Entrar(login)">
+                            <div class="form-group" style="display:block">
+                                    <input v-model="login.email" id="email" class="form-control" placeholder="E-mail"> 
+                                    <span name="email" class="spanErro"></span>                                                      
+                            </div>
+                            <div class="form-group" style="display:block">
+                                    <input v-model="login.senha" id="senha" class="form-control" type="password" placeholder="Senha" v-on:keyup.enter="Entrar">
+                                    <span name="senha" class="spanErro"></span>                                                         
+                            </div>
+                            <div style="display:flex; justify-content: center; margin-top:40px !important">
+                                <button type="submit" class="btn btn-primary primaryColorBtn mr-3">
+                                    Entrar
+                                </button> 
+                            </div> 
+                            <div style="display:flex; justify-content: center; margin-top:50px !important">
+                                <a @click="NovaConta" class="criarConta primaryColor">
+                                    Criar conta?
+                                </a> 
+                            </div>
+                        </ValidationForm>
                     </div>
                 </div>
                 
@@ -35,28 +36,29 @@
 </template>
 
 <script>
+import ValidationForm from '../../components/ValidationForm.vue'
 import axios from 'axios'
   export default {
     name: 'LoginScreen',
+    components: { ValidationForm },
     data(){
         return{
-            email: null,
-            senha: null,
-            erros: {},            
+            login: {
+                email: null,
+                senha: null,
+            }        
         }
     },
     methods: {
-        Entrar(){
-            this.erros = {}
-            axios.post('http://localhost:4000/login', {email: this.email,senha: this.senha}).then( (result) => {
+        Entrar(login){
+            axios.post('http://localhost:4000/login', {email: login.email,senha: login.senha}).then( (result) => {
                     var usuarioLogado = result.data[0]
-                    if(usuarioLogado.id > 0)
-                    {
+                    if(usuarioLogado.id > 0) {
                         this.$store.commit('login', usuarioLogado)
                         this.$router.push('/home')
                     }
-                    else{
-                        this.erros.login = {msg:'Usuário ou senha inválidos.'}
+                    else {
+                        this.$refs.validation.insereErrorMessageCustom('senha', 'Usuário ou senha inválidos')
                     }
                 })
         },
@@ -64,6 +66,10 @@ import axios from 'axios'
             this.$router.push('/Usuario/Cadastro')
         }
   },
+  mounted() {
+        this.$refs.validation.required('email',"E-mail")
+        this.$refs.validation.required('senha',"Senha")
+  }
 }
 </script>
 

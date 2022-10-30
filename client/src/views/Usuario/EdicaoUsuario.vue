@@ -107,6 +107,13 @@
                 this.$refs.validation.email("email", "E-mail")
                 this.$refs.validation.minLength("senha", "Senha", 6)
                 this.$refs.validation.equal("confirmaSenha","senha", "Senhas")
+                this.$refs.validation.newValidation("teste", (model) => {
+                    if(model.nome == 'teste')
+                        return true
+                    return false
+                }, "Testando")
+                this.$refs.validation.applyValidation("nome", "teste")
+                this.$refs.validation.applyValidation("email", "teste")
         },        
     }
 </script>
