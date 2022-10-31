@@ -45,7 +45,7 @@
             insereErrorMessageEqual(field, label){
                 document.querySelectorAll('span[name=' + field + ']')[0].innerHTML = label + " não conferem"
             },
-            insereErrorMessageCustom(field, msg){
+            insereErrorMessage(field, msg){
                 document.querySelectorAll('span[name=' + field + ']')[0].innerHTML = msg
             },
             limparErros(){
@@ -76,6 +76,10 @@
             },
             applyValidation(nome, validation){
                 this.validations.push({"field": nome ,"validation": "new", "msg": this.newValidations[validation].msg, "func": this.newValidations[validation].func})
+            },
+            insereErro(nome, msg){
+                this.erros++
+                this.insereErrorMessage(nome, msg)
             },
             validar(){
                 this.limparErros()
@@ -111,13 +115,13 @@
                         else if(element.validation === 'custom'){
                             if(!element.func(this.model)){
                                 this.erros++
-                                this.insereErrorMessageCustom(element.field, element.msg)
+                                this.insereErrorMessage(element.field, element.msg)
                             }
                         }
                         else if(element.validation === 'new'){
                             if(!element.func(this.model)){
                                 this.erros++
-                                this.insereErrorMessageCustom(element.field, element.msg)
+                                this.insereErrorMessage(element.field, element.msg)
                             }
                         }
 

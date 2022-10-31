@@ -2,11 +2,11 @@
     <div align="center">
         <div id="content">
             <h3 class="primaryColor" style="margin-bottom:40px;">Lista de Usuários</h3>
-            <button style="margin-bottom:15px;" type="button" class="btn btn-primary primaryColorBtn" @click="inserir">
+            <!-- <button style="margin-bottom:15px;" type="button" class="btn btn-primary primaryColorBtn" @click="inserir">
                 <font-awesome-icon icon="fa-solid fa-plus" style="margin-right:7px" />
                 Inserir Usuário
-            </button>
-            <DataTable :colLabels="colLabels" :dataFields="dataFields" :dataUrl="'http://localhost:4000/usuario'" showEditButton="true" :showRemoveButton="true" @editar="editar" @excluir="excluir" :key="dataTableKey"></DataTable>
+            </button> -->
+            <DataTable :colLabels="colLabels" :dataFields="dataFields" :dataUrl="'http://localhost:4000/usuario'" :showRemoveButton="true" @excluir="excluir" :key="dataTableKey"></DataTable>
             <ModalPergunta ref="modalExclusao"></ModalPergunta>
         </div>
     </div>
@@ -33,22 +33,22 @@
             }
         },
         methods: {
-            editar(usuario) {
-                this.$router.push({
-                    name: 'cadastroedicaousuario',
-                    params: {
-                        codigoUsuario: usuario.id,
-                    },
-                });
-            },
-            inserir() {
-                this.$router.push({
-                    name: 'cadastroedicaousuario',
-                    params: {
-                        codigoUsuario: 0,
-                    },
-                });
-            },
+            // editar(usuario) {
+            //     this.$router.push({
+            //         name: 'cadastroedicaousuario',
+            //         params: {
+            //             codigoUsuario: usuario.id,
+            //         },
+            //     });
+            // },
+            // inserir() {
+            //     this.$router.push({
+            //         name: 'cadastroedicaousuario',
+            //         params: {
+            //             codigoUsuario: 0,
+            //         },
+            //     });
+            // },
             async excluir(usuario) {
                 const ok = await this.$refs.modalExclusao.show({
                     title: 'Excluir Usuário',

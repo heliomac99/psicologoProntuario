@@ -177,11 +177,11 @@
             this.$refs.validation.required("idade", "Idade")
             this.$refs.validation.required("estado", "Estado")
             this.$refs.validation.required("municipio", "Município")
-            this.$refs.validation.customValidation("genero", function (model) {
-                if(model.genero != "teste")
-                    return false
-                return true
-            }, "Teste")
+            // this.$refs.validation.customValidation("genero", function (model) {
+            //     if(model.genero != "teste")
+            //         return false
+            //     return true
+            // }, "Teste")
         }
 
         

@@ -71,7 +71,7 @@
                                 this.$router.back() 
                             }
                             else
-                                this.erros.email = { erro: true, msg:'E-mail está sendo utilizado.'}
+                                this.$refs.validation.insereErro("email", "E-mail está sendo utilizado")
                         }                    
                     )
                 }         

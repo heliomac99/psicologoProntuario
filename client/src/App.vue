@@ -107,7 +107,7 @@ export default {
     }
 
     .spanErro{
-        color:4C6793!important;
+        color: #dc3545!important;
         font-size: small;
         float:left;
     }
